@@ -15,12 +15,6 @@ from utils import get_data
 
 class EcardCheck:
     @staticmethod
-    def get_ua(brower_name):
-        url = "https://ghproxy.com/https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/user-agent.json"
-        useragent = choice(requests.get(url).json()[brower_name])
-        return useragent
-
-    @staticmethod
     def randomstr(numb):
         s = ""
         for _ in range(numb):
@@ -30,8 +24,8 @@ class EcardCheck:
     def main(self):
         url = "https://aiqicha.baidu.com/usercenter/getBenefitStatusAjax"
         headers = {
-            "User-Agent": self.get_ua("Safari"),
-            "Referer": f"https://aiqicha.baidu.com/m/usercenter/exchangeList?VNK={self.randomstr(8)}",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1",
+            "Referer": f"https://aiqicha.baidu.com/m/usercenter/mall?fr=jf_h5_center1&VNK={self.randomstr(8)}",
         }
         if requests.get(url, headers=headers).json()["data"]["AQ03008"] == 1:
             send("爱企查e卡监控", "爱企查京东e卡有货，请进行兑换")

@@ -27,7 +27,7 @@ class EcardCheck:
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1",
             "Referer": f"https://aiqicha.baidu.com/m/usercenter/mall?fr=jf_h5_center1&VNK={self.randomstr(8)}",
         }
-        if requests.get(url, headers=headers).json()["data"]["AQ03008"] == 1:
+        if requests.get(url, headers=headers).json()["data"]["AQ03008"] == true:
             send("爱企查e卡监控", "爱企查京东e卡有货，请进行兑换")
 
 

@@ -122,7 +122,7 @@ if (!PushConfig.TG_API_HOST) {
  * @param author 作者仓库等信息 例：`本通知 By：https://github.com/Oreomeow/checkinpanel`
  * @returns {Promise<unknown>}
  */
-async function sendNotify(text, desp, params = {}, author = '\n\nGitHub: https://github.com/Oreomeow/checkinpanel') {
+async function sendNotify(text, desp, params = {}, author = '') {
     // 提供 7 种通知
     desp += author; // 增加作者信息，防止被贩卖等
     await Promise.all([

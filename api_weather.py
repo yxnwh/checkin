@@ -31,7 +31,7 @@ class Weather:
                 city_map = json.loads(city_file.read())
         except Exception:
             with open(
-                "/ql/repo/Oreomeow_checkinpanel_master/city.json", "r", encoding="utf-8"
+                "/ql/repo/yxnwh_checkin_main/city.json", "r", encoding="utf-8"
             ) as city_file:
                 city_map = json.loads(city_file.read())
         msg_all = ""

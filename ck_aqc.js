@@ -96,8 +96,8 @@ async function aqc() {
         msg += '请填写百度爱企查 cookies (同百度贴吧';
     }
     Log(msg);
-    notify.sendNotify('爱企查', desp);
-    return '爱企查' + '\n\n' + desp;
+    notify.sendNotify('爱企查', msg);
+    return '爱企查' + '\n\n' + msg;
 }
 
 function rand() {

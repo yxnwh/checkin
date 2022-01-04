@@ -97,7 +97,7 @@ async function aqc() {
     }
     Log(msg);
     notify.sendNotify('爱企查', msg);
-    return '爱企查' + '\n\n' + msg;
+    return msg;
 }
 
 function rand() {

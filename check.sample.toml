@@ -10,10 +10,11 @@ ECARDCHECK = false
 # Hax 监控
 HAX = false
 
- 每日一句
+
+# 每日一句
 MOTTO = true
 
- 青龙随机定时
+# 青龙随机定时
 QL_RANDOM_TIME = false
 
 # 天气预报
@@ -30,7 +31,7 @@ password = "123456"
 phone = "135xxxxxxxx"
 ######### 多账号示例 #########
 
- 爱企查【WEB】
+# 爱企查【WEB】
 # https://www.baidu.com，同百度贴吧 cookie 一样
 # 批量查询任务需手动抓包查询之后的 exportkey，可不填
 [[AQC]]
@@ -57,7 +58,7 @@ coin_type = 1
 cookie = "_uuid=xxxxxx; rpdid=xxx'xxx; LIVE_BUVID=xxxxxx; PVID=xxxxxx; blackside_state=xxxxxx; CURRENT_FNVAL=xxxxxx; buvid3=xxxxxx; fingerprint3=xxxxxx; fingerprint=xxxxxx; buivd_fp=xxxxxx; buvid_fp_plain=xxxxxx; DedeUserID=xxxxxx; DedeUserID__ckMd5=xxxxxx; SESSDATA=xxxxxx; bili_jct=xxxxxx; bsource=xxxxxx; finger=xxxxxx; fingerprint_s=xxxxxx;"
 silver2coin = true
 
- 天翼云盘
+# 翼云盘
 # https://cloud.189.cn/web/login.html
 [[CLOUD189]]
 password = "Sitoi"
@@ -68,18 +69,18 @@ phone = "18888xxxxxx"
 [[CSDN]]
 cookie = "uuid_tt_dd=xxxxxx; _ga=xxxxxx; UserName=xxxxxx; UserInfo=xxxxxx; UserToken=xxxxxx; UserNick=xxxxxx; AU=768; UN=xxxxxx; BT=xxxxxx; p_uid=xxxxxx; Hm_up_6bcd52f51e9b3dce32bec4a3997715ac=xxxxxx; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=xxxxxx; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=xxxxxx dc_sid=xxxxxx; c_segment=xxxxxx; dc_session_id=xxxxxx; csrfToken=xxxxxx; c_first_ref=xxxxxx; c_first_page=xxxxxx; c_page_id=xxxxxx; announcement-new=xxxxxx; log_Id_click=xxxxxx; c_pref=xxxxxx; c_ref=xxxxxx; dc_tos=xxxxxx; log_Id_pv=xxxxxx; log_Id_view=xxxxxx"
 
- 恩山论坛【WEB】
+# 恩山论坛【WEB】
 # https://www.right.com.cn/forum/forum.php cookie
 [[ENSHAN]]
 cookie = "DJyZ_2132_saltkey=xxxxxx; DJyZ_2132_lastvisit=xxxxxx; DJyZ_2132_onlineusernum=xxxx; DJyZ_2132_sendmail=1; DJyZ_2132_ulastactivity=xxxxxx; DJyZ_2132_auth=xxxxxxxx; DJyZ_2132_sid=0; DJyZ_2132_connect_is_bind=0; DJyZ_2132_nofavfid=1; DJyZ_2132_checkpm=1; DJyZ_2132_noticeTitle=1; DJyZ_2132_lastact=xxxxxx"
 
-Freenom
+# Freenom
 # https://www.freenom.com
 [[FREENOM]]
 password = ""
 username = ""
 
- HOSTLOC
+# HOSTLOC
 # https://hostloc.com
 [[HOSTLOC]]
 password = ""
@@ -100,7 +101,7 @@ user_id = ""
 [[JUEJIN]]
 cookie = "ttcid=xxxxxx; MONITOR_WEB_ID=xxxxxx; passport_csrf_token_default=xxxxxx; passport_csrf_token=xxxxxx; s_v_web_id=xxxxxx; MONITOR_DEVICE_ID=xxxxxx; n_mh=xxxxxx; passport_auth_status=xxxxxx; passport_auth_status_ss=xxxxxx; sid_guard=xxxxxx; uid_tt=xxxxxx; uid_tt_ss=xxxxxx; sid_tt=xxxxxx; sessionid=xxxxxx; sessionid_ss=xxxxxx; sid_ucp_v1=xxxxxx; ssid_ucp_v1=xxxxxx; odin_tt=xxxxxx; tt_scid=xxxxxx"
 
- 芒果 TV【WEB】
+# 芒果TV【WEB】
 # https://www.mgtv.com 请求参数
 [[MGTV]]
 params = "uuid=xxxxxx&uid=xxxxxx&ticket=xxxxxx&token=xxxxxx&device=iPhone&did=xxxxxx&deviceId=xxxxxx&appVersion=6.8.2&osType=ios&platform=iphone&abroad=0&aid=xxxxxx&nonce=xxxxxx×tamp=xxxxxx&appid=xxxxxx&type=1&sign=xxxxxx&callback=xxxxxx"
@@ -116,19 +117,19 @@ min_step = "10000"
 password = "Sitoi"
 phone = "18888xxxxxx"
 
- NGA【APP】
+# NGA【APP】
 # https://ngabbs.com/nuke.php POST 请求主体 access_token
 # https://ngabbs.com/nuke.php POST 请求主体 access_uid，纯数字
 [[NGA]]
 token = "X8xxxxghxxxxxxxxujxxxxxxxv9xxxxxxxxccxxx"
 uid = "xxxxx391"
 
- 吾爱破解【WEB】
+# 吾爱破解【WEB】
 # https://www.52pojie.cn cookie
 [[POJIE]]
 cookie = "htVD_2132_client_token=xxxxxx; htVD_2132_connect_is_bind=xxxxxx; htVD_2132_connect_uin=xxxxxx; htVD_2132_nofavfid=xxxxxx; htVD_2132_smile=xxxxxx; Hm_lvt_46d556462595ed05e05f009cdafff31a=xxxxxx; htVD_2132_saltkey=xxxxxx; htVD_2132_lastvisit=xxxxxx; htVD_2132_client_created=xxxxxx; htVD_2132_auth=xxxxxx; htVD_2132_connect_login=xxxxxx; htVD_2132_home_diymode=xxxxxx; htVD_2132_visitedfid=xxxxxx; htVD_2132_viewid=xxxxxx; KF4=xxxxxx; htVD_2132_st_p=xxxxxx; htVD_2132_lastcheckfeed=xxxxxx; htVD_2132_sid=xxxxxx; htVD_2132_ulastactivity=xxxxxx; htVD_2132_noticeTitle=xxxxxx;"
 
- 什么值得买
+# 什么值得买
 # https://www.smzdm.com cookie
 [[SMZDM]]
 cookie = "sess=xxxxxx;"
@@ -138,7 +139,7 @@ cookie = "sess=xxxxxx;"
 [[TIEBA]]
 cookie = "BIDUPSID=xxxxxx; PSTM=xxxxxx; BAIDUID=xxxxxx; BAIDUID_BFESS=xxxxxx; delPer=xxxxxx; PSINO=xxxxxx; H_PS_PSSID=xxxxxx; BA_HECTOR=xxxxxx; BDORZ=xxxxxx; TIEBA_USERTYPE=xxxxxx; st_key_id=xxxxxx; BDUSS=xxxxxx; BDUSS_BFESS=xxxxxx; STOKEN=xxxxxx; TIEBAUID=xxxxxx; ab_sr=xxxxxx; st_data=xxxxxx; st_sign=xxxxxx;"
 
- 联通营业厅【APP】
+# 联通营业厅【APP】
 # 联通营业厅 APP 抓包域名为 https://m.client.10010.com/mobileService/login.htm 请求内容的 appId
 # 联通营业厅 APP 手机号
 # 联通营业厅 APP 密码

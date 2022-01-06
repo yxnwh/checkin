@@ -147,7 +147,7 @@ class HOSTLOC:
             log("帐户当前积分：" + points[0])
         else:
             log("无法获取帐户积分，可能页面存在错误或者未登录！")
-        time.sleep(5)
+        time.sleep(12)
 
     # 依次访问随机生成的用户空间链接获取积分
     def get_points(self, s: req_Session, number_c: int):
@@ -161,7 +161,7 @@ class HOSTLOC:
                     res = s.get(url)
                     res.raise_for_status()
                     log("第 " + str(i + 1) + " 个用户空间链接访问成功")
-                    time.sleep(5)  # 每访问一个链接后休眠5秒，以避免触发论坛的防CC机制
+                    time.sleep(12)  # 每访问一个链接后休眠5秒，以避免触发论坛的防CC机制
                 except Exception as e:
                     log("链接访问异常：" + str(e))
             self.log_current_points(s)  # 再次打印帐户当前积分

@@ -122,46 +122,14 @@ cp /ql/repo/Oreomeow_checkinpanel_master/notify.sample.toml /ql/config/notify.to
 
 ## 补充说明
 
-### 1. **添加了葫芦侠的签到配置**
-
-参数说明： `HLX.username` ：用户名 `HLX.password` ：密码的 MD5 32 位小写加密[生成](https://md5jiami.bmcx.com/)
-
-### 2. **添加了网易云游戏的签到配置**
-
-[官网](https://cg.163.com/#/mobile)
-
-参数说明： `GAME163.authorization`
-
-登录后抓取签到请求（一般请求的请求头也有这个字段）
-
-[![4tfx5F.png](https://z3.ax1x.com/2021/09/22/4tfx5F.png)](https://imgtu.com/i/4tfx5F)
-
-### 3. **Shell 脚本配置**
+## 3. **Shell 脚本配置**
 
 * 目前 Shell 脚本只有一个 SSPanel 签到，如需使用请参考 `env.sample` 配置 `.env` 后放入 `script/Lists` 或 `/ql/config` 文件夹
 * 支持自定义配置文件路径
   * 环境变量 / store KEY 名称：`ENV_PATH`
   * 参考值 / VALUE：`/usr/local/app/script/.env`
 
-### 4. **添加了欢太商城的签到配置**
-
-* [欢太商城 HttpCanary 抓包教程](https://github.com/hwkxk/HeytapTask/wiki/%E6%AC%A2%E5%A4%AA%E5%95%86%E5%9F%8EHttpCanary%E6%8A%93%E5%8C%85%E6%95%99%E7%A8%8B)
-* 部分域名屏蔽境外 IP 访问，所以本项目不适于在 非中国 IP 代理网络下 / Github Actions / 境外 VPS 上运行！
-* 从未在欢太商城做过任务，请先手动进入任务中心完成一下任务再使用，否则可能无法获取到任务列表数据导致出错！@YYplus
-
-### 5. **添加了时光相册的签到配置**
-
-[![4tWaFg.png](https://z3.ax1x.com/2021/09/22/4tWaFg.png)](https://imgtu.com/i/4tWaFg)
-
-### 6. **EUserv 在未开启登录验证时有效**
-
-* [True Captcha](https://apitruecaptcha.org/api)
-
-* 如图注册账号后获取 `userid` 和 `apikey`
-
-  [![5e9nF1.png](https://z3.ax1x.com/2021/10/11/5e9nF1.png)](https://imgtu.com/i/5e9nF1)
-
-## 其他说明
+# 其他说明
 
 1. 请自行修改执行时间。
 

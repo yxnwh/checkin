@@ -3,7 +3,7 @@ const Env = utils.Env;
 const getData = utils.getData;
 const $ = new Env('无忧行');
 const notify = $.isNode() ? require('./notify') : '';
-const AsVow = getData().JEGOTRIP;
+const AsVow = getData().JEGOTRIP.sow();
 var info = '';
 
 

@@ -134,11 +134,6 @@ cookie = "htVD_2132_client_token=xxxxxx; htVD_2132_connect_is_bind=xxxxxx; htVD_
 [[SMZDM]]
 cookie = "sess=xxxxxx;"
 
-# 百度贴吧
-# https://tieba.baidu.com/index.html cookie
-[[TIEBA]]
-cookie = "BIDUPSID=xxxxxx; PSTM=xxxxxx; BAIDUID=xxxxxx; BAIDUID_BFESS=xxxxxx; delPer=xxxxxx; PSINO=xxxxxx; H_PS_PSSID=xxxxxx; BA_HECTOR=xxxxxx; BDORZ=xxxxxx; TIEBA_USERTYPE=xxxxxx; st_key_id=xxxxxx; BDUSS=xxxxxx; BDUSS_BFESS=xxxxxx; STOKEN=xxxxxx; TIEBAUID=xxxxxx; ab_sr=xxxxxx; st_data=xxxxxx; st_sign=xxxxxx;"
-
 # 联通营业厅【APP】
 # 联通营业厅 APP 抓包域名为 https://m.client.10010.com/mobileService/login.htm 请求内容的 appId
 # 联通营业厅 APP 手机号

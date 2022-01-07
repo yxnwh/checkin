@@ -5,33 +5,6 @@
 > 环境：𝑷𝒚𝒕𝒉𝒐𝒏 3.8+ / 𝑵𝒐𝒅𝒆.𝒋𝒔 10+ / 𝑩𝒂𝒔𝒉 4+ / 𝑶𝒑𝒆𝒏𝑱𝑫𝑲8 / 𝑷𝒆𝒓𝒍5
 
 
-## 𝐞𝐥𝐞𝐜𝐕𝟐𝐏 使用方法
-
-### 1. 添加任务
-
-TASK -> 添加订阅任务 -> 修改名称、更新方式、任务 -> 获取内容 -> 全部添加
-
-名称：签到项目
-
-同名任务更新方式： `替换`
-
-任务：
-
-```text
-https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/dailycheckin.json
-```
-
-### 2. 抓包配置
-
-下载 [check.sample.toml](https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.sample.toml)，根据注释说明进行抓包并配置
-
-### 3. 上传配置
-
-将 `check.sample.toml` 重命名为 `check.toml` 后放入 `script/Lists` 文件夹
-
-* OVERVIEW -> EFSS 文件管理界面 -> 是否开启 EFSS 功能：开启 -> 目录：`./script/Lists` -> 选择文件：`check.toml` -> 开始上传
-
-* elecV2P 3.4.6 已支持在线编辑，右键文件即可
 
 ### 4. 配置通知
 

@@ -16,10 +16,8 @@ class kejiwanjia:
         self.check_items = check_items
 
     @staticmethod
-    def sign(cookie):
+    def sign(cookie,authorization):
         result = ""
-        cookie = 'b2_token='+cookie
-        authorization = 'Bearer '+cookie
         headers = {
             "Cookie": cookie,
             "Host": "www.kejiwanjia.com",
@@ -43,7 +41,9 @@ class kejiwanjia:
         msg_all = ""
         for check_item in self.check_items:
             cookie = check_item.get("cookie")
-            sign_msg = self.sign(cookie=cookie)
+            cookie = 'b2_token='+cookie
+            authorization = 'Bearer '+cookie
+            sign_msg = self.sign(cookie=cookie,authorization=authorization)
             msg = f"账号 {i} 签到状态: {sign_msg}"
             msg_all += msg + "\n\n"
             i += 1

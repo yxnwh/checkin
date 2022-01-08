@@ -1,3 +1,7 @@
+   
+/*
+41 7 * * * ck_mydigit.js
+*/
 const axios = require("axios");
 const utils = require('./utils');
 const Env = utils.Env;

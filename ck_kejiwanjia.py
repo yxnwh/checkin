@@ -48,6 +48,7 @@ class kejiwanjia:
         msg_all = ""
         for check_item in self.check_items:
             cookie = check_item.get("cookie")
+	    authorization = check_item.get("authorization")
             sign_msg = self.sign(cookie=cookie)
             msg = f"账号 {i} 签到状态: {sign_msg}"
             msg_all += msg + "\n\n"

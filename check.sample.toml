@@ -175,3 +175,7 @@ cookie = "xxxx"
 [[JEGOTRIP]]
 mobile = "13xxxxxxxxx"
 token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# 数码之家【WEB】
+[[MYDIGIT]]
+cookie = "VhUn_2132_saltkey=xxx; VhUn_2132_auth=xxx"

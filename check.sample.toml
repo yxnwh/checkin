@@ -10,12 +10,8 @@ ECARDCHECK = false
 # Hax 监控
 HAX = false
 
-
 # 每日一句
 MOTTO = true
-
-# 青龙随机定时
-QL_RANDOM_TIME = false
 
 # 天气预报
 CITY = ["上海", "朝阳区"]
@@ -172,3 +168,10 @@ password = "Sitoi"
 pause21days = true
 phone = "18888xxxxxx"
 url = "https://nyan.mail.wo.cn/cn/sign/index/index?mobile=xxxxxx&userName=&openId=xxxxxx"
+
+# 科技玩家签到【ios】
+# cookie取b2token那一段，带;号
+# authorization取bear那一整段
+[[KEJIWANJIA]]
+cookie = ""
+authorization = ""

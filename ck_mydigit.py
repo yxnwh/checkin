@@ -26,18 +26,25 @@ class mydigit:
             "Referer": "https://www.mydigit.cn/home.php",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36",
         }
+        url1 = 'https://www.mydigit.cn/k_misign-sign.html'
         s = requests.session()
-        resp = s.get( "https://www.mydigit.cn/k_misign-sign.html", headers=headers )
-        time.sleep(2)
-		print(resp.content)
-#        s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
-#        resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
-#        ta = resp.json()
-#        tb = json.loads(ta)
-#        if int(ta) < 100 :
-#            result += f"今天已签到\n\n获得积分：{int(ta)}"
-#        else:
-#            result += f"签到成功\n\n已连续签到：{tb['mission']['always']}\n获得积分：{tb['mission']['credit']}\n总积分：{tb['mission']['my_credit']}"
+        resp = s.get( url1, headers=headers )
+        time.sleep(1)
+        m = re.findall(r'name="formhash" value="([0-9a-z]+)"',resp.content.decode())
+        formhash = m[0]
+        url2 = 'https://www.mydigit.cn/plugin.php?id=k_misign:sign&operation=qiandao&format=text&formhash=' + formhash
+        headers.update({'Referer': 'https://www.mydigit.cn/k_misign-sign.html'})
+        resp2 = s.post( url2, headers=headers )
+        time.sleep(1)
+        n = re.findall(r'已签',resp2.content.decode())
+        if n[0] == "已签":
+            resp3 = s.get( url1, headers=headers )
+            time.sleep(1)
+            nn = re.findall(r'id="lxdays" value="([0-9]+)"|id="lxreward" value="([0-9]+)"|id="lxtdays" value="([0-9]+)"|class="author">([0-9a-zA-Z]+)<',resp3.content.decode())
+            account = nn[0][3]
+            result += f"账号名 {account} 今天已签到\n已连续签到：{nn[1][0]}天\n获得积分：{nn[2][1]}\n总签到：{nn[3][2]}天"
+        else:
+            result += f"有错误，请重新调试"
         return result
 
     def main(self):
@@ -46,7 +53,7 @@ class mydigit:
         for check_item in self.check_items:
             cookie = check_item.get("cookie")
             sign_msg = self.sign(cookie=cookie)
-            msg = f"账号 {i} 签到状态: {sign_msg}"
+            msg = f"账号{i}签到状态: {sign_msg}"
             msg_all += msg + "\n\n"
             i += 1
         return msg_all

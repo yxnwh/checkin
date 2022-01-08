@@ -7,9 +7,6 @@
 # 爱企查e卡监控
 ECARDCHECK = true
 
-# 每日一句
-MOTTO = true
-
 # 天气预报
 CITY = ["上海", "北京"]
 
@@ -30,15 +27,6 @@ phone = "135xxxxxxxx"
 [[AQC]]
 cookie = 'log_guid=xxxxxx; BDPPN=xxx"xxx;...'
 exportkey = ""
-
-# 百度搜索资源平台
-# 提交网站的 URL 链接
-# https://ziyuan.baidu.com/site/index# 提交百度网站的目标 URL
-# 每日对同个网站提交次数
-[[BAIDU]]
-data_url = "https://cdn.jsdelivr.net/gh/Sitoi/Sitoi.github.io/baidu_urls.txt"
-submit_url = "http://data.zz.baidu.com/urls?site=https://sitoi.cn&token=xxxxxx"
-times = 10
 
 # Bilibili【WEB】
 # 每日投币数量
@@ -67,13 +55,13 @@ cookie = "uuid_tt_dd=xxxxxx; _ga=xxxxxx; UserName=xxxxxx; UserInfo=xxxxxx; UserT
 [[ENSHAN]]
 cookie = "DJyZ_2132_saltkey=xxxxxx; DJyZ_2132_lastvisit=xxxxxx; DJyZ_2132_onlineusernum=xxxx; DJyZ_2132_sendmail=1; DJyZ_2132_ulastactivity=xxxxxx; DJyZ_2132_auth=xxxxxxxx; DJyZ_2132_sid=0; DJyZ_2132_connect_is_bind=0; DJyZ_2132_nofavfid=1; DJyZ_2132_checkpm=1; DJyZ_2132_noticeTitle=1; DJyZ_2132_lastact=xxxxxx"
 
-# Freenom
+# Freenom【WEB】
 # https://www.freenom.com
 [[FREENOM]]
 password = ""
 username = ""
 
-# HOSTLOC
+# HOSTLOC【WEB】
 # https://hostloc.com
 [[HOSTLOC]]
 password = ""

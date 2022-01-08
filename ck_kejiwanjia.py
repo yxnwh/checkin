@@ -46,8 +46,8 @@ class kejiwanjia:
             authorization = 'Bearer '+cookie
             cookie = 'b2_token='+cookie
             sign_msg = self.sign(cookie=cookie,authorization=authorization)
-            msg = f"账号 {i} 签到状态: {sign_msg}"
-            msg_all += msg + "\n\n"
+            msg = f"账号 {i} 签到状态: {sign_msg}\n"
+            msg_all += msg + "\n"
             i += 1
         return msg_all
 

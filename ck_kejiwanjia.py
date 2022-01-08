@@ -27,7 +27,7 @@ class kejiwanjia:
         }
         s = requests.session()
         resp1 = s.get( "https://www.kejiwanjia.com/mission/today", headers=headers )
-        time.sleep(2)
+        time.sleep(1)
         s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
         resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
         ta = resp.json()

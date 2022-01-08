@@ -6,6 +6,7 @@ new Env('科技玩家');
 
 import requests
 import time
+import json
 
 from notify_mtr import send
 from utils import get_data
@@ -29,11 +30,12 @@ class kejiwanjia:
         time.sleep(2)
         s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
         resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
-        totalmessage = resp.json()
-        if int(totalmessage) > 0 :
-            result += f"今天已签到\n\n获得积分：{int(totalmessage)}"
+        ta = resp.json()
+        tb = json.loads(ta)
+        if int(ta) < 100 :
+            result += f"今天已签到\n\n获得积分：{int(ta)}"
         else:
-            result += f"签到成功\n\n获得积分：{int(totalmessage['credit'])}\n总积分：{int(totalmessage['mission']['my_credit'])}"
+            result += f"签到成功\n\n已连续签到：{tb['mission']['always']}\n获得积分：{tb['mission']['credit']}\n总积分：{tb['mission']['my_credit']}"
         return result
 
     def main(self):

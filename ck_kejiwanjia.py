@@ -23,6 +23,7 @@ class kejiwanjia:
             "Cookie": cookie,
             "Host": "www.kejiwanjia.com",
             "Referer": "https://www.kejiwanjia.com/mission/today",
+            #User-Agent最好更换为自己的
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1",
         }
         s = requests.session()

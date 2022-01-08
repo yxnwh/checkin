@@ -1,5 +1,10 @@
 /*
 37 7 * * * ck_jeotrip.js
+在check.toml中添加如下，其中mobile为手机号，11位，token为32为的数字和字母组成，自己取抓包
+# 无忧行【APP】
+[[JEGOTRIP]]
+mobile = "13xxxxxxxxx"
+token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 */
 const utils = require('./utils');
 const Env = utils.Env;
@@ -11,13 +16,13 @@ var info = '';
 
 
 const headers = {
+	'Host': 'app.jegotrip.com.cn',
+	'Origin': 'https://cdn.jegotrip.com.cn',
 	'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 };
 
 function Log(desp) {
     console.log(desp);
-    info = info + '\n' + desp;
-    return info;
 }
 
 !(async () => {
@@ -50,6 +55,7 @@ function Log(desp) {
     notify.sendNotify('无忧行', info);
   } else {
     info = '签到失败：请先获取Cookie⚠️';
+    Log(info)
     notify.sendNotify('无忧行', info);
   }
 })().finally(() => {
@@ -60,7 +66,6 @@ function Log(desp) {
 function Total() {
   const url = 'https://app.jegotrip.com.cn/api/service/user/v1/getUserAssets?lang=zh_cn&token=' + token;
   const body = `{"token":"${token}"}`;
-  headers['Host'] = 'app.jegotrip.com.cn';
   headers['Referer'] = 'http://task.jegotrip.com.cn:8080/';
   const request = {
       url: url,
@@ -70,15 +75,14 @@ function Total() {
   return new Promise(resolve => {
     $.http.post(request)
       .then((resp) => {
-        Log(`\nTotal body: \n${$.toStr(resp)}`);
         data = $.toObj(resp.body);
         total = data.body.tripCoins;
         info += `无忧币总计：${total}💰\n`;
+        Log(info)
       })
       .catch((err) => {
         const error = '账号信息获取失败⚠️';
         Log(error + '\n' + err);
-		notify.sendNotify('无忧行', `${head+error}请查看日志‼️`);
       })
       .finally(() => {
         resolve();
@@ -89,8 +93,6 @@ function Total() {
 
 function QuerySign() {
   const url = 'https://app.jegotrip.com.cn/api/service/v1/mission/sign/querySign?token=' + token;
-  headers['Origin'] = 'https://cdn.jegotrip.com.cn';
-  headers['Host'] = 'app.jegotrip.com.cn';
   headers['Referer'] = 'https://cdn.jegotrip.com.cn/static/missioncenter/index.html?token=' + token;
   const request = {
       url: url,
@@ -99,7 +101,6 @@ function QuerySign() {
   return new Promise(resolve => {
     $.http.post(request)
       .then(async (resp) => {
-        Log(`\nQuerySign body: \n${resp}`);
         data = resp.body;
         if (data.includes('成功')) {
           data = $.toObj(data);
@@ -118,13 +119,11 @@ function QuerySign() {
           }
         } else if (data.includes('不正确')) {
           invalid = true;
-		  notify.sendNotify('无忧行', `${head}\nToken已失效‼️`);
         }
       })
       .catch((err) => {
         const error = '🆕签到状态获取失败⚠️';
         Log(error + '\n' + err);
-		notify.sendNotify('无忧行', `${head+error}请查看日志‼️`);
       })
       .finally(() => {
         resolve();
@@ -135,10 +134,8 @@ function QuerySign() {
 
 function UserSign(headers) {
   const url = 'https://app.jegotrip.com.cn/api/service/v1/mission/sign/userSign?token=' + token;
-  const body = `{"signConfigId":"${id}"}`;
-  headers['Origin'] = 'https://cdn.jegotrip.com.cn';
-  headers['Host'] = 'app.jegotrip.com.cn';
   headers['Referer'] = 'https://cdn.jegotrip.com.cn/static/missioncenter/index.html?token=' + token;
+  const body = `{"signConfigId":"${id}"}`;
   const request = {
       url: url,
       headers: headers,
@@ -147,21 +144,17 @@ function UserSign(headers) {
   return new Promise(resolve => {
     $.http.post(request)
       .then((resp) => {
-        Log(`\nUserSign body: \n${resp}`);
         data = resp.body;
         if (data.includes('成功')) {
           info += `签到成功：无忧币 +${rewardCoin}🎉\n`;
         }
       })
       .catch((err) => {
-        const error = '🆕签到失败⚠️';
+        const error = 'UserSign 🆕签到失败⚠️';
         Log(error + '\n' + err);
-		notify.sendNotify('无忧行', `${head+error}请查看日志‼️`);
       })
       .finally(() => {
         resolve();
       });
   });
 }
-
-module.exports = jeotrip;

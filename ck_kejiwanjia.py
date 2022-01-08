@@ -16,40 +16,33 @@ class kejiwanjia:
         self.check_items = check_items
 
     @staticmethod
-    def sign(cookie):
+    def sign(cookie, authorization):
         result = ""
         headers = {
             "Cookie": cookie,
-			"Host": "www.kejiwanjia.com",
-			"Referer": "https://www.kejiwanjia.com/mission/today",
+            "Host": "www.kejiwanjia.com",
+            "Referer": "https://www.kejiwanjia.com/mission/today",
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1",
         }
-		s = requests.Session()
-        s.get( "https://www.kejiwanjia.com/mission/today", headers=headers )
-		time.sleep(2)
-		s.headers.update({'Origin': 'https://www.kejiwanjia.com/' , 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lmtlaml3YW5qaWEuY29tIiwiaWF0IjoxNjQxNTY4ODU1LCJuYmYiOjE2NDE1Njg4NTUsImV4cCI6MTY0MjM0NjQ1NSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMTI2OTAifX19.IZli32ODEWdulvKfZER6utlDh3oL8Ifo83kAX-z7LHo'})
-		resp = s.post( "https://www.kejiwanjia.com/mission/today", headers=headers )
-		totalmessage = resp.json()
-		#dailycredit = resp.json().get("credit")
-		#totalcredit = resp.json().get("my_credit")
-
-        #if "您需要先登录才能继续本操作" in fc:
-        #    result += "Cookie 失效"
-        #elif "恭喜" in fc:
-        #    result += "签到成功"
-        #elif "不是进行中的任务" in fc:
-        #    result += "不是进行中的任务"
-        #else:
-        #    result += "签到失败"
-        #return result
+        s = requests.session()
+        resp1 = s.get( "https://www.kejiwanjia.com/mission/today", headers=headers )
+        time.sleep(2)
+        s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
+        resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
+        totalmessage = resp.json()
+        if int(totalmessage) > 0 :
+            result += f"今天已签到\n\n获得积分：{int(totalmessage)}"
+        else:
+            result += f"签到成功\n\n获得积分：{int(totalmessage['credit'])}\n总积分：{int(totalmessage['my_credit'])}"
+        return result
 
     def main(self):
         i = 1
         msg_all = ""
         for check_item in self.check_items:
             cookie = check_item.get("cookie")
-	    authorization = check_item.get("authorization")
-            sign_msg = self.sign(cookie=cookie)
+            authorization = check_item.get("authorization")
+            sign_msg = self.sign(cookie=cookie, authorization=authorization)
             msg = f"账号 {i} 签到状态: {sign_msg}"
             msg_all += msg + "\n\n"
             i += 1

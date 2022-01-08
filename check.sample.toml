@@ -5,16 +5,13 @@
 # e.g.3 cookie = 'xxx; app_param={"brand":"iPhone"}'
 
 # 爱企查e卡监控
-ECARDCHECK = false
-
-# Hax 监控
-HAX = false
+ECARDCHECK = true
 
 # 每日一句
 MOTTO = true
 
 # 天气预报
-CITY = ["上海", "朝阳区"]
+CITY = ["上海", "北京"]
 
 # AcFun
 # https://www.acfun.cn
@@ -170,8 +167,11 @@ phone = "18888xxxxxx"
 url = "https://nyan.mail.wo.cn/cn/sign/index/index?mobile=xxxxxx&userName=&openId=xxxxxx"
 
 # 科技玩家签到【ios】
-# cookie取b2token那一段，带;号
-# authorization取bear那一整段
+# cookie取b2token=后面那一段，不带;号
 [[KEJIWANJIA]]
-cookie = ""
-authorization = ""
+cookie = "xxxx"
+
+# 无忧行【APP】
+[[JEGOTRIP]]
+mobile = "13xxxxx"
+token = "2xxx"

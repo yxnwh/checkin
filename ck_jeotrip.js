@@ -1,9 +1,12 @@
+/*
+37 7 * * * ck_jeotrip.js
+*/
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
 const $ = new Env('无忧行');
 const notify = $.isNode() ? require('./notify') : '';
-const AsVow = getData().JEGOTRIP.sow();
+const AsVow = getData().JEGOTRIP;
 var info = '';
 
 

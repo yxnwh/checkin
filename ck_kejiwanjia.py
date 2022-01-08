@@ -33,7 +33,7 @@ class kejiwanjia:
         if int(totalmessage) > 0 :
             result += f"今天已签到\n\n获得积分：{int(totalmessage)}"
         else:
-            result += f"签到成功\n\n获得积分：{int(totalmessage['credit'])}\n总积分：{int(totalmessage['my_credit'])}"
+            result += f"签到成功\n\n获得积分：{int(totalmessage['mission']['credit'])}\n总积分：{int(totalmessage['mission']['my_credit'])}"
         return result
 
     def main(self):

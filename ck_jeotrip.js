@@ -1,6 +1,6 @@
 /*
 37 7 * * * ck_jeotrip.js
-在check.toml中添加如下，其中mobile为手机号，11位，token为32为的数字和字母组成，自己取抓包
+在check.toml中添加如下，其中mobile为手机号，11位，token为32为的数字和字母组成，自己抓包
 # 无忧行【APP】
 [[JEGOTRIP]]
 mobile = "13xxxxxxxxx"
@@ -21,11 +21,9 @@ const headers = {
 	'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 };
 
-function Log(desp) {
-    console.log(desp);
-}
+jegotrip();
 
-!(async () => {
+async function jegotrip() {
   if (AsVow) {
     for (i in AsVow) {
       mobile = AsVow[i].mobile;
@@ -49,7 +47,7 @@ function Log(desp) {
         INC_Cookie = $.toStr(AsVow[i]);
         AsVow = $.toObj($.toStr(AsVow).replace(INC_Cookie,'').replace(/,]*$/, ']'));
         $.write(AsVow,'AsVow');
-        Log(`⚠️自动删除不完整的Cookie\n ${INC_Cookie}`);
+        console.log(`⚠️自动删除不完整的Cookie\n ${INC_Cookie}`);
       }
     }
     notify.sendNotify('无忧行', info);
@@ -58,9 +56,7 @@ function Log(desp) {
     Log(info)
     notify.sendNotify('无忧行', info);
   }
-})().finally(() => {
-  $.done();
-});
+}
 
 
 function Total() {
@@ -78,11 +74,11 @@ function Total() {
         data = $.toObj(resp.body);
         total = data.body.tripCoins;
         info += `无忧币总计：${total}💰\n`;
-        Log(info)
+        console.log(info)
       })
       .catch((err) => {
         const error = '账号信息获取失败⚠️';
-        Log(error + '\n' + err);
+        console.log(error + '\n' + err);
       })
       .finally(() => {
         resolve();
@@ -123,7 +119,7 @@ function QuerySign() {
       })
       .catch((err) => {
         const error = '🆕签到状态获取失败⚠️';
-        Log(error + '\n' + err);
+        console.log(error + '\n' + err);
       })
       .finally(() => {
         resolve();
@@ -151,10 +147,12 @@ function UserSign(headers) {
       })
       .catch((err) => {
         const error = 'UserSign 🆕签到失败⚠️';
-        Log(error + '\n' + err);
+        console.log(error + '\n' + err);
       })
       .finally(() => {
         resolve();
       });
   });
 }
+
+module.exports = jegotrip;

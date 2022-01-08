@@ -24,6 +24,7 @@ class mydigit:
             "Cookie": cookie,
             "Host": "www.mydigit.cn",
             "Referer": "https://www.mydigit.cn/home.php",
+            #User-Agent最好更换为自己的
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36",
         }
         url1 = 'https://www.mydigit.cn/k_misign-sign.html'

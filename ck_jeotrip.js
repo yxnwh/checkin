@@ -18,6 +18,7 @@ var info = '';
 const headers = {
 	'Host': 'app.jegotrip.com.cn',
 	'Origin': 'https://cdn.jegotrip.com.cn',
+	//User-Agent最好更换为自己的
 	'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 };
 

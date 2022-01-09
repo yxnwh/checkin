@@ -33,7 +33,7 @@ class kejiwanjia:
         resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
         ta = resp.json()
         if type(ta) == str :
-            result += f"今天已签到\n\n获得积分（签到可能未成功，请登录网页查看）：{int(ta)}"
+            result += f"今天已签到（签到可能未成功，请登录网页查看）\n\n获得积分：{int(ta)}"
         elif type(ta) == dict:
             tb = json.load(ta)
             result += f"签到成功\n\n已连续签到：{tb['mission']['always']}\n获得积分：{tb['mission']['credit']}\n总积分：{tb['mission']['my_credit']}"

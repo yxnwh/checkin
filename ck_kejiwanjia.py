@@ -31,8 +31,8 @@ class kejiwanjia:
         time.sleep(1)
         s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
         resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
-        ta = resp.content.json()
-        tb = json.loads(ta)
+        ta = resp.json()
+        tb = json.load(ta)
         if int(ta) < 100 :
             result += f"今天已签到\n\n获得积分（签到可能未成功，请登录网页查看）：{int(ta)}"
         else:

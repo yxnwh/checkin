@@ -243,7 +243,7 @@ async function dotask(tasklist, aqcCookie, exportkey) {
                 break;
             case 'CX12008': //高级筛选
                 Log('开始任务：' + oo[o.title]);
-                await get(`search/advanceFilterAjax?q=%E7%A6%8F%E5%B7%9E%E6%AF%8F%E6%97%A5&t=0&p=1&s=10&o=0`);
+                await get(`app/advanceFilterAjax?f=%7B%22taxLevel%22%3A%5B%221%22%5D%2C%22tenderbidding%22%3A%5B%221%22%5D%2C%22website%22%3A%5B%221%22%5D%2C%22importExport%22%3A%5B%221%22%5D%2C%22contactEmail%22%3A%5B%221%22%5D%2C%22contactPhone%22%3A%5B%221%22%5D%7D&o=0&p=1&q=${encodeURI(rand())}&t=111`);
                 break;
             case 'CX12009': //浏览互动
                 Log('开始任务：' + oo[o.title]);

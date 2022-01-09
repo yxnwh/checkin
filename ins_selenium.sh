@@ -3,7 +3,7 @@
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 alpine_pkgs="bash curl gcc git jq libffi-dev make musl-dev openssl-dev py3-pip python3 python3-dev wget"
-py_reqs="cryptography selenium PyVirtualDisplay"
+py_reqs="cryptography selenium PyVirtualDisplay flask"
 chromium_pkgs="chromium libexif eudev"
 chromedriver_pkgs="chromium-chromedriver"
 xvfb_pkgs="xvfb"

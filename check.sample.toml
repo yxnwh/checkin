@@ -27,6 +27,7 @@ phone = "135xxxxxxxx"
 [[AQC]]
 cookie = 'log_guid=xxxxxx; BDPPN=xxx"xxx;...'
 exportkey = ""
+reuid = ""
 
 # Bilibili【WEB】
 # 每日投币数量

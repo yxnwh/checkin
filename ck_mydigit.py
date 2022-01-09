@@ -46,6 +46,7 @@ class mydigit:
             result += f"账号名 {account} 今天已签到\n已连续签到：{nn[1][0]}天\n获得积分：{nn[2][1]}\n总签到：{nn[3][2]}天"
         else:
             result += f"有错误，请重新调试"
+        s.close()
         return result
 
     def main(self):

@@ -1,7 +1,7 @@
 /*
 * @url: https://raw.githubusercontent.com/Wenmoux/checkbox/master/scripts/aiqicha.js
 * @author: wenmoux
-37 0-23/8 * * * ck_aiqicha.js
+37 7 * * * ck_aiqicha.js
 */
 
 const axios = require('axios');
@@ -41,6 +41,7 @@ const oo = {
     CX12007: '高级搜索',
     CX12008: '高级筛选',
     CX12009: '浏览互动',
+    CX12010: '发表观点',
     CX12011: '点赞观点',
 };
 
@@ -254,6 +255,14 @@ async function dotask(tasklist, aqcCookie, exportkey) {
                     await get(`smart/questionDetailAjax?nid=${nid}`);
                 }
                 break;
+            case 'CX12010': //发表观点
+                Log('开始任务：' + oo[o.title]);
+                nid = nid ?? '1851233986328193016';
+                let dbody = {"content":"%E8%BF%98%E4%B8%8D%E9%94%99","nid": nid, "replyUserId": "1723083146"};
+                headers.cookie = aqcCookie;
+                headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
+                await post('https://aiqicha.baidu.com/app/addReplyAjax', dbody);
+                let 
             case 'CX12011': //点赞观点
                 Log('开始任务：' + oo[o.title]);
                 nid = nid ?? '1851233986328193016';

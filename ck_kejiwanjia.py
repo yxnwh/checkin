@@ -32,11 +32,14 @@ class kejiwanjia:
         s.headers.update({'Origin': 'https://www.kejiwanjia.com/', 'Authorization': authorization,})
         resp = s.post( "https://www.kejiwanjia.com/wp-json/b2/v1/userMission", headers=headers )
         ta = resp.json()
-        tb = json.load(ta)
         if type(ta) == str :
             result += f"今天已签到\n\n获得积分（签到可能未成功，请登录网页查看）：{int(ta)}"
-        else:
+        elif type(ta) == dict:
+            tb = json.load(ta)
             result += f"签到成功\n\n已连续签到：{tb['mission']['always']}\n获得积分：{tb['mission']['credit']}\n总积分：{tb['mission']['my_credit']}"
+        else:
+            print('ta返回的数据类型为'+ type(ta)+'请调试')
+            result += f"签到发生错误，请查看日志"
         s.close()
         return result
 

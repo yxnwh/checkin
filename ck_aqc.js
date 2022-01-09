@@ -5,6 +5,7 @@
 */
 
 const axios = require('axios');
+const qs = require('qs');
 
 const utils = require('./utils');
 const Env = utils.Env;
@@ -63,6 +64,7 @@ async function aqc() {
         for (let a = 0; a < COOKIES_AQC.length; a++) {
             let aqcCookie = COOKIES_AQC[a].cookie;
             let exportkey = COOKIES_AQC[a].exportkey ? COOKIES_AQC[a].exportkey : '';
+			let aqcreuid = COOKIES_AQC[a].reuid
             headers.cookie = aqcCookie;
             Log('\n========== [Account ' + (a + 1) + '] Start ========== ');
             Log('爱企查每日任务开始');
@@ -258,11 +260,11 @@ async function dotask(tasklist, aqcCookie, exportkey) {
             case 'CX12010': //发表观点
                 Log('开始任务：' + oo[o.title]);
                 nid = nid ?? '1851233986328193016';
-                let dbody = {"content":"%E8%BF%98%E4%B8%8D%E9%94%99","nid": nid, "replyUserId": "1723083146"};
                 headers.cookie = aqcCookie;
                 headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
-                await post('https://aiqicha.baidu.com/app/addReplyAjax', dbody);
-                let 
+				headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+                await get(`app/addReplyAjax`, qs.stringify({content:"其实还好吧,再观察观察", nid:Number(nid), replyUserId:Number(aqcreuid)}), 'post');
+                break;
             case 'CX12011': //点赞观点
                 Log('开始任务：' + oo[o.title]);
                 nid = nid ?? '1851233986328193016';

@@ -64,7 +64,7 @@ async function aqc() {
         for (let a = 0; a < COOKIES_AQC.length; a++) {
             let aqcCookie = COOKIES_AQC[a].cookie;
             let exportkey = COOKIES_AQC[a].exportkey ? COOKIES_AQC[a].exportkey : '';
-			let aqcreuid = COOKIES_AQC[a].reuid
+            let aqcreuid = COOKIES_AQC[a].reuid
             headers.cookie = aqcCookie;
             Log('\n========== [Account ' + (a + 1) + '] Start ========== ');
             Log('爱企查每日任务开始');
@@ -262,7 +262,7 @@ async function dotask(tasklist, aqcCookie, exportkey) {
                 nid = nid ?? '1851233986328193016';
                 headers.cookie = aqcCookie;
                 headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
-				headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+                headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
                 await get(`app/addReplyAjax`, qs.stringify({content:"其实还好吧,再观察观察", nid:Number(nid), replyUserId:Number(aqcreuid)}), 'post');
                 break;
             case 'CX12011': //点赞观点

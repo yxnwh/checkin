@@ -65,7 +65,6 @@ async function aqc() {
             let aqcCookie = COOKIES_AQC[a].cookie;
             let exportkey = COOKIES_AQC[a].exportkey ? COOKIES_AQC[a].exportkey : '';
             let aqcreuid = COOKIES_AQC[a].reuid;
-			console.log(aqcreuid)
             headers.cookie = aqcCookie;
             Log('\n========== [Account ' + (a + 1) + '] Start ========== ');
             Log('爱企查每日任务开始');

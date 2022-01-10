@@ -64,7 +64,8 @@ async function aqc() {
         for (let a = 0; a < COOKIES_AQC.length; a++) {
             let aqcCookie = COOKIES_AQC[a].cookie;
             let exportkey = COOKIES_AQC[a].exportkey ? COOKIES_AQC[a].exportkey : '';
-            let aqcreuid = COOKIES_AQC[a].reuid ? COOKIES_AQC[a].reuid : '';
+            let aqcreuid = COOKIES_AQC[a].reuid;
+			console.log(aqcreuid)
             headers.cookie = aqcCookie;
             Log('\n========== [Account ' + (a + 1) + '] Start ========== ');
             Log('爱企查每日任务开始');
@@ -78,8 +79,8 @@ async function aqc() {
                     });
                 key = [...key, ...popularSearchKey];
                 await getaskList();
-                await dotask(taskList, aqcCookie, exportkey);
-                await dotask(taskList, aqcCookie, exportkey);
+                await dotask(taskList, aqcCookie, exportkey, aqcreuid);
+                await dotask(taskList, aqcCookie, exportkey, aqcreuid);
                 await sleep(5000);
                 await getaskList();
                 for (let task of claimList) {
@@ -152,7 +153,7 @@ async function getaskList() {
     Log(`共 ${alltaskList.length} 任务 已完成 ${ytaskList.length} 任务 可做 ${taskList.length} 任务 ${claimList.length} 任务可领取奖励`);
 }
 
-async function dotask(tasklist, aqcCookie, exportkey) {
+async function dotask(tasklist, aqcCookie, exportkey, aqcreuid) {
     for (var o of tasklist) {
         switch (o.title) {
             case 'CX10002': //每日签到
@@ -246,6 +247,8 @@ async function dotask(tasklist, aqcCookie, exportkey) {
                 break;
             case 'CX12008': //高级筛选
                 Log('开始任务：' + oo[o.title]);
+                headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
+                headers['User-Agent'] = 'aiinquiry/2.4.2 (iPhone; iOS 14.2.1; Scale/3.00) Ios (21) 91d6849184841539d639 aiqicha/2.4.2';
                 await get(`app/advanceFilterAjax?f=%7B%22taxLevel%22%3A%5B%221%22%5D%2C%22tenderbidding%22%3A%5B%221%22%5D%2C%22website%22%3A%5B%221%22%5D%2C%22importExport%22%3A%5B%221%22%5D%2C%22contactEmail%22%3A%5B%221%22%5D%2C%22contactPhone%22%3A%5B%221%22%5D%7D&o=0&p=1&q=${encodeURI(rand())}&t=111`);
                 break;
             case 'CX12009': //浏览互动

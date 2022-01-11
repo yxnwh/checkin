@@ -107,7 +107,7 @@ function QuerySign() {
           for (var i in list) {
             isSign = list[i].isSign;
             if (isSign == '3') {
-              info += `签到失败：今日已签到‼️\n\n已获得无忧币: +${list[i].rewardCoin}`;
+              info += `签到失败：今日已签到‼️\n\n已获得无忧币: +${list[i].rewardCoin}\n`;
               break;
             } else if (isSign == '2') {
               id = list[i].id;

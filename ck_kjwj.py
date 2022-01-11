@@ -20,7 +20,8 @@ class KJWJ:
         session = requests.Session()
         login_url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token'
         headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
         data = {
             'nickname': '',
@@ -45,11 +46,11 @@ class KJWJ:
             token = status.get('token')
             check_url = 'https://www.kejiwanjia.com/wp-json/b2/v1/userMission'
             check_head = {
-                'authorization': f'Bearer {token}',
-                'origin': 'https://www.kejiwanjia.com',
-                'referer': 'https://www.kejiwanjia.com/task',
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
-    
+                'Authorization': f'Bearer {token}',
+                'Host': 'www.kejiwanjia.com',
+                'Origin': 'https://www.kejiwanjia.com',
+                'Referer': 'https://www.kejiwanjia.com/mission/today',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
             }
             respons = session.post(check_url, headers=check_head)
             if respons.status_code == 200:

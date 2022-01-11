@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 """
 cron: 17 7 * * *
-new Env('科技玩家-签到');
+new Env('科技玩家');
 """
 import requests
 import os

@@ -45,7 +45,7 @@ async function jegotrip() {
           continue;
         }
         await Total();
-        notify.sendNotify('无忧行', info);
+        desp = info;
         info = '';
       } else {
         INC_Cookie = $.toStr(AsVow[i]);
@@ -54,6 +54,8 @@ async function jegotrip() {
         console.log(`⚠️自动删除不完整的Cookie\n ${INC_Cookie}`);
       }
     }
+    info += desp;
+    notify.sendNotify('无忧行', info);
   } else {
     info = '签到失败：请先获取Cookie⚠️';
     Log(info)

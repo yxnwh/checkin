@@ -107,7 +107,7 @@ function QuerySign() {
           for (var i in list) {
             isSign = list[i].isSign;
             if (isSign == '3') {
-              info += '签到失败：今日已签到‼️\n';
+              info += `签到失败：今日已签到‼️\n\n已获得无忧币: +${list[i].rewardCoin}`;
               break;
             } else if (isSign == '2') {
               id = list[i].id;
@@ -136,8 +136,7 @@ function UserSign(headers) {
   headers['Referer'] = 'https://cdn.jegotrip.com.cn/static/missioncenter/index.html?token=' + token;
   headers['Accept'] = 'application/json';
   headers['Content-Type'] = 'application/json';
-  bdata = {};
-  bdata.signConfigId = id;
+  bdata = {"signConfigId":id};
   body = Encrypt(bdata);
   const request = {
       url: url,
@@ -148,7 +147,7 @@ function UserSign(headers) {
   return new Promise(resolve => {
     $.http.post(request)
       .then((resp) => {
-        data = JSON.stringify(Decrypt(resp.sec, resp.body));
+        data = resp.body;
         if (data.includes('成功')) {
           info += `签到成功：无忧币 +${rewardCoin}🎉\n`;
         }
@@ -190,6 +189,7 @@ function Encrypt(i) {
     }
 }
 
+/*
 function Decrypt(t, n) {
     if (!t || !n) return n;
     r = "93EFE107DDE6DE51";
@@ -213,5 +213,5 @@ function Decrypt(t, n) {
     } catch(t){}
     return s
 }
-
+*/
 module.exports = jegotrip;

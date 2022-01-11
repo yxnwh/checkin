@@ -45,6 +45,8 @@ async function jegotrip() {
           continue;
         }
         await Total();
+        notify.sendNotify('无忧行', info);
+        info = '';
       } else {
         INC_Cookie = $.toStr(AsVow[i]);
         AsVow = $.toObj($.toStr(AsVow).replace(INC_Cookie,'').replace(/,]*$/, ']'));
@@ -52,7 +54,6 @@ async function jegotrip() {
         console.log(`⚠️自动删除不完整的Cookie\n ${INC_Cookie}`);
       }
     }
-    notify.sendNotify('无忧行', info);
   } else {
     info = '签到失败：请先获取Cookie⚠️';
     Log(info)
@@ -133,12 +134,17 @@ function QuerySign() {
 function UserSign(headers) {
   const url = 'https://app.jegotrip.com.cn/api/service/v1/mission/sign/userSign?token=' + token;
   headers['Referer'] = 'https://cdn.jegotrip.com.cn/static/missioncenter/index.html?token=' + token;
-  const body = Encrypt({"signConfigId":id});
+  headers['Accept'] = 'application/json';
+  headers['Content-Type'] = 'application/json';
+  bdata = {};
+  bdata.signConfigId = id;
+  body = Encrypt(bdata);
   const request = {
       url: url,
       headers: headers,
       body: body
   };
+  console.log(request);
   return new Promise(resolve => {
     $.http.post(request)
       .then((resp) => {

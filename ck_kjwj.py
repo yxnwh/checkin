@@ -38,7 +38,7 @@ class KJWJ:
         respon = session.post(login_url, headers=headers, data=data)
         if respon.status_code == 200:
             status = respon.json()
-            info += f"账号：{status.get('name')}登陆成功\n"
+            info += f"账号：{status.get('name')}\n"
             info += f"ID：{status.get('id')}\n"
             info += f"金币：{status.get('credit')}\n"
             info += f"等级：{status.get('lv').get('lv').get('name')}\n"

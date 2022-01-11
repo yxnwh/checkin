@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 """
+author:cuncun-edg
 cron: 17 7 * * *
 new Env('科技玩家');
 """

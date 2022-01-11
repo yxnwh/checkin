@@ -23,6 +23,18 @@ const headers = {
     Host: 'aiqicha.baidu.com',
     cookie: '',
 };
+const words = {
+    0: '其实还好吧。。。',
+    1: '不服不行！！',
+    2: '新人报道，路过打卡~~',
+    3: '关注一下',
+    4: '做事在人！成事在天！',
+    5: '试看苍天绕过了谁',
+    6: '小鸡炖蘑菇',
+    7: '呵呵，无利不起早~~',
+    8: '什么意思啊？？',
+    9: '无论如何努力还是抢不到茅台的路过。。。',
+};
 const oo = {
     CX10002: '每日签到',
     CX10001: '每日登陆',
@@ -265,7 +277,7 @@ async function dotask(tasklist, aqcCookie, exportkey, aqcreuid) {
                 headers.cookie = aqcCookie;
                 headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
                 headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-                await get(`app/addReplyAjax`, qs.stringify({content:"其实还好吧,再观察观察", nid:Number(nid), replyUserId:Number(aqcreuid)}), 'post');
+                await get(`app/addReplyAjax`, qs.stringify({content:words[Math.floor(Math.random()*10)], nid:Number(nid), replyUserId:Number(aqcreuid)}), 'post');
                 break;
             case 'CX12011': //点赞观点
                 Log('开始任务：' + oo[o.title]);

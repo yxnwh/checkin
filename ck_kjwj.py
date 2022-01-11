@@ -55,9 +55,9 @@ class KJWJ:
             if respons.status_code == 200:
                 desp = respons.json()
                 if type(desp) == str:
-                    info += f"已经签到：{info}金币\n\n"
+                    info += f"已经签到过啦~：获得{desp}金币\n\n"
                 else:
-                    info += f"签到成功：{info.get('credit')}金币\n\n"
+                    info += f"每日首次签到成功：获得{desp.get('credit')}金币\n\n"
         else:
             info += f"账号登陆失败: 账号或密码错误\n\n"
         return info

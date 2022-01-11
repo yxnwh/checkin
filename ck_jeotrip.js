@@ -14,6 +14,7 @@ const $ = new Env('无忧行');
 const notify = $.isNode() ? require('./notify') : '';
 const AsVow = getData().JEGOTRIP;
 var info = '';
+var desp = '';
 
 
 const headers = {
@@ -45,7 +46,7 @@ async function jegotrip() {
           continue;
         }
         await Total();
-        desp = info;
+        desp += info;
         info = '';
       } else {
         INC_Cookie = $.toStr(AsVow[i]);

@@ -10,14 +10,13 @@ import time
 from notify_mtr import send
 from utils import get_data
 
-info= ""
-
 class KJWJ:
     def __init__(self, check_items):
         self.check_items = check_items
     
     @staticmethod
     def login(usr, pwd):
+        info= ""
         session = requests.Session()
         login_url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token'
         headers = {

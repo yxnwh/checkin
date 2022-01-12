@@ -139,14 +139,13 @@ function UserSign(headers) {
   headers['Referer'] = 'https://cdn.jegotrip.com.cn/static/missioncenter/index.html?token=' + token;
   headers['Accept'] = 'application/json';
   headers['Content-Type'] = 'application/json';
-  bdata = {"signConfigId":id};
-  body = Encrypt(bdata);
+  signid = {"signConfigId":id};
+  body = JSON.stringify(Encrypt(signid));
   const request = {
       url: url,
       headers: headers,
       body: body
   };
-  console.log(request);
   return new Promise(resolve => {
     $.http.post(request)
       .then((resp) => {

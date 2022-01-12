@@ -1,10 +1,5 @@
 /*
-37 7 * * * ck_jeotrip.js
-在check.toml中添加如下，其中mobile为手机号，11位，token为32为的数字和字母组成，自己抓包
-# 无忧行【APP】
-[[JEGOTRIP]]
-mobile = "13xxxxxxxxx"
-token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+31 7 * * * ck_kjwj.js
 */
 const utils = require('./utils');
 const Env = utils.Env;

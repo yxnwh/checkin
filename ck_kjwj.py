@@ -1,83 +1,133 @@
-"""
-author:cuncun-edg
-cron: 17 7 * * *
-new Env('科技玩家');
-"""
-import requests
-import os
-import time
+/*
+37 7 * * * ck_jeotrip.js
+在check.toml中添加如下，其中mobile为手机号，11位，token为32为的数字和字母组成，自己抓包
+# 无忧行【APP】
+[[JEGOTRIP]]
+mobile = "13xxxxxxxxx"
+token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+*/
+const utils = require('./utils');
+const Env = utils.Env;
+const getData = utils.getData;
+const $ = new Env('科技玩家');
+const notify = $.isNode() ? require('./notify') : '';
+const AsVow = getData().KJWJ;
+var info = '';
+var desp = '';
+var token = '';
 
-from notify_mtr import send
-from utils import get_data
 
-class KJWJ:
-    def __init__(self, check_items):
-        self.check_items = check_items
-    
-    @staticmethod
-    def login(usr, pwd):
-        info= ""
-        session = requests.Session()
-        login_url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token'
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
-            'Content-Type': 'application/x-www-form-urlencoded'
+const headers = {
+    'Host': 'www.kejiwanjia.com';
+    'Referer': 'https://www.kejiwanjia.com/mission/today';
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
+};
+
+const data = {
+    'nickname': '';
+    'username': usr;
+    'password': pwd;
+    'code': '';
+    'img_code': '';
+    'invitation_code': '';
+    'token': '';
+    'smsToken': '';
+    'luoToken': '';
+    'confirmPassword': '';
+    'loginType': ''
+};
+
+
+kjwj();
+
+async function kjwj() {
+  if (AsVow) {
+    for (i in AsVow) {
+      username = AsVow[i].username;
+      password = AsVow[i].password;
+      invalid = false;
+      if (username && password) {
+        head = `=== 正对在 ${username} 的账号签到===\n`;
+        info += `\n${head}`;
+        await getauth();
+        if (invalid) {
+          info += 'Token已失效‼️\n\n';
+          continue;
         }
-        data = {
-            'nickname': '',
-            'username': usr,
-            'password': pwd,
-            'code': '',
-            'img_code': '',
-            'invitation_code': '',
-            'token': '',
-            'smsToken': '',
-            'luoToken': '',
-            'confirmPassword': '',
-            'loginType': ''
-        }
-        respon = session.post(login_url, headers=headers, data=data)
-        if respon.status_code == 200:
-            status = respon.json()
-            info += f"账号：{status.get('name')}\n"
-            info += f"ID：{status.get('id')}\n"
-            info += f"金币：{status.get('credit')}\n"
-            info += f"等级：{status.get('lv').get('lv').get('name')}\n"
-            token = status.get('token')
-            check_url = 'https://www.kejiwanjia.com/wp-json/b2/v1/userMission'
-            check_head = {
-                'Authorization': f'Bearer {token}',
-                'Host': 'www.kejiwanjia.com',
-                'Origin': 'https://www.kejiwanjia.com',
-                'Referer': 'https://www.kejiwanjia.com/mission/today',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
-            }
-            respons = session.post(check_url, headers=check_head)
-            if respons.status_code == 200:
-                desp = respons.json()
-                if type(desp) == str:
-                    info += f"已经签到过啦~：获得{desp}金币\n\n"
-                else:
-                    info += f"每日首次签到成功：获得{desp.get('credit')}金币\n\n"
-        else:
-            info += f"账号登陆失败: 账号或密码错误\n\n"
-        return info
-    
-    def main(self):
-        i = 0
-        msg = ""
-        msg += "检测到 " + str(len(self.check_items)) + " 个科技玩家帐户，开始签到："
-        for check_item in self.check_items:
-            username = check_item.get("username")
-            password = check_item.get("password")
-            try:
-                msg += self.login(username, password)
-            except Exception as e:
-                msg += "程序执行异常：" + str(e)
-        return msg
+        await sign();
+        desp += info;
+        info = '';
+      } 
+    }
+    info += desp;
+//    notify.sendNotify('科技玩家', info);
+  } else {
+    info = '签到失败：请先获取Cookie⚠️';
+    console.log(info);
+//    notify.sendNotify('科技玩家', info);
+  }
+}
 
-if __name__ == "__main__":
-    data = get_data()
-    _check_items = data.get("KJWJ", [])
-    res = KJWJ(check_items=_check_items).main()
-    send("科技玩家", res)
+
+function getauth() {
+  const url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token';
+  headers['Referer'] = 'Referer: https://www.kejiwanjia.com/';
+  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  const request = {
+      url: url,
+      headers: headers,
+      body: data
+  };
+  return new Promise(resolve => {
+    $.http.get(request)
+      .then((resp) => {
+        resdata = $.toObj(resp.body);
+        info += `账号：${resdata.body.name}\n`;
+        info += `账号：${resdata.body.name}\n`;
+        info += `ID：${resdata.body.id}\n`;
+        info += `金币：${resdata.body.credit}\n`;
+        info += `等级：${resdata.body.lv.lv.name}\n`;
+        token = resdata.body.token;
+        console.log(info);
+      })
+      .catch((err) => {
+        const error = '账号信息获取失败⚠️';
+        console.log(error + '\n' + err);
+      })
+      .finally(() => {
+        resolve();
+      });
+  });
+}
+
+
+function sign() {
+  const url = 'https://www.kejiwanjia.com/wp-json/b2/v1/userMission';
+  headers['Origin'] = 'https://www.kejiwanjia.com/';
+  headers['Authorization'] = `Bearer ${token}`;
+  const request = {
+      url: url,
+      headers: headers
+  };
+  return new Promise(resolve => {
+    $.http.post(request)
+      .then(async (resp) => {
+        resdata = resp.body;
+        console.log(resdata);
+        console.log(typeof resdata);
+        if ((typeof desp) == string) {
+          info += `已经签到过啦~：获得${resdata}金币\n\n`
+        }else{
+          info += "每日首次签到成功：获得金币\n\n"
+      })
+      .catch((err) => {
+        const error = '🆕签到状态获取失败⚠️';
+        console.log(error + '\n' + err);
+      })
+      .finally(() => {
+        resolve();
+      });
+  });
+}
+
+module.exports = kjwj;

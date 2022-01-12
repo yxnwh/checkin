@@ -2,6 +2,7 @@
 31 7 * * * ck_kjwj.js
 */
 const utils = require('./utils');
+const Qs = require('qs');
 const Env = utils.Env;
 const getData = utils.getData;
 const $ = new Env('科技玩家');
@@ -13,23 +14,14 @@ var token = '';
 
 
 const headers = {
-    'Host': 'www.kejiwanjia.com';
-    'Referer': 'https://www.kejiwanjia.com/mission/today';
+    'Host': 'www.kejiwanjia.com',
+    'Referer': 'https://www.kejiwanjia.com/mission/today',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
 };
 
 const data = {
-    'nickname': '';
-    'username': usr;
-    'password': pwd;
-    'code': '';
-    'img_code': '';
-    'invitation_code': '';
-    'token': '';
-    'smsToken': '';
-    'luoToken': '';
-    'confirmPassword': '';
-    'loginType': ''
+    'username': '',
+    'password': ''
 };
 
 
@@ -40,50 +32,46 @@ async function kjwj() {
     for (i in AsVow) {
       username = AsVow[i].username;
       password = AsVow[i].password;
-      invalid = false;
+      data['username'] = username;
+      data['password'] = password;
       if (username && password) {
         head = `=== 正对在 ${username} 的账号签到===\n`;
         info += `\n${head}`;
         await getauth();
-        if (invalid) {
-          info += 'Token已失效‼️\n\n';
-          continue;
-        }
+        await pre_sign();
         await sign();
         desp += info;
         info = '';
       } 
     }
     info += desp;
-//    notify.sendNotify('科技玩家', info);
+    console.log(info);
+    notify.sendNotify('科技玩家', info);
   } else {
     info = '签到失败：请先获取Cookie⚠️';
     console.log(info);
-//    notify.sendNotify('科技玩家', info);
+    notify.sendNotify('科技玩家', info);
   }
 }
 
-
 function getauth() {
-  const url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token';
-  headers['Referer'] = 'Referer: https://www.kejiwanjia.com/';
+  url = 'https://www.kejiwanjia.com/wp-json/jwt-auth/v1/token';
+  headers['Referer'] = 'https://www.kejiwanjia.com/';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   const request = {
       url: url,
       headers: headers,
-      body: data
+      body: Qs.stringify(data)
   };
   return new Promise(resolve => {
-    $.http.get(request)
-      .then((resp) => {
+    $.http.post(request)
+      .then(async (resp) => {
         resdata = $.toObj(resp.body);
-        info += `账号：${resdata.body.name}\n`;
-        info += `账号：${resdata.body.name}\n`;
-        info += `ID：${resdata.body.id}\n`;
-        info += `金币：${resdata.body.credit}\n`;
-        info += `等级：${resdata.body.lv.lv.name}\n`;
-        token = resdata.body.token;
-        console.log(info);
+        info += `账号：${resdata.name}\n`;
+        info += `ID：${resdata.id}\n`;
+        info += `金币：${resdata.credit}\n`;
+        info += `等级：${resdata.lv.lv.name}\n`;
+        token = resdata.token;
       })
       .catch((err) => {
         const error = '账号信息获取失败⚠️';
@@ -95,9 +83,38 @@ function getauth() {
   });
 }
 
+function pre_sign() {
+  url = 'https://www.kejiwanjia.com/wp-json/b2/v1/getUserMission';
+  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  headers['Origin'] = 'https://www.kejiwanjia.com/';
+  headers['Authorization'] = `Bearer ${token}`;
+  suff = 'count=10&paged=1';
+  const request = {
+      url: url,
+      headers: headers,
+      body: suff
+  };  
+  return new Promise(resolve => {
+    $.http.post(request)
+      .then(async (resp) => {
+        resdata = $.toObj(resp.body);
+        console.log( typeof resdata.mission.credit);
+        if (resdata.mission.credit != "0") {
+          info += `今天已签到：获得${resdata.mission.credit}金币\n\n`;
+        }
+      })
+      .catch((err) => {
+        const error = '🆕--签到前--状态获取失败⚠️';
+        console.log(error + '\n' + err);
+      })
+      .finally(() => {
+        resolve();
+      });
+  });
+}
 
 function sign() {
-  const url = 'https://www.kejiwanjia.com/wp-json/b2/v1/userMission';
+  url = 'https://www.kejiwanjia.com/wp-json/b2/v1/userMission';
   headers['Origin'] = 'https://www.kejiwanjia.com/';
   headers['Authorization'] = `Bearer ${token}`;
   const request = {
@@ -107,16 +124,13 @@ function sign() {
   return new Promise(resolve => {
     $.http.post(request)
       .then(async (resp) => {
-        resdata = resp.body;
-        console.log(resdata);
-        console.log(typeof resdata);
-        if ((typeof desp) == string) {
-          info += `已经签到过啦~：获得${resdata}金币\n\n`
-        }else{
-          info += "每日首次签到成功：获得金币\n\n"
+        resdata = $.toObj(resp.body);
+        if ((typeof resdata) != 'string') {
+          info += `每日首次签到成功：获得${resdata.credit}金币\n\n`;
+        }
       })
       .catch((err) => {
-        const error = '🆕签到状态获取失败⚠️';
+        const error = '🆕--签到--状态获取失败⚠️';
         console.log(error + '\n' + err);
       })
       .finally(() => {
@@ -124,5 +138,4 @@ function sign() {
       });
   });
 }
-
 module.exports = kjwj;

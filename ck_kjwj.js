@@ -98,7 +98,6 @@ function pre_sign() {
     $.http.post(request)
       .then(async (resp) => {
         resdata = $.toObj(resp.body);
-        console.log( typeof resdata.mission.credit);
         if (resdata.mission.credit != "0") {
           info += `今天已签到：获得${resdata.mission.credit}金币\n\n`;
         }

@@ -80,5 +80,7 @@ if (AsVow) {
           console.log(info);
           notify.sendNotify('朴朴超市', info);
         });
+    }
+}
 
 module.exports = pupu;

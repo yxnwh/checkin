@@ -155,16 +155,15 @@ pause21days = true
 phone = "18888xxxxxx"
 url = "https://nyan.mail.wo.cn/cn/sign/index/index?mobile=xxxxxx&userName=&openId=xxxxxx"
 
-# 科技玩家签到【ios】
-# cookie取b2token=后面那一段，不带;号
-[[KEJIWANJIA]]
-cookie = "xxxx"
-
-# 无忧行【APP】
-[[JEGOTRIP]]
-mobile = "13xxxxxxxxx"
-token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# 科技玩家签到【web】
+[[KJWJ]]
+username = "xxx@163.com"
+password = "xxx"
 
 # 数码之家【WEB】
 [[MYDIGIT]]
-cookie = "VhUn_2132_saltkey=xxx; VhUn_2132_auth=xxx"
+cookie = "xxx"
+
+# 朴朴超市【IOS】
+[[PUPU]]
+token = "xxx"

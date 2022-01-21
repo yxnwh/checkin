@@ -16,7 +16,7 @@ const $ = new Env('爱企查');
 const notify = $.isNode() ? require('./notify') : '';
 const COOKIES_AQC = getData().AQC;
 
-nid ='';
+var nid ='';
 
 const headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Safari/537.36',

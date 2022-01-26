@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-cron: 55 23 * * *
-new Env('爱奇艺');
-"""
-
 /*
+* @url: https://raw.githubusercontent.com/Wenmoux/checkbox/master/scripts/aiqicha.js
+* @author: wenmoux
 登录网页获取cookie，将cookie全部字段写入cookie
+28 8 * * * ck_iqiyi.js
 */
+
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;

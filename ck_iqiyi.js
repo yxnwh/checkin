@@ -1,10 +1,9 @@
 /*
-* @url: https://raw.githubusercontent.com/Wenmoux/checkbox/master/scripts/aiqicha.js
-* @author: wenmoux
+* @url: https://raw.githubusercontent.com/BlueSkyClouds/Script/master/nodejs/iQIYI-bak.js
+* @author: BlueSkyClouds
 登录网页获取cookie，将cookie全部字段写入cookie
 28 8 * * * ck_iqiyi.js
 */
-
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -86,10 +85,10 @@ function login() {
         if(deadline === undefined){deadline = "非 VIP 用户"}
         $nobyda.expire = ("\nVIP 等级: " + level + "\n当前成长值: " + growthvalue + "\n升级需成长值: " + distance + "\n今日成长值: " + today_growth_value + "\nVIP 到期时间: " + deadline)
         //P00003 = data.match(/img7.iqiyipic.com\/passport\/.+?passport_(.*?)_/)[1]   //通过头像链接获取userid P00003
-        info += `爱奇艺-查询成功: ${$nobyda.expire} ${Details}`;
+        info += `爱奇艺-查询成功: ${$nobyda.expire} ${Details}\n`;
         console.log(info);
       } else {
-        info += `爱奇艺-查询失败${error || ': 无到期数据 ⚠️'} ${Details}`;
+        info += `爱奇艺-查询失败${error || ': 无到期数据 ⚠️'} ${Details}\n`;
         console.log(info);
       }
       resolve()
@@ -136,8 +135,8 @@ function Checkin() {
     }
     $nobyda.post(URL, function(error, response, data) {
       if (error) {
-        $nobyda.data = "签到失败: 接口请求出错 ‼️"
-        info += $nobyda.data;
+        $nobyda.data = "签到失败: 接口请求出错 ‼️";
+        info += "签到失败: 接口请求出错 ‼️";
         console.log(info);
       } else {
         if(!isJSON_test(data)){
@@ -149,17 +148,17 @@ function Checkin() {
           if (obj.data.code === "A0000") {
             var quantity = obj.data.data.rewards[0].rewardCount;
             var continued = obj.data.data.signDays;
-            $nobyda.data = "签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉"
-            info += $nobyda.data;
+            $nobyda.data = "签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉";
+            info += "签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉\n";
             console.log(`爱奇艺-${$nobyda.data} ${Details}`)
           } else {
-            $nobyda.data = "签到失败: " + obj.data.msg + " ⚠️"
-            info += $nobyda.data;
+            $nobyda.data = "签到失败: " + obj.data.msg + " ⚠️";
+            info += "签到失败: " + obj.data.msg + " ⚠️\n";
             console.log(`爱奇艺-${$nobyda.data} ${Details}`)
           }
         } else {
-          $nobyda.data = "签到失败: Cookie无效 ⚠️"
-          info += $nobyda.data;
+          $nobyda.data = "签到失败: Cookie无效 ⚠️";
+          info += "签到失败: Cookie无效 ⚠️\n";
           console.log(`爱奇艺-${$nobyda.data} ${Details}`)
         }
       }
@@ -197,8 +196,8 @@ function WebCheckin() {
     }
     $nobyda.get(URL, function(error, response, data) {
       if (error) {
-        $nobyda.data = "网页端签到失败: 接口请求出错 ‼️"
-        info += $nobyda.data;
+        $nobyda.data = "网页端签到失败: 接口请求出错 ‼️";
+        info += "网页端签到失败: 接口请求出错 ‼️\n";
         console.log(`爱奇艺-${$nobyda.data} ${error}`)
       } else {
         if(!isJSON_test(data)){
@@ -210,17 +209,17 @@ function WebCheckin() {
           if (obj.data[0].code === "A0000") {
             var quantity = obj.data[0].score;
             var continued = obj.data[0].continuousValue;
-            $nobyda.data = "网页端签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉"
-            info += $nobyda.data;
+            $nobyda.data = "网页端签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉";
+            info += "网页端签到成功: 获得积分" + quantity + ", 累计签到" + continued + "天 🎉\n";
             console.log(`爱奇艺-${$nobyda.data} ${Details}`)
           } else {
-            $nobyda.data = "网页端签到失败: " + obj.data[0].message + " ⚠️"
-            info += $nobyda.data;
+            $nobyda.data = "网页端签到失败: " + obj.data[0].message + " ⚠️";
+            info += "网页端签到失败: " + obj.data[0].message + " ⚠️\n";
             console.log(`爱奇艺-${$nobyda.data} ${Details}`)
           }
         } else {
-          $nobyda.data = "网页端签到失败: Cookie无效 ⚠️"
-          info += $nobyda.data;
+          $nobyda.data = "网页端签到失败: Cookie无效 ⚠️";
+          info += "网页端签到失败: Cookie无效 ⚠️\n";
           console.log(`爱奇艺-${$nobyda.data} ${Details}`)
         }
       }
@@ -240,7 +239,7 @@ function Lottery(s) {
       $nobyda.get(URL, async function(error, response, data) {
         if (error) {
           $nobyda.data += "\n抽奖失败: 接口请求出错 ‼️"
-          info += $nobyda.data;
+          info += "抽奖失败: 接口请求出错 ‼️\n";
           console.log(`爱奇艺-抽奖失败: 接口请求出错 ‼️ ${error} (${$nobyda.times})`)
           //$nobyda.notice("爱奇艺", "", $nobyda.data)
         } else {
@@ -249,12 +248,12 @@ function Lottery(s) {
           $nobyda.last = !!data.match(/(机会|已经)用完/)
           if (obj.awardName && obj.code === 0) {
             $nobyda.data += !$nobyda.last ? `\n抽奖成功: ${obj.awardName.replace(/《.+》/, "未中奖")} 🎉` : `\n抽奖失败: 今日已抽奖 ⚠️`
-            info += $nobyda.data;
+            info += `爱奇艺-抽奖明细: ${obj.awardName.replace(/《.+》/, "未中奖")} 🎉 (${$nobyda.times}) ${Details}\n`;
             console.log(`爱奇艺-抽奖明细: ${obj.awardName.replace(/《.+》/, "未中奖")} 🎉 (${$nobyda.times}) ${Details}`)
           } else if (data.match(/\"errorReason\"/)) {
             const msg = data.match(/msg=.+?\)/) ? data.match(/msg=(.+?)\)/)[1].replace(/用户(未登录|不存在)/, "Cookie无效") : ""
             $nobyda.data += `\n抽奖失败: ${msg || `未知错误 Cookie疑似失效`} ⚠️`
-            info += $nobyda.data;
+            info += `爱奇艺-抽奖失败: ${msg || `未知错误 Cookie疑似失效`} ⚠️ (${$nobyda.times}) ${msg ? Details : `response:\n${data}`}\n`;
             console.log(`爱奇艺-抽奖失败: ${msg || `未知错误 Cookie疑似失效`} ⚠️ (${$nobyda.times}) ${msg ? Details : `response:\n${data}`}`)
             console.log(data)
             s = s + 500;
@@ -262,8 +261,8 @@ function Lottery(s) {
               await Lottery(s)
             }
           } else {
-            $nobyda.data += "\n抽奖错误: 已输出日志 ⚠️"
-            info += $nobyda.data;
+            $nobyda.data += "\n抽奖错误: 已输出日志 ⚠️";
+            info += "抽奖错误: 已输出日志 ⚠️\n";
             console.log(`爱奇艺-抽奖失败: \n${data} (${$nobyda.times})`)
           }
         }
@@ -297,8 +296,8 @@ function getTaskRewards(task) {
   return new Promise(resolve => {
     $nobyda.get('https://tc.vip.iqiyi.com/taskCenter/task/getTaskRewards?taskCode=' + task + '&lang=zh_CN&platform=0000000000000000&P00001=' + P00001, function (error, response, data) {
       if (error) {
-        $nobyda.data += "\n浏览奖励失败: 接口请求出错 ‼️"
-        info += $nobyda.data;
+        $nobyda.data += "\n浏览奖励失败: 接口请求出错 ‼️";
+        info += "浏览奖励失败: 接口请求出错 ‼️\n";
         console.log(`爱奇艺-抽奖失败: \n${data} (${$nobyda.times})`)
       } else {
         const obj = JSON.parse(data)
@@ -306,18 +305,18 @@ function getTaskRewards(task) {
         if (obj.msg === "成功") {
           if (obj.code === "A00000") {
             if(obj.dataNew[0] !== undefined){ //任务未完成
-              $nobyda.data += `\n浏览奖励成功: ${obj.dataNew[0].name + obj.dataNew[0].value} 🎉`
-              info += $nobyda.data;
+              $nobyda.data += `\n浏览奖励成功: ${obj.dataNew[0].name + obj.dataNew[0].value} 🎉`;
+              info += `浏览奖励成功: ${obj.dataNew[0].name + obj.dataNew[0].value} 🎉\n`;
               console.log(`爱奇艺-浏览奖励成功: ${obj.dataNew[0].name + obj.dataNew[0].value} 🎉`)
             }
           } else {
-            $nobyda.data += `\n浏览奖励失败: ${obj.msg} ⚠️`
-            info += $nobyda.data;
+            $nobyda.data += `\n浏览奖励失败: ${obj.msg} ⚠️`;
+            info += `浏览奖励失败: ${obj.msg} ⚠️\n`;
             console.log(`爱奇艺-抽奖失败: ${obj.msg || `未知错误`} ⚠️ (${$nobyda.times}) ${msg ? Details : `response:\n${data}`}`)
           }
         } else {
-          $nobyda.data += "\n浏览奖励失败: Cookie无效/接口失效 ⚠️"
-          info += $nobyda.data;
+          $nobyda.data += "\n浏览奖励失败: Cookie无效/接口失效 ⚠️";
+          info += "浏览奖励失败: Cookie无效/接口失效 ⚠️\n";
           console.log(`爱奇艺-浏览奖励失败: \n${data}`)
         }
         resolve()

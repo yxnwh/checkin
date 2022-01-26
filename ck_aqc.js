@@ -261,7 +261,7 @@ async function dotask(tasklist, aqcCookie, exportkey, aqcreuid) {
             case 'CX12008': //高级筛选
                 Log('开始任务：' + oo[o.title]);
                 headers['referer'] = 'https://aiqicha.baidu.com/usercenter';
-                headers['User-Agent'] = 'aiinquiry/2.4.2 (iPhone; iOS 14.2.1; Scale/3.00) Ios (21) 91d6849184841539d639 aiqicha/2.4.2';
+                headers['User-Agent'] = 'aiinquiry/2.4.4 (iPhone; iOS 14.2.1; Scale/3.00) Ios (21) 31f6143331a8222222c7 aiqicha/2.4.4';
                 await get(`app/advanceFilterAjax?f=%7B%22taxLevel%22%3A%5B%221%22%5D%2C%22tenderbidding%22%3A%5B%221%22%5D%2C%22website%22%3A%5B%221%22%5D%2C%22importExport%22%3A%5B%221%22%5D%2C%22contactEmail%22%3A%5B%221%22%5D%2C%22contactPhone%22%3A%5B%221%22%5D%7D&o=0&p=1&q=${encodeURI(rand())}&t=111`);
                 break;
             case 'CX12009': //浏览互动

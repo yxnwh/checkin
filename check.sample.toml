@@ -167,3 +167,7 @@ cookie = "xxx"
 # 朴朴超市【IOS】
 [[PUPU]]
 token = "xxx"
+
+# 海尔【IOS】
+[[HAIER]]
+access_token = ""

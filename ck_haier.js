@@ -56,6 +56,7 @@ function haier() {
                         if (body.retInfo.includes('成功')) {
                            info += `共计持有海贝 ${body.data.haiBeiTotal} 个\n`;
                            console.log(info);
+                           notify.sendNotify('海尔', info);
                         } else {
                             info += "查询钱包信息返回错误，请重新调试";
                             console.log(info);

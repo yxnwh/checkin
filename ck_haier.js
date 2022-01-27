@@ -12,9 +12,9 @@ const AsVow = getData().HAIER;
 var info = '';
 
 const headers = {
-	'Host': 'zj.haier.net',
-        'Content-Type': 'application/json',
-	'User-Agent': 'Uplus/7.8.0 (iPhone; iOS 14.2.1; Scale/3.00)'
+    'Host': 'zj.haier.net',
+    'Content-Type': 'application/json',
+    'User-Agent': 'Uplus/7.8.0 (iPhone; iOS 14.2.1; Scale/3.00)'
 };
 
 haier();

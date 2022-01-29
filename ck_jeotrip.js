@@ -92,7 +92,7 @@ function Total() {
       .catch((err) => {
         const error = '账号信息获取失败⚠️';
         console.log(error + '\n' + err);
-        notify.sendNotify('无忧行', error + '\n' +'请查看日志‼️');
+        notify.sendNotify('无忧行', head + error + '\n' +'请查看日志‼️');
       })
       .finally(() => {
         resolve();
@@ -138,7 +138,7 @@ function QuerySign() {
       .catch((err) => {
         const error = '签到状态获取失败⚠️';
         console.log(error + '\n' + err);
-        notify.sendNotify('无忧行', error + '\n' +'请查看日志‼️');
+        notify.sendNotify('无忧行', head + error + '\n' +'请查看日志‼️');
       })
       .finally(() => {
         resolve();
@@ -202,7 +202,7 @@ function QueryVideoTask() {
       .catch((err) => {
         const error = '视频任务信息获取失败⚠️';
         console.log(error + '\n' + err);
-        notify.sendNotify('无忧行', error + '\n' +'请查看日志‼️');
+        notify.sendNotify('无忧行', head + error + '\n' +'请查看日志‼️');
       })
       .finally(() => {
         resolve();
@@ -235,7 +235,7 @@ function VideoTask(headers) {
       .catch((err) => {
         const error = '视频任务失败⚠️';
         console.log(error + '\n' + err);
-        notify.sendNotify('无忧行', error + '\n' +'请查看日志‼️');
+        notify.sendNotify('无忧行', head + error + '\n' +'请查看日志‼️');
       })
       .finally(() => {
         resolve();
@@ -273,7 +273,7 @@ function Exchange(headers) {
       .catch((err) => {
         const error = '兑换失败⚠️';
         console.log(error + '\n' + err);
-        notify.sendNotify('无忧行', error + '\n' +'请查看日志‼️');
+        notify.sendNotify('无忧行', head + error + '\n' +'请查看日志‼️');
       })
       .finally(() => {
         resolve();
@@ -281,6 +281,7 @@ function Exchange(headers) {
   });
 }
 
+/*
 function Encrypt(i) {
     if (!i || "object" != typeof i) return {};
 	var t = "online_jego_h5",
@@ -308,7 +309,7 @@ function Encrypt(i) {
     }
 }
 
-/*
+
 function Decrypt(t, n) {
     if (!t || !n) return n;
     r = "93EFE107DDE6DE51";

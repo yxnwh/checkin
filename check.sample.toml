@@ -175,3 +175,5 @@ access_token = ""
 # 小蚁【IOS】
 [[XIAOYI]]
 token = ""
+token_secret = ""
+userid = ""

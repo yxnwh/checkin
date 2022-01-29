@@ -32,7 +32,7 @@ async function xiaoyi() {
       ss.token_secret = AsVow[i].token_secret;
       userid = AsVow[i].userid;
       if (ss.token) {
-        info + = `=== 正对在第 ${i+1} 个账号签到===\n`;
+        info += `=== 正对在第 ${i+1} 个账号签到===\n`;
         await sign();
         await query_tsknum().then (function(data){
           tsk = data;

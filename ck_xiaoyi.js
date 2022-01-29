@@ -4,6 +4,7 @@
 const utils = require('./utils');
 const HmacSha1 = require('crypto-js/hmac-sha1');
 const Base64 = require('crypto-js/enc-base64');
+const fetch = require('node-fetch');
 const Qs = require('qs');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -14,8 +15,6 @@ const AsVow = getData().XIAOYI;
 var info = '';
 var desp = '';
 
-
-
 const headers = {
       'Host': 'gw.xiaoyi.com',
       'Origin': 'http://app.xiaoyi.com',
@@ -23,85 +22,53 @@ const headers = {
       'Referer': 'http://app.xiaoyi.com/cnApph5/integral/?rewardType=1&taskType=10&subTask=0'
 };
 
-
 xiaoyi();
 
 async function xiaoyi() {
   if (AsVow) {
     for (i in AsVow) {
-      refresh_token = AsVow[i].token;
-      var userid = '';
-      var mobile = '';
-      var live_num = 0;
-      var video_num = 0;
-      var alert_num = 0;
-      var ss = {};
-      await getauth();
-      if (refresh_token) {
-        head = `=== 正对在 ${mobile} 的账号签到===\n`;
-        info += `\n${head}`;
+      ss = {};
+      ss.token = AsVow[i].token;
+      ss.token_secret = AsVow[i].token_secret;
+      userid = AsVow[i].userid;
+      if (ss.token) {
+        info + = `=== 正对在第 ${i+1} 个账号签到===\n`;
         await sign();
-        await query_tsknum();
+        await query_tsknum().then (function(data){
+          tsk = data;
+        });
         await sleep(Math.floor((Math.random() * 10) + 32));
-        for(var i=1;i<video_num+1;i++) {
-            await videotask(i);
+        info += `还需完成 ${tsk.video_num} 次看视频任务\n`;
+        for(var i=1;i<tsk.video_num+1;i++) {
+            await videotask();
             await sleep(Math.floor((Math.random() * 10) + 32));
         }
-        for(var i=1;i<live_num+1;i++) {
-            await receive_livetask(i);
+        info += `还需完成 ${tsk.live_num} 次看直播任务\n`;
+        for(var i=1;i<tsk.live_num+1;i++) {
+            await receive_livetask();
             await sleep(Math.floor((Math.random() * 10) + 32));
-            await livetask(i);
+            await livetask();
             await sleep(Math.floor((Math.random() * 10) + 10));
         }
-        for(var i=1;i<alert_num+1;i++) {
-            await receive_alerttask(i);
+        info += `还需完成 ${tsk.alert_num} 次看报警视频任务\n`;
+        for(var i=1;i<tsk.alert_num+1;i++) {
+            await receive_alerttask();
             await sleep(Math.floor((Math.random() * 10) + 10));
-            await alerttask(i);
+            await alerttask();
             await sleep(Math.floor((Math.random() * 10) + 10));
         }
         desp += info;
         info = '';
       } 
-    }
     info += desp;
     console.log(info);
     notify.sendNotify('小蚁', info);
-  } else {
-    info = '签到失败：请先获取Cookie⚠️';
-    console.log(info);
-    notify.sendNotify('小蚁', info);
-  }
-}
-
-function getauth() {
-  url = `https://gw.xiaoyi.com/v2/auth/wechat/login?auth_refresh_token=${refresh_token}&auth_type=13&dev_id=&dev_name=Apple&dev_os_version=iOS_14.2.1&dev_type=iPhone13%2C2&opt_type=1`;
-  headers['User-Agent'] = '小蚁摄像机/5.4.4 rv:5.4.401271500 (iPhone; iOS 14.2.1; zh_CN)';
-  delete headers['Referer'];
-  delete headers['Origin'];
-  return new Promise(resolve => {
-    fetch(url, {
-        method: 'PUT',
-        headers: headers
-    }).then(function(response) {
-        return response.json()
-    }).then(function(body) {
-        if (body.code == "20000") {
-            mobile = body.data.mobile;
-            userid = body.data.userid;
-            ss.token = body.data.token;
-            ss.token_secret = body.data.token_secret;
-    }).catch(function(e) {
-        error = 'auth信息可能失效⚠️';
-        console.log(error + '\n' + e);
-    }).finally(() => {
-        resolve();
-    });
-  });
 }
 
 function sign() {
   time = new Date().getTime();
   hh = 'appPlatform=yihome&region=CN&seq=1&timestamp='+time+'&userid='+userid;
+  console.log(hh);
   suffix = t(hh,ss);
   url = 'https://gw.xiaoyi.com/urs/v8/task/sign/14990653?${suffix}';
   return new Promise(resolve => {
@@ -117,6 +84,7 @@ function sign() {
             } else {
                 info += '今天已经签到过啦\n';
             }
+        }
     }).catch(function(e) {
         const error = '签到出现错误，请检查⚠️';
         console.log(error + '\n' + e);
@@ -130,7 +98,7 @@ function query_tsknum() {
   time = new Date().getTime();
   hh = 'appPlatform=yihome&region=CN&seq=1&timestamp='+time+'&userid='+userid;
   suffix = t(hh,ss);
-  url = 'https://gw.xiaoyi.com/urs/v8/task/list?${suffix}';
+  url = `https://gw.xiaoyi.com/urs/v8/task/list?${suffix}`;
   return new Promise(resolve => {
     fetch(url, {
         method: 'GET',
@@ -139,20 +107,21 @@ function query_tsknum() {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            video_num = body.data[0].total - body.data[0].currentTotal;
-            live_num = body.data[1].total - body.data[1].currentTotal;
-            alert_num = body.data[2].total - body.data[2].currentTotal;
+            tsk_num = {};
+            tsk_num.video_num = body.data[0].total - body.data[0].currentTotal;
+            tsk_num.live_num = body.data[1].total - body.data[1].currentTotal;
+            tsk_num.alert_num = body.data[2].total - body.data[2].currentTotal;
             info += '获取视频任务数量成功\n';
+            resolve(tsk_num)
+        }
     }).catch(function(e) {
         const error = '获取视频任务数量出现错误，请检查⚠️';
         console.log(error + '\n' + e);
-    }).finally(() => {
-        resolve();
-    });
+    })
   });
 }
 
-function videotask(t) {
+function videotask() {
   url = 'https://gw.xiaoyi.com/urs/v8/task/do';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   nonce = Math.random().toString().slice(-6);
@@ -169,8 +138,8 @@ function videotask(t) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            info += '完成第 ${t} 次看视频任务：\n获得${body.data.reward}分\n';
-
+            info += `完成看视频任务：\n获得${body.data.reward}分\n`;
+        }
     }).catch(function(e) {
         const error = '看视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
@@ -180,7 +149,7 @@ function videotask(t) {
   });
 }
 
-function receive_livetask(t) {
+function receive_livetask() {
   url = 'https://gw.xiaoyi.com/urs/v8/task/receive';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   nonce = Math.random().toString().slice(-6);
@@ -197,7 +166,8 @@ function receive_livetask(t) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            info += '接受第 ${t} 次看直播任务：\n';
+            info += '接受一次看直播任务：\n';
+        }
     }).catch(function(e) {
         const error = '接受看直播任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
@@ -207,7 +177,7 @@ function receive_livetask(t) {
   });
 }
 
-function livetask(t) {
+function livetask() {
   url = 'https://gw.xiaoyi.com/urs/v8/task/do';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   nonce = Math.random().toString().slice(-6);
@@ -224,7 +194,8 @@ function livetask(t) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            info += '完成第 ${t} 次看直播任务：\n获得${body.data.reward}分\n';
+            info += `完成一次看直播任务：\n获得${body.data.reward}分\n`;
+        }
     }).catch(function(e) {
         const error = '看直播任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
@@ -234,7 +205,7 @@ function livetask(t) {
   });
 }
 
-function receive_alerttask(t) {
+function receive_alerttask() {
   url = 'https://gw.xiaoyi.com/urs/v8/task/receive';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   nonce = Math.random().toString().slice(-6);
@@ -251,7 +222,8 @@ function receive_alerttask(t) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            info += '接受第 ${t} 次看报警视频任务：\n';
+            info += '接受一次看报警视频任务：\n';
+        }
     }).catch(function(e) {
         const error = '接受看报警视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
@@ -261,7 +233,7 @@ function receive_alerttask(t) {
   });
 }
 
-function alerttask(t) {
+function alerttask() {
   url = 'https://gw.xiaoyi.com/urs/v8/task/do';
   headers['Content-Type'] = 'application/x-www-form-urlencoded';
   nonce = Math.random().toString().slice(-6);
@@ -278,7 +250,8 @@ function alerttask(t) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            info += '完成第 ${t} 次看报警视频任务：\n获得${body.data.reward}分\n';
+            info += `完成一次看报警视频任务：\n获得${body.data.reward}分\n`;
+        }
     }).catch(function(e) {
         const error = '看报警视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);

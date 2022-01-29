@@ -171,3 +171,7 @@ token = "xxx"
 # 海尔【IOS】
 [[HAIER]]
 access_token = ""
+
+# 小蚁【IOS】
+[[XIAOYI]]
+token = ""

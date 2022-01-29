@@ -36,41 +36,51 @@ async function xiaoyi() {
         await sign();
         await query_tsknum().then (function(data){
           tsk = data;
-        }).finally(() => {resolve();});
+        });
         await sleep(Math.floor((Math.random() * 10) + 32));
-        info += `还需完成 ${tsk.video_num} 次看视频任务\n`;
-        for(var i=1;i<tsk.video_num+1;i++) {
-            await videotask();
-            await sleep(Math.floor((Math.random() * 10) + 32));
-        }
-        info += `还需完成 ${tsk.live_num} 次看直播任务\n`;
-        for(var i=1;i<tsk.live_num+1;i++) {
-            await receive_livetask();
-            await sleep(Math.floor((Math.random() * 10) + 32));
-            await livetask();
-            await sleep(Math.floor((Math.random() * 10) + 10));
-        }
-        info += `还需完成 ${tsk.alert_num} 次看报警视频任务\n`;
-        for(var i=1;i<tsk.alert_num+1;i++) {
-            await receive_alerttask();
-            await sleep(Math.floor((Math.random() * 10) + 10));
-            await alerttask();
-            await sleep(Math.floor((Math.random() * 10) + 10));
+        if (tsk.video_num==0 && tsk.live_num==0 && tsk.alert_num==0) {
+           info += '今天的视频任务全部完成啦~~\n';
+        } else if (tsk.video_num>0) {
+            info += `获取视频任务数量成功\n还需完成 ${tsk.video_num} 次看视频任务\n`;
+            for(var m=1;m<tsk.video_num+1;m++) {
+                await videotask();
+                await sleep(Math.floor((Math.random() * 10) + 32));
+            }
+        } else if (tsk.live_num>0) {
+            info += `还需完成 ${tsk.live_num} 次看直播任务\n`;
+            for(var m=1;m<tsk.live_num+1;m++) {
+                await receive_livetask();
+                await sleep(Math.floor((Math.random() * 10) + 32));
+                await livetask();
+                await sleep(Math.floor((Math.random() * 10) + 10));
+            }
+        } else if (tsk.alert_num>0) {
+            info += `还需完成 ${tsk.alert_num} 次看报警视频任务\n`;
+            for(var m=1;m<tsk.alert_num+1;m++) {
+                await receive_alerttask();
+                await sleep(Math.floor((Math.random() * 10) + 10));
+                await alerttask();
+                await sleep(Math.floor((Math.random() * 10) + 10));
+            }
         }
         desp += info;
         info = '';
-      } 
+      }
+    }
     info += desp;
     console.log(info);
     notify.sendNotify('小蚁', info);
+  } else {
+    info = '签到失败：请先获取Cookie⚠️';
+    notify.sendNotify('小蚁', info);
+  }
 }
 
 function sign() {
   time = new Date().getTime();
   hh = 'appPlatform=yihome&region=CN&seq=1&timestamp='+time+'&userid='+userid;
-  console.log(hh);
   suffix = t(hh,ss);
-  url = 'https://gw.xiaoyi.com/urs/v8/task/sign/14990653?${suffix}';
+  url = `https://gw.xiaoyi.com/urs/v8/task/sign/14990653?${suffix}`;
   return new Promise(resolve => {
     fetch(url, {
         method: 'GET',
@@ -89,8 +99,8 @@ function sign() {
         const error = '签到出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
@@ -111,7 +121,6 @@ function query_tsknum() {
             tsk_num.video_num = body.data[0].total - body.data[0].currentTotal;
             tsk_num.live_num = body.data[1].total - body.data[1].currentTotal;
             tsk_num.alert_num = body.data[2].total - body.data[2].currentTotal;
-            info += '获取视频任务数量成功\n';
             resolve(tsk_num)
         }
     }).catch(function(e) {
@@ -144,8 +153,8 @@ function videotask() {
         const error = '看视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
@@ -172,8 +181,8 @@ function receive_livetask() {
         const error = '接受看直播任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
@@ -200,8 +209,8 @@ function livetask() {
         const error = '看直播任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
@@ -228,8 +237,8 @@ function receive_alerttask() {
         const error = '接受看报警视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
@@ -256,18 +265,16 @@ function alerttask() {
         const error = '看报警视频任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
-        resolve();
-    });
+        resolve()
+    })
   });
 }
 
-function t(a, b)
-{
+function t(a, b) {
     m = b.token,
     n = b.token_secret,
     o = Base64.stringify((HmacSha1(a,m+'&'+n)));
     c = 'hmac=' + encodeURIComponent(o) + '&' + a;
-    console.log(c);
    	return c
 }
 

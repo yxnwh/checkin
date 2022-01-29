@@ -36,7 +36,7 @@ async function xiaoyi() {
         await sign();
         await query_tsknum().then (function(data){
           tsk = data;
-        });
+        }).finally(() => {resolve();});
         await sleep(Math.floor((Math.random() * 10) + 32));
         info += `还需完成 ${tsk.video_num} 次看视频任务\n`;
         for(var i=1;i<tsk.video_num+1;i++) {

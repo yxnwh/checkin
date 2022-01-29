@@ -2,7 +2,7 @@
 37 7 * * * ck_jeotrip.js
  * @Author: AsVow
  * @LastMod: 2022-01-20 20:43:14
-Cookie说明：分为四部分「 accountid｜mobile｜token｜userid 」
+Cookie说明：分为四部分「 accountid｜mobile｜token｜userid(uid) 」
 点击「 我的客服 」 提取「 accountid & mobile 」
 点击「 无忧币商城 」 提取「 token & userid(uid) 」
 */

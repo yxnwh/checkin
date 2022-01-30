@@ -38,15 +38,14 @@ async function xiaoyi() {
           tsk = data;
         });
         await sleep(Math.floor((Math.random() * 10) + 32));
-        if (tsk.video_num==0 && tsk.live_num==0 && tsk.alert_num==0) {
-           info += '今天的视频任务全部完成啦~~\n';
-        } else if (tsk.video_num>0) {
+        if (tsk.video_num>0) {
             info += `获取视频任务数量成功\n还需完成 ${tsk.video_num} 次看视频任务\n`;
             for(var m=1;m<tsk.video_num+1;m++) {
                 await videotask();
                 await sleep(Math.floor((Math.random() * 10) + 32));
             }
-        } else if (tsk.live_num>0) {
+        }
+        if (tsk.live_num>0) {
             info += `还需完成 ${tsk.live_num} 次看直播任务\n`;
             for(var m=1;m<tsk.live_num+1;m++) {
                 await receive_livetask();
@@ -54,7 +53,8 @@ async function xiaoyi() {
                 await livetask();
                 await sleep(Math.floor((Math.random() * 10) + 10));
             }
-        } else if (tsk.alert_num>0) {
+        }
+        if (tsk.alert_num>0) {
             info += `还需完成 ${tsk.alert_num} 次看报警视频任务\n`;
             for(var m=1;m<tsk.alert_num+1;m++) {
                 await receive_alerttask();
@@ -62,6 +62,9 @@ async function xiaoyi() {
                 await alerttask();
                 await sleep(Math.floor((Math.random() * 10) + 10));
             }
+        }
+        else {
+            info += '今天的视频任务全部完成啦~~\n';
         }
         desp += info;
         info = '';
@@ -77,26 +80,26 @@ async function xiaoyi() {
 }
 
 function sign() {
+  url = 'https://gw.xiaoyi.com/urs/v8/task/do';
+  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  nonce = Math.random().toString().slice(-6);
   time = new Date().getTime();
-  hh = 'appPlatform=yihome&region=CN&seq=1&timestamp='+time+'&userid='+userid;
-  suffix = t(hh,ss);
-  url = `https://gw.xiaoyi.com/urs/v8/task/sign/14990653?${suffix}`;
+  hh = {"appPlatform":"yihome","nonce":nonce,"region":"CN","seq":1,"subTask":0,"taskType":10,"timestamp":time,"userid":userid};
+  cc =Qs.stringify(hh);
+  hh.hmac = decodeURIComponent(t(cc,ss).replace('&'+cc,'').slice(5));
   return new Promise(resolve => {
     fetch(url, {
-        method: 'GET',
-        headers: headers
+        method: 'POST',
+        headers: headers,
+        body: Qs.stringify(hh),
     }).then(function(response) {
         return response.json()
     }).then(function(body) {
         if (body.code == "20000" && body.msg == "success") {
-            if (body.data == 0) {
-                info += '签到成功\n';
-            } else {
-                info += '今天已经签到过啦\n';
-            }
+            info += `完成签到任务：\n获得${body.data.reward}分\n`;
         }
     }).catch(function(e) {
-        const error = '签到出现错误，请检查⚠️';
+        const error = '签到任务出现错误，请检查⚠️';
         console.log(error + '\n' + e);
     }).finally(() => {
         resolve()

@@ -42,25 +42,25 @@ async function xiaoyi() {
             info += `获取视频任务数量成功\n还需完成 ${tsk.video_num} 次看视频任务\n`;
             for(var m=1;m<tsk.video_num+1;m++) {
                 await videotask();
-                await sleep(Math.floor((Math.random() * 10) + 32));
+                await sleep(Math.floor((Math.random() * 10000) + 32000));
             }
         }
         if (tsk.live_num>0) {
             info += `还需完成 ${tsk.live_num} 次看直播任务\n`;
             for(var m=1;m<tsk.live_num+1;m++) {
                 await receive_livetask();
-                await sleep(Math.floor((Math.random() * 10) + 32));
+                await sleep(Math.floor((Math.random() * 10000) + 32000));
                 await livetask();
-                await sleep(Math.floor((Math.random() * 10) + 10));
+                await sleep(Math.floor((Math.random() * 10000) + 10000));
             }
         }
         if (tsk.alert_num>0) {
             info += `还需完成 ${tsk.alert_num} 次看报警视频任务\n`;
             for(var m=1;m<tsk.alert_num+1;m++) {
                 await receive_alerttask();
-                await sleep(Math.floor((Math.random() * 10) + 10));
+                await sleep(Math.floor((Math.random() * 10000) + 10000));
                 await alerttask();
-                await sleep(Math.floor((Math.random() * 10) + 10));
+                await sleep(Math.floor((Math.random() * 10000) + 10000));
             }
         }
         else {

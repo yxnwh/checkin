@@ -4,6 +4,7 @@
 登录网页获取cookie，将cookie全部字段写入cookie
 28 8 * * * ck_iqiyi.js
 */
+const crypto = require('crypto');
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -98,7 +99,14 @@ function login() {
 }
 
 function Checkin() {
-  const stringRandom = require('string-random');
+  const stringRandom = (length) => {
+      var rdm62, ret = '';
+      while (length--) {
+          rdm62 = 0 | Math.random() * 62;
+          ret += String.fromCharCode(rdm62 + (rdm62 < 10 ? 48 : rdm62 < 36 ? 55 : 61))
+      }
+      return ret;
+  };
   return new Promise(resolve => {
     const sign_date = {
       agentType: "1",
@@ -406,7 +414,6 @@ function k(e, t) {
   return md5(u)
 }
 function md5(date){
-  const crypto = require('crypto');
   return crypto.createHash("md5").update(date, "utf8").digest("hex")
 }
 function w(){

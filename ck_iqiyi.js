@@ -4,7 +4,7 @@
 登录网页获取cookie，将cookie全部字段写入cookie
 28 8 * * * ck_iqiyi.js
 */
-const crypto = require('crypto');
+const crypto = require('crypto-js');
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;

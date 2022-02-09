@@ -1,5 +1,6 @@
-//0 */8 * * * ck_10000.js
-
+/*
+3-59/32 7 * * * ck_10000.js
+*/
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -20,7 +21,7 @@ async function dianxin() {
   if (AsVow) {
     for (i in AsVow) {
         phone = AsVow[i].phone;
-        if (username && password) {
+        if (phone) {
           head = `== 对 ${phone} 账号签到==\n`;
           info += `\n${head}`;
           await signapp()

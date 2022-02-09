@@ -36,7 +36,7 @@ async function haier() {
 }
 
 function sign() {
-    url = 'https://zj.haier.net/zjapi/zjBaseServer/daily/sign';
+    url = 'https://uws.haier.net/zjapi/zjBaseServer/daily/sign';
     headers['accountToken'] = token;
     body = {};
     return new Promise(resolve => {
@@ -68,7 +68,7 @@ function sign() {
 }
 
 function getinfo() {
-    url = 'https://zj.haier.net/zjapi/zjBaseServer/signDetail/getUserPointsAndWallet';
+    url = 'https://uws.haier.net/zjapi/zjBaseServer/signDetail/getUserPointsAndWallet';
     headers['accountToken'] = token;
     body = {};
     return new Promise(resolve => {

@@ -1,6 +1,5 @@
-/*
-0 */8 * * * ck_10000.js
-*/
+//0 */8 * * * ck_10000.js
+
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -57,7 +56,7 @@ function signapp() {
             }else {
                 info += `${data.data.msg}⚠️\n`;
             }
-        });
+        })
         .catch((err) => {
             const error = '签到状态获取失败⚠️';
             console.log(error + '\n' + err);
@@ -65,7 +64,7 @@ function signapp() {
         })    
         .finally(() => {
             resolve();
-        });
+        })
       });
 }
 

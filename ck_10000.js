@@ -44,12 +44,11 @@ async function dianxin() {
 }
 
 function signapp() {
-    const bodystr = `{"phone":"${phone}","date":${new Date().getTime()},"sysType":"20004"}`
-    const body = JSON.stringify({ encode: encrypt(bodystr) })
+    const bodystr = `{"phone":"${phone}","date":${new Date().getTime()},"sysType":"20004"}`;
     const request = {
         url: 'https://wapside.189.cn:9001/jt-sign/api/home/sign',
         headers: headers,
-        body: body
+        body: JSON.stringify({ encode: encrypt(bodystr) })
     };
     return new Promise((resolve) => {
       $.http.post(request)
@@ -73,15 +72,11 @@ function signapp() {
 }
 
 function coinfo() {
-    const bodystr = `{"phone":"${phone}"}`
-    var encrypt = new JSEncrypt();
-    encrypt.setPublicKey(pubbkey);
-    encrypted = encrypt.encode(JSON.stringify(bodystr));
-    body = JSON.stringify({para:encrypted});
+    const bodystr = {"phone":phone};
     const request = {
         url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
         headers: headers,
-        body: bodystr
+        body: enphone(bodystr)
     };
     return new Promise((resolve) => {
       $.http.post(request)
@@ -104,10 +99,18 @@ function coinfo() {
       });
 }
 
+function enphone(t){
+  var encrypt = new JSEncrypt();
+  encrypt.setPublicKey(pubbkey);
+  encrypted = encrypt.encode(JSON.stringify(t));
+  data = {para:encrypted};
+  return JSON.stringify(data);
+}
+
 function encrypt(t) {
-  const srcs = $.CryptoJS.enc.Utf8.parse(t)
-  const key = $.CryptoJS.enc.Utf8.parse('34d7cb0bcdf07523')
-  const encrypted = $.CryptoJS.AES.encrypt(srcs, key, { mode: $.CryptoJS.mode.ECB, padding: $.CryptoJS.pad.Pkcs7 })
+  const srcs = $.CryptoJS.enc.Utf8.parse(t);
+  const key = $.CryptoJS.enc.Utf8.parse('34d7cb0bcdf07523');
+  const encrypted = $.CryptoJS.AES.encrypt(srcs, key, { mode: $.CryptoJS.mode.ECB, padding: $.CryptoJS.pad.Pkcs7 });
   return $.CryptoJS.enc.Hex.stringify($.CryptoJS.enc.Base64.parse(encrypted.toString()))
 }
 

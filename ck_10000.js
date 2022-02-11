@@ -73,18 +73,17 @@ function signapp() {
 function coinfo() {
     const bodystr = `{"para":"${telpara}"}`;
     if (bodystr.para == "") {return}
-    const body = JSON.stringify(bodystr)
     const request = {
         url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
         headers: headers,
-        body: body
+        body: bodystr
     };
     return new Promise((resolve) => {
       $.http.post(request)
         .then((resp) => {
             data = JSON.parse(resp.body);
             if (data.resoultMsg.includes('成功')) {
-                info += `共有金豆：+${data.totalCoin}🎉\n`;
+                info += `共有金豆：${data.totalCoin}🎉\n`;
             }else {
                 info += `${data.resoultMsg}⚠️\n`;
             }

@@ -21,11 +21,12 @@ async function dianxin() {
   if (AsVow) {
     for (i in AsVow) {
         phone = AsVow[i].phone;
+        telpara = AsVow[i].telpara;
         if (phone) {
           head = `== 对 ${phone} 账号签到==\n`;
           info += `\n${head}`;
-          await signapp()
-          //await gethomeinfo()
+          await signapp();
+          await coninfo();
           desp += info;
           info = '';
         }
@@ -69,37 +70,35 @@ function signapp() {
       });
 }
 
-/*
-function gethomeinfo() {
+function coinfo() {
+    const bodystr = `{"para":"${telpara}"}`;
+    if (bodystr.para == "") {return}
+    const body = JSON.stringify(bodystr)
+    const request = {
+        url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
+        headers: headers,
+        body: body
+    };
     return new Promise((resolve) => {
-    const bodystr = `{"phone":"${phone}"}`
-    const body = JSON.stringify({ encode: encrypt(bodystr) })
-	const url = { url: 'https://wapside.189.cn:9001/jt-sign/api/exchange/homeInfo', body, headers: {} }
-    url.headers['Content-Type'] = 'application/json;charset=UTF-8'
-	if (!homebody)
-        {
-            resolve()
-            return;
-        }
-	$.post(url, (err, resp, data) => {
-		   try {
-		       const _data = JSON.parse(data);
-			   if  (_data.resoultCode == "0") 
-			   {
-				  $.info.signs[0].homeinfo = `金币总数：${_data.data.userInfo.totalCoin}`  
-			   } else
-			   {
-				  $.info.signs[0].homeinfo = `获取金币信息失败：${_data.resoultMsg}`;  
-			   }
-		   } catch (e) {
-		       $.info.signs[0].homeinfo = `获取金币信息失败：${e.message}`;
-		   } finally {
-           resolve()
-       }
-	   })
-	})
+      $.http.post(request)
+        .then((resp) => {
+            data = JSON.parse(resp.body);
+            if (data.resoultMsg.includes('成功')) {
+                info += `共有金豆：+${data.totalCoin}🎉\n`;
+            }else {
+                info += `${data.resoultMsg}⚠️\n`;
+            }
+        })
+        .catch((err) => {
+            const error = '金豆状态获取失败⚠️';
+            console.log(error + '\n' + err);
+            notify.sendNotify('中国电信', head + error + '\n' +'请查看日志‼️');
+        })    
+        .finally(() => {
+            resolve();
+        })
+      });
 }
-*/
 
 function encrypt(t) {
   const srcs = $.CryptoJS.enc.Utf8.parse(t)

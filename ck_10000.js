@@ -26,7 +26,9 @@ async function dianxin() {
           head = `== 对 ${phone} 账号签到==\n`;
           info += `\n${head}`;
           await signapp();
-          await coinfo();
+          if (telpara != '') {
+              await coinfo();
+          }
           desp += info;
           info = '';
         }
@@ -72,7 +74,6 @@ function signapp() {
 
 function coinfo() {
     const bodystr = `{"para":"${telpara}"}`;
-    if (bodystr.para == "") {return}
     const request = {
         url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
         headers: headers,

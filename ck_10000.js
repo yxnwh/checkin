@@ -118,25 +118,4 @@ function decrypt(t){
 		padding: $.CryptoJS.pad.Pkcs7
 	}).toString($.CryptoJS.enc.Utf8).toString()
 };
-
-JSEncrypt.prototype.encode = function (t)
-    {
-        var e, i, n, a, s, o = this.getKey();
-        o.n.bitLength();
-        try
-        {
-        	if (e = "", t.length > 32)
-        	{
-        		for (i = parseInt(t.length / 32) + 1, a = 0; i > a;) n = a == i - 1 ? t.substring(32 * a, t.length) : t.substring(32 * a, 32 * a + 32), s = o.encrypt(n), s.length < 256 && (s = o.encrypt(n)), e += s, a++;
-        		return e
-        	}
-        	return o.encrypt(t)
-        }
-        catch (t)
-        {
-        	return ""
-        }
-    }
-*/
-
 module.exports = dianxin;

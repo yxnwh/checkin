@@ -7,6 +7,7 @@ const getData = utils.getData;
 const $ = new Env('中国电信')
 $.CryptoJS = require('crypto-js')
 const notify = require('./notify');
+const JSEncrypt = require('./jsencrypt-3.0-mod.js');
 const AsVow = getData().DIANXIN;
 var info = '';
 var desp = '';
@@ -15,20 +16,19 @@ const headers = {
     'Content-Type': 'application/json;charset=UTF-8'
 };
 
+const pubbkey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+ugG5A8cZ3FqUKDwM57GM4io6JGcStivT8UdGt67PEOihLZTw3P7371+N47PrmsCpnTRzbTgcupKtUv8ImZalYk65dU8rjC/ridwhw9ffW2LBwvkEnDkkKKRi2liWIItDftJVBiWOh17o6gfbPoNrWORcAdcbpk2L+udld5kZNwIDAQAB";
+
 dianxin();
 
 async function dianxin() {
   if (AsVow) {
     for (i in AsVow) {
         phone = AsVow[i].phone;
-        telpara = AsVow[i].telpara;
         if (phone) {
           head = `== 对 ${phone} 账号签到==\n`;
           info += `\n${head}`;
           await signapp();
-          if (telpara != '') {
-              await coinfo();
-          }
+          await coinfo();
           desp += info;
           info = '';
         }
@@ -73,7 +73,11 @@ function signapp() {
 }
 
 function coinfo() {
-    const bodystr = `{"para":"${telpara}"}`;
+    const bodystr = `{"phone":"${phone}"}`
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(pubbkey);
+    encrypted = encrypt.encode(JSON.stringify(bodystr));
+    body = JSON.stringify({para:encrypted});
     const request = {
         url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
         headers: headers,

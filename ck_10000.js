@@ -26,7 +26,7 @@ async function dianxin() {
           head = `== 对 ${phone} 账号签到==\n`;
           info += `\n${head}`;
           await signapp();
-          await coninfo();
+          await coinfo();
           desp += info;
           info = '';
         }

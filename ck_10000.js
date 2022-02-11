@@ -117,4 +117,5 @@ function decrypt(t){
 		padding: $.CryptoJS.pad.Pkcs7
 	}).toString($.CryptoJS.enc.Utf8).toString()
 };
+*/
 module.exports = dianxin;

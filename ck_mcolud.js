@@ -198,3 +198,4 @@ function enlogin() {
   });
 }
 */
+module.exports = dianxin;

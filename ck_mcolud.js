@@ -1,9 +1,13 @@
 const utils = require('./utils');
+const sleep = utils.sleep;
+const getData = utils.getData;
 const Env = utils.Env;
 const $ = new Env('和彩云')
 const Qs = require('qs');
 const fetch = require('node-fetch');
 const JSEncrypt = require('./jsencrypt-2.3-mod.js');
+const notify = $.isNode() ? require('./notify') : '';
+const AsVow = getData().MCLOUD;
 var info = '';
 var desp = '';
 
@@ -31,9 +35,10 @@ async function mcloud() {
         //await getime().then (function(time){uxtime = time});
         //await enlogin;
         await signin().then (function(data){encryptphone = data});
-        await pageinfo().then (function(data){toreceive = data});
-        if (toreceive != 0) {
-            
+        //await pageinfo().then (function(data){toreceive = data});
+        //if (toreceive != 0) {
+        //    await receivepts();
+        //}
         //await sleep(Math.floor((Math.random() * 10000) + 2000));
         desp += info;
         info = '';
@@ -198,4 +203,4 @@ function enlogin() {
   });
 }
 */
-module.exports = dianxin;
+module.exports = mcloud;

@@ -55,7 +55,7 @@ function signapp() {
         .then((resp) => {
             data = JSON.parse(resp.body);
             if (data.data.msg.includes('成功')) {
-                info += `每日首次签到成功：金豆 +${data.data.coin}🎉\n已连续签到：+${data.data.continuousDay}天🎉\n本月已签到：+${data.data.totalDay}天🎉\n`;
+                info += `每日首次签到成功：金豆 +${data.data.coin}🎉\n已连续签到：+${data.data.continuousDay}天🎉\n本周已签到：+${data.data.totalDay}天🎉\n`;
             }else {
                 info += `${data.data.msg}⚠️\n`;
             }

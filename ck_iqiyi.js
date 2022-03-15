@@ -4,7 +4,7 @@
 登录网页获取cookie，将cookie全部字段写入cookie
 28 8 * * * ck_iqiyi.js
 */
-const crypto = require('crypto-js');
+const md5 = require('crypto-js/md5');
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
@@ -412,9 +412,6 @@ function k(e, t) {
     }
     )).join(c) + (i ? c : "") + e;
   return md5(u)
-}
-function md5(date){
-  return crypto.createHash("md5").update(date, "utf8").digest("hex")
 }
 function w(){
   var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}

@@ -18,7 +18,7 @@ var info = '';
 
 const headers = {
     'Host': 'mcs-mimp-web.sf-express.com',
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json;charset=utf-8',
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 mediaCode=SFEXPRESSAPP-iOS-ML'
 };
 
@@ -27,22 +27,56 @@ sfexpress();
 async function sfexpress() {
     if (AsVow) {
         for (i in AsVow) {
-            do_Treasure = AsVow[i].do_Treasure;
-            white_list = AsVow[i].white_list.split("&");
+            do_Treasure = AsVow[i].dotreasure;
+            white_list = AsVow[i].whitelist.split("&");
             headers['Cookie'] = AsVow[i].cookie;
             info +=`=== 正对在第 ${i+1} 个账号签到===\n`;
-            await normsign();
+            /*await normsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
             await surpsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
             await do_lottery();
-            await sleep(Math.floor((Math.random() * 5000) + 5000));
-            await task_list();
-            await sleep(Math.floor((Math.random() * 5000) + 5000));
-            if (AsVow[i].do_Treasure == ‘true’) {
-                await Treasure_list();
+            await sleep(Math.floor((Math.random() * 5000) + 5000));*/
+            await task_list().then (function(data){list1 = data});
+            for (i in list1) {
+               taskId = list1[i].taskId;
+               strategyId = list1[i].strategyId;
+               taskCode = list1[i].taskCode;
+               title = list1[i].description;
+               taskPeriod = list1[i].taskPeriod;
+               if (title.includes('邀请')) {
+                   continue;
+               } else if (taskPeriod.includes('D')){
+                   //await do_mission(title, taskCode);
+                   //console.log(i);
+                   await reward_mission(title, strategyId, taskId, taskCode);
+                   console.log(i+00);
+                   await sleep(Math.floor((Math.random() * 5000) + 5000));
+               }
+               desp += info;
+               info = '';
             }
+            /*await sleep(Math.floor((Math.random() * 5000) + 5000));
+            if (do_Treasure == "true") {
+                await treasure_list().then (function(data){list2 = data});
+                if (list2 != ""){
+                   for (i in list2) {
+                      pkgName = list2[i].pkgName;
+                      flowId = list2[i].flowId;
+                      if (pkgName in white_list) {
+                          await treasure(flowId, pkgName);
+                      } else {
+                          continue;
+                      }
+                      desp += info;
+                      info = '';
+                   }
+                }
+            }*/
+            desp += info;
+            info = '';
         }
+        info = desp;
         console.log(info);
         notify.sendNotify('顺丰速运', info);
     } else {
@@ -54,7 +88,6 @@ async function sfexpress() {
 //普通签到
 function normsign() {
     url = 'https://mcs-mimp-web.sf-express.com/mcs-mimp/integralTaskSignService/automaticSignFetchPackage';
-    //headers['Cookie'] = cookie;
     body = {"comeFrom":"vioin","channelFrom":"SFAPP"};
     return new Promise(resolve => {
       fetch(url, {
@@ -68,14 +101,14 @@ function normsign() {
             if (body.obj.hasFinishSign == 0) {
               info += `首次签到成功\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].detailValue} 分\n连续签到 ${body.obj.countDay} 天\n`;
             } else {
-              info += `今日已签到过啦~\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].detailValue} 分\n连续签到 ${body.obj.countDay} 天\n`;
+              info += `今日已签到过啦~\n`;
             }
         } else {
-             info += "普通签到返回错误，请重新调试";
+             info += "普通签到返回错误，请重新调试\n";
              console.log(info);
         }
       }).catch(function(e) {
-          const error = '普通签到返回错误，请检查⚠️';
+          const error = '普通签到出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -103,11 +136,11 @@ function surpsign() {
                 info += `超值福利签到成功\n获得 ${prize} 奖励\n`;
             }
         } else {
-            info += "超值签到返回错误，请重新调试";
+            info += "超值签到返回错误，请重新调试\n";
             console.log(info);
         }
       }).catch(function(e) {
-          const error = '超值签到返回错误，请检查⚠️';
+          const error = '超值签到返回错误，请检查⚠️\n';
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -129,23 +162,10 @@ function task_list() {
         return response.json()
       }).then(function(body) {
         list = body.obj.taskTitleLevels;
-        for (i in list) {
-            taskId = list[i].taskId;
-            strategyId = list[i].strategyId;
-            taskCode = list[i].taskCode;
-            title = list[i].description;
-            if (title.includes('邀请')) {
-                continue;
-            } else {
-                await do_mission (title, taskCode);
-                await reward_mission (title, strategyId, taskId, taskCode);
-            }
-        }
+        resolve(list);
       }).catch(function(e) {
           const error = '超值签到返回错误，请检查⚠️';
           console.log(error + '\n' + e);
-      }).finally(() => {
-          resolve()
       })
     });
 }
@@ -154,10 +174,10 @@ function task_list() {
 function do_mission(title, taskCode) {
     url = `https://mcs-mimp-web.sf-express.com/mcs-mimp/task/finishTask?id=${taskCode}`;
     //headers['Cookie'] = cookie;
-    delete headers.Content-Type;
+    delete headers['Content-Type'];
     return new Promise(resolve => {
       fetch(url, {
-        method: 'POST',
+        method: 'GET',
         headers: headers
       }).then(function(response) {
         return response.json()
@@ -166,11 +186,11 @@ function do_mission(title, taskCode) {
              info += `执行 ${title} 任务，等待20秒\n`;
              sleep(Math.floor((Math.random() * 20000) + 5000));
         } else {
-             info += `执行 ${title} 任务出现错误，请重新调试`;
+             info += `执行 ${title} 任务出现错误，请重新调试\n`;
              console.log(info);
         }
       }).catch(function(e) {
-          const error = `执行 ${title} 任务返回错误，请检查⚠️`;
+          const error = `执行 ${title} 任务返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -192,10 +212,10 @@ function do_lottery() {
         return response.json()
       }).then(function(body) {
         if (body.success) {
-             info += `执行抽奖任务，获得 ${body.obj[0].giftName} 奖励\n`;
+             info += `执行抽奖任务，获得 ${body.obj.giftName} 奖励\n`;
         }
       }).catch(function(e) {
-          const error = `执行抽奖任务返回错误，请检查⚠️`;
+          const error = `执行抽奖任务返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -220,9 +240,11 @@ function reward_mission (title, strategyId, taskId, taskCode) {
             info += `执行 ${title} 任务成功，领取 ${body.obj.point} 积分\n`;
         } else if (body.errorMessage.includes('已领取')){
             info += `${title} 任务已完成\n`;
+        } else {
+            info += `任务异常，显示${body.errorMessage}\n`;
         }
       }).catch(function(e) {
-          const error = `领取 ${title} 任务积分返回错误，请检查⚠️`;
+          const error = `领取 ${title} 任务积分返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -243,8 +265,13 @@ function treasure_list() {
       }).then(function(response) {
         return response.json()
       }).then(function(body) {
-        list = body.obj.activityInfoList;
-        for (i in list) {
+        if (body.success) {
+            list = body.obj.activityInfoList;
+        } else {
+            list = '';
+        }
+        resolve(list);
+        /*for (i in list) {
             pkgName = list[i].pkgName;
             flowId = list[i].flowId;
             if (pkgName in white_list) {
@@ -252,12 +279,10 @@ function treasure_list() {
             } else {
                 continue;
             }
-        }       
+        }*/       
       }).catch(function(e) {
-          const error = `执行抽奖任务返回错误，请检查⚠️`;
+          const error = `执行抽奖任务返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);
-      }).finally(() => {
-          resolve()
       })
     });
 }
@@ -280,7 +305,7 @@ function treasure(flowId, pkgName) {
             sleep(3000);
         }
       }).catch(function(e) {
-          const error = `执行夺宝任务返回错误，请检查⚠️`;
+          const error = `执行夺宝任务返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()
@@ -288,4 +313,4 @@ function treasure(flowId, pkgName) {
     });
 }
 
-module.exports = jegotrip;
+module.exports = sfexpress;

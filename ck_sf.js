@@ -1,6 +1,6 @@
 /*
 1 8 * * * ck_sfexpress.js
-cookie只需要sessionId=xxxxxx即可
+变量cookie只需要sessionId=xxxxxx即可
 变量do_Treasure设置为false，即不参与夺宝活动，默认false。
 变量white_list = '18元顺丰优惠券&13元顺丰优惠券&顺丰定制飞机模型&顺丰定制电动车模型'，仅参与white_list中的夺宝活动。
 夺宝活动全部名称：18元顺丰优惠券,13元顺丰优惠券,8折同城券,顺丰定制三轮车车模,顺丰定制电动车模型,顺丰定制杜邦纸袋,顺丰定制飞机模型,顺丰升级版杜邦袋,顺丰定制营业厅积木,纪梵希口红套装,iPhone13,KT45周年盲盒,Kakao系列盲盒,顺丰定制车模,九号平衡车
@@ -27,8 +27,9 @@ sfexpress();
 async function sfexpress() {
     if (AsVow) {
         for (i in AsVow) {
-            cookie = AsVow[i].cookie;
-            headers['Cookie'] = cookie;
+            do_Treasure = AsVow[i].do_Treasure;
+            white_list = AsVow[i].white_list.split("&");
+            headers['Cookie'] = AsVow[i].cookie;
             info +=`=== 正对在第 ${i+1} 个账号签到===\n`;
             await normsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
@@ -287,4 +288,4 @@ function treasure(flowId, pkgName) {
     });
 }
 
-module.exports = sfexpress;
+module.exports = jegotrip;

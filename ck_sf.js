@@ -47,8 +47,7 @@ async function sfexpress() {
                if (title.includes('邀请')) {
                    continue;
                } else if (taskPeriod.includes('D')){
-                   //await do_mission(title, taskCode);
-                   //console.log(i);
+                   await do_mission(title, taskCode);
                    await reward_mission(title, strategyId, taskId, taskCode);
                    console.log(i+00);
                    await sleep(Math.floor((Math.random() * 5000) + 5000));
@@ -56,7 +55,7 @@ async function sfexpress() {
                desp += info;
                info = '';
             }
-            /*await sleep(Math.floor((Math.random() * 5000) + 5000));
+            await sleep(Math.floor((Math.random() * 5000) + 5000));
             if (do_Treasure == "true") {
                 await treasure_list().then (function(data){list2 = data});
                 if (list2 != ""){
@@ -72,7 +71,7 @@ async function sfexpress() {
                       info = '';
                    }
                 }
-            }*/
+            }
             desp += info;
             info = '';
         }
@@ -270,16 +269,7 @@ function treasure_list() {
         } else {
             list = '';
         }
-        resolve(list);
-        /*for (i in list) {
-            pkgName = list[i].pkgName;
-            flowId = list[i].flowId;
-            if (pkgName in white_list) {
-                await treasure(flowId, pkgName);
-            } else {
-                continue;
-            }
-        }*/       
+        resolve(list);     
       }).catch(function(e) {
           const error = `执行抽奖任务返回错误，请检查⚠️\n`;
           console.log(error + '\n' + e);

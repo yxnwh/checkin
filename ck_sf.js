@@ -31,12 +31,12 @@ async function sfexpress() {
             white_list = AsVow[i].whitelist.split("&");
             headers['Cookie'] = AsVow[i].cookie;
             info +=`=== 正对在第 ${i+1} 个账号签到===\n`;
-            /*await normsign();
+            await normsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
             await surpsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
             await do_lottery();
-            await sleep(Math.floor((Math.random() * 5000) + 5000));*/
+            await sleep(Math.floor((Math.random() * 5000) + 5000));
             await task_list().then (function(data){list1 = data});
             for (i in list1) {
                taskId = list1[i].taskId;
@@ -49,7 +49,6 @@ async function sfexpress() {
                } else if (taskPeriod.includes('D')){
                    await do_mission(title, taskCode);
                    await reward_mission(title, strategyId, taskId, taskCode);
-                   console.log(i+00);
                    await sleep(Math.floor((Math.random() * 5000) + 5000));
                }
                desp += info;

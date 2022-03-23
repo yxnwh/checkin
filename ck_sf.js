@@ -97,7 +97,7 @@ function normsign() {
       }).then(function(body) {
         if (body.success) {
             if (body.obj.hasFinishSign == 0) {
-              info += `首次签到成功\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].commodityName} 分\n连续签到 ${body.obj.countDay} 天\n`;
+              info += `首次签到成功\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].commodityName}\n连续签到 ${body.obj.countDay} 天\n`;
             } else {
               info += `今日已签到过啦~\n`;
             }

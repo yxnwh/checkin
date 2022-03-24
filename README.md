@@ -7,7 +7,7 @@
 修改后，自用
 
 1.修改config.sh
-## ql repo命令拉取脚本时需要拉取的文件后缀，直接写文件后缀名即可
+ql repo命令拉取脚本时需要拉取的文件后缀，直接写文件后缀名即可
 RepoFileExtensions="js pl py sh ts"
 
 2.拉库

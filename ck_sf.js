@@ -225,7 +225,7 @@ function do_lottery() {
 function reward_mission (title, strategyId, taskId, taskCode) {
     url = 'https://mcs-mimp-web.sf-express.com/mcs-mimp/commonPost/~memberNonactivity~integralTaskStrategyService~fetchIntegral';
     //headers['Cookie'] = cookie;
-    body = `{"strategyId":${strategyId}, "taskId":${taskId}, "taskCode":${taskCode}}`;
+    body = `{"strategyId":${strategyId}, "taskId":"${taskId}", "taskCode":"${taskCode}"}`;
     return new Promise(resolve => {
       fetch(url, {
         method: 'POST',

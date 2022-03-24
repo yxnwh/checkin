@@ -16,7 +16,7 @@ RepoFileExtensions="js pl py sh ts"
 2.拉库
 
 
-ql repo https://github.com/yxnwh/checkin/.git "api_|ck_|ins_" "^checkin" "^notify|^utils|cpm" "master"
+ql repo https://github.com/yxnwh/checkin/.git "api_|ck_|ins_" "^checkin" "^notify|^utils|cpm" "main"
 
 3.运行 签到依赖 任务
 

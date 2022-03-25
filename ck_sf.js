@@ -226,7 +226,6 @@ function reward_mission (title, strategyId, taskId, taskCode) {
     url = 'https://mcs-mimp-web.sf-express.com/mcs-mimp/commonPost/~memberNonactivity~integralTaskStrategyService~fetchIntegral';
     headers['Content-Type'] = 'application/json;charset=utf-8';
     body = {"strategyId":strategyId,"taskId":taskId,"taskCode":taskCode};
-    console.log(body);
     return new Promise(resolve => {
       fetch(url, {
         method: 'POST',

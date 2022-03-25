@@ -4,8 +4,9 @@
 const utils = require('./utils');
 const Env = utils.Env;
 const getData = utils.getData;
-const $ = new Env('中国电信')
-$.CryptoJS = require('crypto-js')
+const $ = new Env('中国电信');
+$.CryptoJS = require('crypto-js');
+const fetch = require('node-fetch');
 const notify = require('./notify');
 const JSEncrypt = require('./jsencrypt-3.0-mod.js');
 const AsVow = getData().DIANXIN;
@@ -13,7 +14,9 @@ var info = '';
 var desp = '';
 
 const headers = {
-    'Content-Type': 'application/json;charset=UTF-8'
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Host': 'wapside.189.cn:9001',
+    'User-Agent': 'User-Agent: CtClient;9.3.3;iOS;14.2.1;iPhone 12;NDIwNDk3!#!MTUzNjE='
 };
 
 const pubbkey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+ugG5A8cZ3FqUKDwM57GM4io6JGcStivT8UdGt67PEOihLZTw3P7371+N47PrmsCpnTRzbTgcupKtUv8ImZalYk65dU8rjC/ridwhw9ffW2LBwvkEnDkkKKRi2liWIItDftJVBiWOh17o6gfbPoNrWORcAdcbpk2L+udld5kZNwIDAQAB";
@@ -44,59 +47,53 @@ async function dianxin() {
 }
 
 function signapp() {
-    const bodystr = `{"phone":"${phone}","date":${new Date().getTime()},"sysType":"20004"}`;
-    const request = {
-        url: 'https://wapside.189.cn:9001/jt-sign/api/home/sign',
+    url = 'https://wapside.189.cn:9001/jt-sign/api/home/sign';
+    bodystr = `{"phone":"${phone}","date":${new Date().getTime()},"sysType":"20004"}`;
+    return new Promise(resolve => {
+      fetch(url, {
+        method: 'POST',
         headers: headers,
         body: JSON.stringify({ encode: encrypt(bodystr) })
-    };
-    return new Promise((resolve) => {
-      $.http.post(request)
-        .then((resp) => {
-            data = JSON.parse(resp.body);
-            if (data.data.msg.includes('成功')) {
-                info += `每日首次签到成功：金豆 +${data.data.coin}🎉\n已连续签到：+${data.data.continuousDay}天🎉\n本周已签到：+${data.data.totalDay}天🎉\n`;
-            }else {
-                info += `${data.data.msg}⚠️\n`;
-            }
-        })
-        .catch((err) => {
-            const error = '签到状态获取失败⚠️';
-            console.log(error + '\n' + err);
-            notify.sendNotify('中国电信', head + error + '\n' +'请查看日志‼️');
-        })    
-        .finally(() => {
-            resolve();
-        })
-      });
+      }).then(function(response) {
+        return response.json()
+      }).then(function(body) {
+        if (body.data.msg.includes('成功')) {
+            info += `每日首次签到成功：金豆 +${body.data.coin}🎉\n已连续签到：+${body.data.continuousDay}天🎉\n本周已签到：+${body.data.totalDay}天🎉\n`;
+        }else {
+            info += `${body.data.msg}⚠️\n`;
+        }
+      }).catch(function(e) {
+          const error = '签到状态获取失败⚠️';
+          console.log(error + '\n' + e);
+      }).finally(() => {
+          resolve()
+      })
+    });
 }
 
 function coinfo() {
-    const bodystr = {"phone":phone};
-    const request = {
-        url: 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo',
+    url = 'https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo';
+    bodystr = {"phone":phone};
+    return new Promise(resolve => {
+      fetch(url, {
+        method: 'POST',
         headers: headers,
         body: enphone(bodystr)
-    };
-    return new Promise((resolve) => {
-      $.http.post(request)
-        .then((resp) => {
-            data = JSON.parse(resp.body);
-            if (data.resoultMsg.includes('成功')) {
-                info += `共有金豆：${data.totalCoin}🎉\n`;
-            }else {
-                info += `${data.resoultMsg}⚠️\n`;
-            }
-        })
-        .catch((err) => {
-            const error = '金豆状态获取失败⚠️';
-            console.log(error + '\n' + err);
-            notify.sendNotify('中国电信', head + error + '\n' +'请查看日志‼️');
-        })    
-        .finally(() => {
-            resolve();
-        })
-      });
+      }).then(function(response) {
+        return response.json()
+      }).then(function(body) {
+        if (body.resoultMsg.includes('成功')) {
+            info += `共有金豆：${body.totalCoin}🎉\n`;
+        }else {
+            info += `${body.resoultMsg}⚠️\n`;
+        }
+      }).catch(function(e) {
+          const error = '金豆状态获取失败⚠️';
+          console.log(error + '\n' + e);
+      }).finally(() => {
+          resolve()
+      })
+    });
 }
 
 function enphone(t){
@@ -114,15 +111,5 @@ function encrypt(t) {
   return $.CryptoJS.enc.Hex.stringify($.CryptoJS.enc.Base64.parse(encrypted.toString()))
 }
 
-/*
-function decrypt(t){
-	var e = $.CryptoJS.enc.Hex.parse(t),
-		i = $.CryptoJS.enc.Base64.stringify(e);
-	return $.CryptoJS.AES.decrypt(i, n,
-	{
-		mode: $.CryptoJS.mode.ECB,
-		padding: $.CryptoJS.pad.Pkcs7
-	}).toString($.CryptoJS.enc.Utf8).toString()
-};
-*/
+
 module.exports = dianxin;

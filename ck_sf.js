@@ -31,7 +31,7 @@ async function sfexpress() {
             white_list = AsVow[i].whitelist.split("&");
             headers['Cookie'] = AsVow[i].cookie;
             info +=`=== 正对在第 ${i+1} 个账号签到===\n`;
-            await normsign();
+            await normsign().then (function(data){countday = data});
             await sleep(Math.floor((Math.random() * 5000) + 5000));
             await surpsign();
             await sleep(Math.floor((Math.random() * 5000) + 5000));
@@ -47,6 +47,10 @@ async function sfexpress() {
                if (title.includes('邀请')) {
                    continue;
                } else if (taskPeriod.includes('D')){
+                   await do_mission(title, taskCode);
+                   await reward_mission(title, strategyId, taskId, taskCode);
+                   await sleep(Math.floor((Math.random() * 5000) + 5000));
+               } else if (taskPeriod.includes('W') && countday == 7){
                    await do_mission(title, taskCode);
                    await reward_mission(title, strategyId, taskId, taskCode);
                    await sleep(Math.floor((Math.random() * 5000) + 5000));
@@ -101,6 +105,8 @@ function normsign() {
             } else {
               info += `今日已签到过啦~\n`;
             }
+            countday = body.obj.countDay;
+            resolve(countday);
         } else {
              info += "普通签到返回错误，请重新调试\n";
              console.log(info);
@@ -108,8 +114,6 @@ function normsign() {
       }).catch(function(e) {
           const error = '普通签到出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
-      }).finally(() => {
-          resolve()
       })
     });
 }

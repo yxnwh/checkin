@@ -1,378 +1,56 @@
-{
-    "name": "签到项目",
-    "author": "Leon",
-    "desc": "该订阅适用于 elecV2P，与其他软件并不兼容。相关说明参考：https://github.com/elecV2/elecV2P-dei/tree/master/docs/06-task.md",
-    "date": "2021-12-06 01:00:00",
-    "list": [
-        {
-            "name": "Bash & Git",
-            "type": "schedule",
-            "time": "0",
-            "job": {
-                "type": "exec",
-                "target": "apk add bash git"
-            },
-            "running": true
-        },
-        {
-            "name": "签到仓库",
-            "type": "schedule",
-            "time": "10",
-            "job": {
-                "type": "exec",
-                "target": "git clone https://github.com/yxnwh/checkin -cwd script/Shell"
-            },
-            "running": true
-        },
-        {
-            "name": "手动更新",
-            "type": "schedule",
-            "time": "0",
-            "job": {
-                "type": "exec",
-                "target": "git checkout master && git fetch --all && git reset --hard origin/master && git pull -cwd script/Shell/checkinpanel"
-            },
-            "running": false
-        },
-        {
-            "name": "自动更新",
-            "type": "cron",
-            "time": "0 16 * * *",
-            "job": {
-                "type": "exec",
-                "target": "git checkout master && git fetch --all && git reset --hard origin/master && git pull -cwd script/Shell/checkinpanel"
-            },
-            "running": true
-        },
-        {
-            "name": "签到依赖",
-            "type": "schedule",
-            "time": "20",
-            "job": {
-                "type": "exec",
-                "target": "chmod +x ins_pkg.sh && bash ins_pkg.sh -cwd script/Shell/checkinpanel -timeout 0"
-            },
-            "running": true
-        },
-        {
-            "name": "日常依赖",
-            "type": "cron",
-            "time": "10 16 * * *",
-            "job": {
-                "type": "exec",
-                "target": "chmod +x ins_pkg.sh && bash ins_pkg.sh -cwd script/Shell/checkinpanel -timeout 0"
-            },
-            "running": true
-        },
-        {
-            "name": "复制 checkins_pkg.js",
-            "type": "cron",
-            "time": "25 16 * * *",
-            "job": {
-                "type": "exec",
-                "target": "cp -rf ./Shell/checkinpanel/checkins_pkg.js ./JSFile/checkins_pkg.js -cwd script"
-            },
-            "running": true
-        },
-        {
-            "name": "ins_selenium",
-            "type": "cron",
-            "time": "32 16 * * *",
-            "job": {
-                "type": "exec",
-                "target": "chmod +x ins_selenium.sh && bash ins_selenium.sh -cwd script/Shell/checkinpanel -timeout 0"
-            },
-            "running": true
-        },
-        {
-            "name": "JS-JS",
-            "type": "schedule",
-            "time": "0",
-            "job": {
-                "type": "exec",
-                "target": "wget https://raw.githubusercontent.com/yxnwh/checkin/main/checkinjs.js -O checkinjs.js -cwd script/JSFile"
-            },
-            "running": true
-        },
-        {
-            "name": "PY-JS",
-            "type": "schedule",
-            "time": "0",
-            "job": {
-                "type": "exec",
-                "target": "wget https://raw.githubusercontent.com/yxnwh/checkin/main/checkin.js -O checkin.js -cwd script/JSFile"
-            },
-            "running": true
-        },
-        {
-            "name": "SH-JS",
-            "type": "schedule",
-            "time": "0",
-            "job": {
-                "type": "exec",
-                "target": "wget https://raw.githubusercontent.com/yxnwh/checkin/main/checkinsh.js -O checkinsh.js -cwd script/JSFile"
-            },
-            "running": true
-        },
-        {
-            "name": "爱企查e卡监控",
-            "type": "cron",
-            "time": "18 0-23/6 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=api_ecardcheck.py"
-            },
-            "running": true
-        },
-        {
-            "name": "Hax 监控",
-            "type": "cron",
-            "time": "21 0-23/6 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=api_hax.py"
-            },
-            "running": true
-        },
-        {
-            "name": "天气预报",
-            "type": "cron",
-            "time": "30 7 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=api_weather.py"
-            },
-            "running": true
-        },
-        {
-            "name": "爱企查",
-            "type": "cron",
-            "time": "37 0-23/8 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkinjs.js -env JSNAME=ck_aqc.js"
-            },
-            "running": true
-        },
-        {
-            "name": "百度搜索资源平台",
-            "type": "cron",
-            "time": "32 7 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_baidu_url_submit.py"
-            },
-            "running": true
-        },
-        {
-            "name": "Bilibili",
-            "type": "cron",
-            "time": "30 8 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_bilibili.py"
-            },
-            "running": true
-        },
-        {
-            "name": "天翼云盘",
-            "type": "cron",
-            "time": "30 9 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_cloud189.py"
-            },
-            "running": true
-        },
-        {
-            "name": "CSDN",
-            "type": "cron",
-            "time": "30 10 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_csdn.py"
-            },
-            "running": true
-        },
-        {
-            "name": "恩山论坛",
-            "type": "cron",
-            "time": "1 15 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_enshan.py"
-            },
-            "running": true
-        },
-        {
-            "name": "FreeNom",
-            "type": "cron",
-            "time": "25 7 */10 * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_freenom.py"
-            },
-            "running": true
-        },
-        {
-            "name": "HOSTLOC",
-            "type": "cron",
-            "time": "48 0-23/12 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_hostloc.py"
-            },
-            "running": true
-        },
-        {
-            "name": "爱奇艺",
-            "type": "cron",
-            "time": "55 23 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_iqiyi.py"
-            },
-            "running": true
-        },
-        {
-            "name": "无忧行",
-            "type": "cron",
-            "time": "21 21 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_jegotrip.py"
-            },
-            "running": true
-        },
-        {
-            "name": "掘金",
-            "type": "cron",
-            "time": "7 11 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_juejin.py"
-            },
-            "running": true
-        },
-        {
-            "name": "芒果 TV",
-            "type": "cron",
-            "time": "23 14 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_mgtv.py"
-            },
-            "running": true
-        },
-        {
-            "name": "小米运动",
-            "type": "cron",
-            "time": "25 20 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_mimotion.py"
-            },
-            "running": true
-        },
-        {
-            "name": "NGA",
-            "type": "cron",
-            "time": "26 13 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_nga.py"
-            },
-            "running": true
-        },
-        {
-            "name": "吾爱破解",
-            "type": "cron",
-            "time": "53 11 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_pojie.py"
-            },
-            "running": true
-        },
-        {
-            "name": "什么值得买任务版",
-            "type": "cron",
-            "time": "29 */8 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkinjs.js -env JSNAME=ck_smzdm.js"
-            },
-            "running": true
-        },
-        {
-            "name": "什么值得买",
-            "type": "cron",
-            "time": "51 9 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_smzdm.py"
-            },
-            "running": true
-        },
-        {
-            "name": "百度贴吧",
-            "type": "cron",
-            "time": "12 16 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_tieba.py"
-            },
-            "running": true
-        },
-        {
-            "name": "联通营业厅",
-            "type": "cron",
-            "time": "18 16 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_unicom.py"
-            },
-            "running": true
-        },
-        {
-            "name": "V2EX",
-            "type": "cron",
-            "time": "10 19 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_v2ex.py"
-            },
-            "running": true
-        },
-        {
-            "name": "腾讯视频",
-            "type": "cron",
-            "time": "55 10 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_vqq.py"
-            },
-            "running": true
-        },
-        {
-            "name": "微博",
-            "type": "cron",
-            "time": "48 7 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_weibo.py"
-            },
-            "running": true
-        },
-        {
-            "name": "联通沃邮箱",
-            "type": "cron",
-            "time": "56 13 * * *",
-            "job": {
-                "type": "runjs",
-                "target": "checkin.js -env PYNAME=ck_womail.py"
-            },
-            "running": true
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use File::Slurp;
+use JSON5;
+use TOML::Dumper;
+
+sub json52toml {
+    my $json5       = read_file(@_) or die "[Error] JSON5 文件读取错误，请检查路径是否完全和正确";
+    my $perl_scalar = decode_json5 $json5;
+    my $toml        = TOML::Dumper->new->dump($perl_scalar);
+    $toml =~ s!\\/!/!g;
+
+    ( my $new_file ) = @_;
+    $new_file =~ s/\.json5?$/\.toml/;
+
+    open( OUT, ">:encoding(UTF-8)", $new_file );
+    print OUT "$toml";
+    close(OUT);
+}
+
+if ( @ARGV == 0 ) {
+    print "[Info.Auto] 未提供传入参数，将启动自动匹配转换\n";
+    my @PATH  = ( "./", "/ql/data/config/", "/ql/config/", "/usr/local/app/script/Lists/" );
+    my @NAME  = ( "check.json5", "check.json", "notify.json5", "notify.json" );
+    my @files = ( $ENV{CHECK_CONFIG}, $ENV{NOTIFY_CONFIG_PATH} );
+    foreach my $path (@PATH) {
+        foreach my $name (@NAME) {
+            push @files, "$path$name";
         }
-    ]
+    }
+
+    foreach my $file (@files) {
+        if ( $file and -e $file ) {
+            print "\t[Info] $file 存在\n";
+            my $new_file = $file;
+            $new_file =~ s/\.json5?$/\.toml/;
+            if ( -e $new_file ) {
+                print "\t\t[Info.Quit] $new_file 已存在，放弃转换\n";
+            }
+            else {
+                print "\t\t[Info.GoOn] $new_file 不存在，开始转换\n";
+                json52toml($file);
+            }
+        }
+    }
+}
+
+elsif ( @ARGV == 1 ) { json52toml $ARGV[0] }
+
+else {
+    die
+"\tUsage: perl $0 <待转换的全路径文件名>\n\te.g. perl $0 /usr/local/app/script/Lists/check.json5\n\t[Error] 用法错误，已退出!!!";
 }

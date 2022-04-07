@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""
+cron: 53 8 * * *
+new Env('滴滴有车');
+"""
 import requests
 import json,sys,os,re
 import time,datetime,random

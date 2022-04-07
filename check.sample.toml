@@ -176,3 +176,7 @@ userid = ""
 # 中国电信【IOS】
 [[DIANXIN]]
 phone = ""
+
+# 滴滴【IOS】
+[[DIDIYC]]
+token = ""

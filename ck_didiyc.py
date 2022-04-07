@@ -12,6 +12,8 @@ import time,datetime,random
 from notify_mtr import send
 from utils import get_data
 
+requests.packages.urllib3.disable_warnings()
+
 wsgsig=['dd03-vx9tq2onDp0IZqcYVoABxTjsa%2BXNwlstUQ6fOSmVa%2BX%2BZhfRmNkDw6zkAz0%2BZA8rsJ2%2BzMKjCoJLpecxVoEAOMK%2FBzf2SAJmXo6ax6Nre%2BnNYVNkX72aP6KjAJE',
         'dd03-67TGcdCHNXqCW0FVDMhX%2B%2F%2B650AFtbkyCIqj4r3350AEWfAm9TIW%2B9cKMnqEWXIwEPUQLAXc%2BWT0%2FiFqd1%2Fn%2Be36LslfUXIyD61n%2BAgNL096XnZxBMZUNl%2BN%2BXO',
         'dd03-rxqml47pGugrvrGTzy%2FbOp8ud3nWyknnyQTDxoGxd3nXv%2FDzSNEfP8%2BSFQgXvBJlYJP3Q%2BvlFR3UTdGPxKw9RJGuE3%2BtZa8rPod9xp3uF3KrvEbhPolCP3KkEQ9',
@@ -43,30 +45,30 @@ wsgsig=['dd03-vx9tq2onDp0IZqcYVoABxTjsa%2BXNwlstUQ6fOSmVa%2BX%2BZhfRmNkDw6zkAz0%
 class DIDIYC:
     def __init__(self, check_items):
         self.check_items = check_items
-
+    
     #获取xpsid
-    def get_xpsid():
-        imei = ''.join (random.sample ('123456789abcdef123456789abcdef123456789abcdef123456789abcdef', 32))
+    def get_xpsid(self):
+        imei = ''.join(random.sample('123456789abcdef123456789abcdef123456789abcdef123456789abcdef', 32))
         url = f'https://v.didi.cn/p/DpzAd35?appid=10000&lang=zh-CN&clientType=1&trip_cityid=21&datatype=101&imei=99d8f16bacaef4eef6c151bcdfa095f0&channel=102&appversion=6.2.4&trip_country=CN&TripCountry=CN&lng=113.812538&maptype=soso&os=iOS&utc_offset=480&access_key_id=1&deviceid=99d8f16bacaef4eef6c151bcdfa095f0&phone=UCvMSok42+5+tfafkxMn+A==&model=iPhone11&lat=23.016271&origin_id=1&client_type=1&terminal_id=1&sig=8503d986c0349e40ea10ff360f75d208c78c989a'
         heards = {
             "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
         }
-        response = requests.head (url=url, headers=heards, verify=False)    #获取响应请求头
+        response = requests.head(url=url, headers=heards, verify=False)    #获取响应请求头
         result = response.headers['Location']                                  #获取响应请求头
         # print(result)
         r = re.compile (r'root_xpsid=(.*?)&channel_id')
-        xpsid = r.findall (result)
+        xpsid = r.findall(result)
         xpsid = xpsid[0]
         return xpsid,imei
 
     #获取dchn
-    def get_dchn():
-        nowtime = int (round (time.time () * 1000))
-        url = f'https://conf.diditaxi.com.cn/one/page?_t={nowtime}&access_key_id=1&appVersion=6.2.4&appversion=6.2.4&biz_type=1&card_nav_id=dache_anycar&channel=102&clientType=1&datatype=101&imei=99d8f16bacaef4eef6c151bcdfa095f0&imsi=&lang=zh-CN&lat=23.01638904876869&lng=113.8122117519379&location_lat=23.01638834635417&location_lng=113.8122121853299&maptype=soso&mobileType=iPhone%2011&model=iPhone12%2C1&networkType=WIFI&origin_id=1&os=15.0&osType=1&osVersion=15.0&platform_type=1&sig=7eafa42e548185d7f1cf5e841ceb05b82a671e40&start_utc_offset=480&terminal_id=1&timestamp={nowtime}&token={Didi_jifen_token}&trip_cityid=-1&uid=281474990465673&userRole=1&utc_offset=480&v6x_version=1'
+    def get_dchn(self):
+        nowtime = int(round(time.time() * 1000))
+        url = f'https://conf.diditaxi.com.cn/one/page?_t={nowtime}&access_key_id=1&appVersion=6.2.4&appversion=6.2.4&biz_type=1&card_nav_id=dache_anycar&channel=102&clientType=1&datatype=101&imei=99d8f16bacaef4eef6c151bcdfa095f0&imsi=&lang=zh-CN&lat=23.01638904876869&lng=113.8122117519379&location_lat=23.01638834635417&location_lng=113.8122121853299&maptype=soso&mobileType=iPhone%2011&model=iPhone12%2C1&networkType=WIFI&origin_id=1&os=15.0&osType=1&osVersion=15.0&platform_type=1&sig=7eafa42e548185d7f1cf5e841ceb05b82a671e40&start_utc_offset=480&terminal_id=1&timestamp={nowtime}&token={token}&trip_cityid=-1&uid=281474990465673&userRole=1&utc_offset=480&v6x_version=1'
         heards = {
             "user-agent": r"OneTravel/6.2.4 (iPhone; iOS 15.0; Scale/2.00)",
         }
-        response = requests.get (url=url, headers=heards, verify=False)
+        response = requests.get(url=url, headers=heards, verify=False)
         result = response.json()
         # print(result)
         name_list = result['data']['nav_list']
@@ -78,11 +80,12 @@ class DIDIYC:
                 # print(dchn)
         return dchn
 
+    @staticmethod
     #领取瓜分奖励
-    def reward(Didi_jifen_token,xpsid,imei,id):
+    def reward(token,xpsid,imei,id):
         global wsgsig
-        wsgsig1 = wsgsig[random.randint (0, 25)]
-        uid = ''.join (random.sample ('01234657890123456789', 15))  # 281474990465673
+        wsgsig1 = wsgsig[random.randint(0, 25)]
+        uid = ''.join(random.sample('01234657890123456789', 15))  # 281474990465673
         try:
             url = f'https://ut.xiaojukeji.com/ut/kappa/api/owner/obtain?wsgsig={wsgsig1}'
             headers = {
@@ -94,9 +97,9 @@ class DIDIYC:
                 "Content-Type":"application/json",
                 "Accept":"application/json, text/plain, */*",
             }
-            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"2dcb602b-c319-44d1-93d3-811faeca4b82","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{Didi_jifen_token}" + r'","env":{"newTicket":"' + f"{Didi_jifen_token}" + r'","isOpenWeb":true,"ticket":"' + f"{Didi_jifen_token}" + r'","cityId":"21","longitude":"113.812232","latitude":"23.016550","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"aid":"' + f"{id}" + '","source":1}'
+            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"2dcb602b-c319-44d1-93d3-811faeca4b82","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{token}" + r'","env":{"newTicket":"' + f"{token}" + r'","isOpenWeb":true,"ticket":"' + f"{token}" + r'","cityId":"21","longitude":"113.812232","latitude":"23.016550","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"aid":"' + f"{id}" + '","source":1}'
             # print(data)
-            response = requests.post (url=url, headers=headers,verify=False,data=data)
+            response = requests.post(url=url, headers=headers,verify=False,data=data)
             result = response.json()
             # print (result)
             errmsg = result['errmsg']
@@ -107,11 +110,12 @@ class DIDIYC:
             res = f"领取奖励失败，可能是token过期"
         return res
 
+    @staticmethod
     #获取活动id
-    def get_id(Didi_jifen_token,xpsid,imei):
+    def get_id(token,xpsid,imei):
         global wsgsig
-        wsgsig1 = wsgsig[random.randint (0, 25)]
-        uid = ''.join (random.sample ('01234657890123456789', 15))  # 281474990465673
+        wsgsig1 = wsgsig[random.randint(0, 25)]
+        uid = ''.join(random.sample('01234657890123456789', 15))  # 281474990465673
         try:
             url = f'https://ut.xiaojukeji.com/ut/kappa/api/owner/getActivityInfo?wsgsig={wsgsig1}'
             headers = {
@@ -123,9 +127,9 @@ class DIDIYC:
                 "Content-Type":"application/json",
                 "Accept":"application/json, text/plain, */*",
             }
-            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"aA/iet7vTTmdKCRAgoHwyg","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{Didi_jifen_token}" + r'","env":{"newTicket":"' + f"{Didi_jifen_token}" + r'","isOpenWeb":true,"ticket":"' + f"{Didi_jifen_token}" + r'","cityId":"21","longitude":"113.812516","latitude":"23.016350","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"source":1}'
+            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"aA/iet7vTTmdKCRAgoHwyg","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{token}" + r'","env":{"newTicket":"' + f"{token}" + r'","isOpenWeb":true,"ticket":"' + f"{token}" + r'","cityId":"21","longitude":"113.812516","latitude":"23.016350","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"source":1}'
             # print(data)
-            response = requests.post (url=url, headers=headers,verify=False,data=data)
+            response = requests.post(url=url, headers=headers,verify=False,data=data)
             result = response.json()
             # print (result)
             id = result['data']['id']
@@ -135,11 +139,12 @@ class DIDIYC:
             res = f"获取活动id失败，可能是token过期"
             return res
 
+    @staticmethod
     #签到
-    def sign(Didi_jifen_token,xpsid,imei,id):
+    def sign(token,xpsid,imei,id):
         global wsgsig
-        wsgsig1 = wsgsig[random.randint (0, 25)]
-        uid = ''.join (random.sample ('01234657890123456789', 15))  # 281474990465673
+        wsgsig1 = wsgsig[random.randint(0, 25)]
+        uid = ''.join(random.sample('01234657890123456789', 15))  # 281474990465673
         print(id)
         try:
             url = f'https://ut.xiaojukeji.com/ut/kappa/api/owner/sign?wsgsig={wsgsig1}'
@@ -149,14 +154,14 @@ class DIDIYC:
                 "Host": "ut.xiaojukeji.com",
                 "Origin": "https://page.udache.com",
                 "Accept-Language": "zh-CN,zh-Hans;q=0.9",
-                "ticket":f"{Didi_jifen_token}",
+                "ticket":f"{token}",
                 "Content-Type":"application/json",
             }
-            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"aA/iet7vTTmdKCRAgoHwyg","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{Didi_jifen_token}" + r'","env":{"newTicket":"' + f"{Didi_jifen_token}" + r'","isOpenWeb":true,"ticket":"' + f"{Didi_jifen_token}" + r'","cityId":"21","longitude":"113.812232","latitude":"23.016550","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"aid":"' + f"{id}" + '"}'
+            data = r'{"xbiz":"","prod_key":"","xpsid":"","dchn":"","xoid":"aA/iet7vTTmdKCRAgoHwyg","uid":"' + f"{uid}" + '","xenv":"passenger","xspm_from":"ut-carowner-service.index.c757.1","xpsid_root":"' +f"{xpsid}" +'","xpsid_from":"' +f"{xpsid}" +'","xpsid_share":"","platform_type":1,"token":"' + f"{token}" + r'","env":{"newTicket":"' + f"{token}" + r'","isOpenWeb":true,"ticket":"' + f"{token}" + r'","cityId":"21","longitude":"113.812232","latitude":"23.016550","xAxes":"0","yAxes":"0","newAppid":"10000","isHitButton":true,"ddfp":"' + f"{imei}" + r'","deviceId":"' + f"{imei}" + r'","appVersion":"6.2.4","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0","fromChannel":"1"},"aid":"' + f"{id}" + '"}'
             # print(data)
-            response = requests.post (url=url, headers=heards,verify=False,data=data)
+            response = requests.post(url=url, headers=heards,verify=False,data=data)
             result = response.json()
-            print (result)
+            print(result)
             errmsg = result['errmsg']
             if "success" in errmsg:
                 res = f"今日成功参加瓜分活动"
@@ -173,13 +178,13 @@ class DIDIYC:
         msg_all = ""
         i = 1
         for check_item in self.check_items:
-            Didi_jifen_token = check_item.get("token")
-            xpsid,imei = get_xpsid ()
-            id = get_id (Didi_jifen_token, xpsid, imei)
-            reward_msg = reward (Didi_jifen_token, xpsid, imei, id)
+            token = check_item.get("token")
+            xpsid,imei = self.get_xpsid()
+            id = self.get_id(token=token, xpsid=xpsid, imei=imei)
+            reward_msg = self.reward(token=token, xpsid=xpsid, imei=imei, id=id)
             time.sleep (2)
-            id = get_id (Didi_jifen_token, xpsid, imei)
-            sign_msg = sign (Didi_jifen_token,xpsid,imei,id)
+            id = self.get_id(token=token, xpsid=xpsid, imei=imei)
+            sign_msg = self.sign(token=token, xpsid=xpsid, imei=imei, id=id)
             msg = (
                 f"账号 {i}\n------ 滴滴有车领取奖励结果 ------\n"
                 + reward_msg
@@ -192,6 +197,6 @@ class DIDIYC:
 
 if __name__ == "__main__":
     data = get_data()
-    _check_items = data.get("DIDIYC", [])
+    _check_items = data.get("DIDI", [])
     res = DIDIYC(check_items=_check_items).main()
     send("滴滴有车签到瓜分", res)

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# @url: https://raw.githubusercontent.com/zyf1118/kevinxf/main/xF_DiDiYC_sign.py
+# @author: zyf1118
 """
 cron: 53 8 * * *
 new Env('滴滴有车');

@@ -66,7 +66,7 @@ class DIDI:
             return xpsid
         except Exception as e:
             print (e)
-            return e
+            return json.loads(e)
     
     #获取v.didi.cn的url
     @staticmethod
@@ -159,7 +159,7 @@ class DIDI:
             return numb,id,day
         except Exception as e:
             print (e)
-            return e
+            return json.loads(e)
     
     #获取个人信息
     @staticmethod
@@ -186,7 +186,7 @@ class DIDI:
             return res
         except Exception as e:
             print (e)
-            return e
+            return json.loads(e)
     
     #获取积分
     @staticmethod
@@ -224,7 +224,7 @@ class DIDI:
                 return res
         except Exception as e:
             print(e)
-            return e
+            return json.loads(e)
    
     #获取抽奖lid
     def get_lid(self):
@@ -244,7 +244,7 @@ class DIDI:
             return activity_id
         except Exception as e:
             print(e)
-            return e
+            return json.loads(e)
     
     #抽奖活动
     @staticmethod
@@ -285,7 +285,7 @@ class DIDI:
                 return res
         except Exception as e:
             print(e)
-            return e
+            return json.loads(e)
     
     def main(self):
         msg_all = ""

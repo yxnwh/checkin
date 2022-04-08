@@ -292,15 +292,15 @@ class DIDI:
             token = check_item.get("token")
             lottery_lid = check_item.get("lottery_lid")
             s_url = self.get_s_url()
-            url_id = self.get_url (s_url)
-            numb,id,day = self.get_id(url_id)
+            url_id = self.get_url (s_url=s_url)
+            numb,id,day = self.get_id(url_id=url_id)
             msg = (
                 f"账号 {i}\n------ 滴滴签到------\n"
-                + get_activity_info(token,day,numb)
+                + self.get_activity_info(token=token,day=day,numb=numb)
                 + "\n"
-                + reward(token,day,numb)
+                + self.reward(token=token,day=day,numb=numb)
                 + "\n"
-                + do_Lottery (token,lottery_lid)
+                + self.do_Lottery (token=token,lottery_lid=lottery_lid)
             )
             i += 1
             msg_all += msg + "\n\n"     

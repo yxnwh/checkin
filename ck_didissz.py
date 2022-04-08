@@ -113,7 +113,7 @@ class DIDIssz:
                 content = do_sign_['data']['content']
                 content = content[6:]
                 res = f"今日签到成功，获得{content}"
-                return res
+            return res
         except Exception as e:
             print(e)
             return json.loads(e)

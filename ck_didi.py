@@ -63,11 +63,10 @@ class DIDI:
             r = re.compile (r'root_xpsid=(.*?)&channel_id')
             xpsid = r.findall (res)
             xpsid = xpsid[0]
-            print (xpsid)
             return xpsid
         except Exception as e:
             print (e)
-            res = f"获取xpsid失败，可能是表达式错误"
+            return e
     
     #获取v.didi.cn的url
     @staticmethod
@@ -84,9 +83,7 @@ class DIDI:
             title = bottom_items[i]['title']
             if "积分商城" in title:
                 link = bottom_items[i]['link']
-                # print(link)
                 v_url = link[18:]
-                print(v_url)
         return v_url
         # print(json.dumps(result,sort_keys=True,indent=4,ensure_ascii=False))         #格式化后的json
     
@@ -99,11 +96,9 @@ class DIDI:
         }
         response = requests.head (url=url, headers=heards, verify=False)            #获取响应请求头
         result = response.headers['Location']                                       #获取响应请求头
-        # print(result)
         s_url = result[18:]
         s_url = s_url[:6]
         return s_url
-    
     
     #获取url
     @staticmethod
@@ -118,7 +113,6 @@ class DIDI:
         r = re.compile (r'dpubimg/(.*?)/index.html', re.M | re.S | re.I)
         url_id = r.findall (res)
         url_id = url_id[0]
-        print(url_id)
         return url_id
     
     #获取签到ID
@@ -165,6 +159,7 @@ class DIDI:
             return numb,id,day
         except Exception as e:
             print (e)
+            return e
     
     #获取个人信息
     @staticmethod
@@ -185,14 +180,13 @@ class DIDI:
             if "已结束" in code:
                 res = f"获取签到ID异常"
             elif "已经" in code:
-                print (do_sign_)
                 res = f"今日已签到，跳过签到环节"
             elif code == '':
                 res = f"今日签到成功"
+            return res
         except Exception as e:
             print (e)
-            res = f"获取签到信息失败,可能是cookies过期"
-        return res
+            return e
     
     #获取积分
     @staticmethod
@@ -230,6 +224,7 @@ class DIDI:
                 return res
         except Exception as e:
             print(e)
+            return e
    
     #获取抽奖lid
     def get_lid(self):
@@ -249,6 +244,7 @@ class DIDI:
             return activity_id
         except Exception as e:
             print(e)
+            return e
     
     #抽奖活动
     @staticmethod
@@ -289,6 +285,7 @@ class DIDI:
                 return res
         except Exception as e:
             print(e)
+            return e
     
     def main(self):
         msg_all = ""

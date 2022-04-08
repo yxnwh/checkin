@@ -2,7 +2,7 @@
 # @url: https://raw.githubusercontent.com/yxnwh/kevinxf/main/xF_DiDi_ssz.py
 # @author: zyf1118
 """
-cron: 23 10,15 * * *
+cron: 23 8,14 * * *
 new Env('滴滴app刷刷赚签到');
 """
 import requests

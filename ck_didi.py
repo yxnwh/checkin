@@ -66,8 +66,6 @@ class DIDI:
             return xpsid
         except Exception as e:
             print (e)
-            print(type(e))
-            print('1')
             return json.loads(e)
     
     #获取v.didi.cn的url
@@ -161,8 +159,6 @@ class DIDI:
             return numb,id,day
         except Exception as e:
             print (e)
-            print(type(e))
-            print('2')
             return json.loads(e)
     
     #获取个人信息
@@ -190,8 +186,6 @@ class DIDI:
             return res
         except Exception as e:
             print (e)
-            print(type(e))
-            print('3')
             return json.loads(e)
     
     #获取积分
@@ -213,25 +207,20 @@ class DIDI:
                 print(list)
                 flag = list['errmsg']
                 if "签到当天奖励" in flag:
-                    break
+                    res = f"已经领过签到当天奖励"
                 elif "未完成签到次数" in flag:
                     res = f"请从星期一开始运行此脚本，请看脚本最上面的说明"
-                    break
                 elif "activity is not" in flag:
                     numb += 2
                     if numb == 12000:
                         res = f"签到异常"
-                        break
                 else:
                     reward = list['lottery']['prize']['name']
                     total_reward = list['lottery']['userinfo']['current_point']  #总积分
-                    res = f"本次签到获取{reward},账号共有{total_reward}积分"
-                    break
+                print(res)
                 return res
         except Exception as e:
             print (e)
-            print(type(e))
-            print('4')
             return json.loads(e)
    
     #获取抽奖lid
@@ -252,8 +241,6 @@ class DIDI:
             return activity_id
         except Exception as e:
             print (e)
-            print(type(e))
-            print('5')
             return json.loads(e)
     
     #抽奖活动
@@ -275,16 +262,12 @@ class DIDI:
                 code = result['code']
                 if code == 20003:
                     res = f"抽奖次数已达上限，跳出抽奖环节"
-                    break
                 elif code == 20017:
                     res = f"抽奖操作过频，稍后再试"
-                    break
                 elif code == 20008:
                     res = f"抽奖lid过期，请重新抓包更新"
-                    break
                 elif code == 20010:
                     res = f"积分不足9分，跳出抽奖环节"
-                    break
                 else:
                     draw_times = result['data']['userinfo']['draw_times']
                     flag = 6 - int(draw_times)
@@ -295,8 +278,6 @@ class DIDI:
                 return res
         except Exception as e:
             print (e)
-            print(type(e))
-            print('6')    
             return json.loads(e)
     
     def main(self):
@@ -309,12 +290,13 @@ class DIDI:
             url_id = self.get_url (s_url=s_url)
             numb,id,day = self.get_id(url_id=url_id)
             msg = (
-                f"账号 {i}\n------ 滴滴签到------\n"
+                f"账号 {i}\n------ 滴滴签到开始------\n"
                 + self.get_activity_info(token=token,day=day,numb=numb)
                 + "\n"
                 + self.reward(token=token,day=day,numb=numb,id=id)
                 + "\n"
                 + self.do_Lottery (token=token,lottery_lid=lottery_lid)
+                + "\n------ 滴滴签到结束------"
             )
             i += 1
             msg_all += msg + "\n\n"     

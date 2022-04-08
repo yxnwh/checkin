@@ -3,7 +3,7 @@
 # @author: zyf1118
 """
 cron: 23 8,14 * * *
-new Env('滴滴app刷刷赚签到');
+new Env('滴滴刷刷赚签到');
 """
 import requests
 import json, sys, os, re

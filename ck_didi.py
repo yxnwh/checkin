@@ -303,7 +303,7 @@ class DIDI:
                 f"账号 {i}\n------ 滴滴签到------\n"
                 + self.get_activity_info(token=token,day=day,numb=numb)
                 + "\n"
-                + self.reward(token=token,day=day,numb=numb)
+                + self.reward(token=token,day=day,numb=numb,id=id)
                 + "\n"
                 + self.do_Lottery (token=token,lottery_lid=lottery_lid)
             )

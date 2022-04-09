@@ -2,7 +2,7 @@
 # @url: https://raw.githubusercontent.com/yxnwh/kevinxf/main/xF_DiDi_FLJ_Sign.py
 # @author: zyf1118
 """
-cron: 22 10,15 * * *
+cron: 22 7,13 * * *
 new Env('滴滴福利金签到');
 """
 import requests
@@ -12,7 +12,10 @@ import time, datetime,random
 from notify_mtr import send
 from utils import get_data
 
-requests.packages.urllib3.disable_warnings ()
+requests.packages.urllib3.disable_warnings()
+
+today = datetime.datetime.now().strftime('%Y-%m-%d')
+tomorrow = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
 wsgsig=['dd03-vx9tq2onDp0IZqcYVoABxTjsa%2BXNwlstUQ6fOSmVa%2BX%2BZhfRmNkDw6zkAz0%2BZA8rsJ2%2BzMKjCoJLpecxVoEAOMK%2FBzf2SAJmXo6ax6Nre%2BnNYVNkX72aP6KjAJE',
         'dd03-67TGcdCHNXqCW0FVDMhX%2B%2F%2B650AFtbkyCIqj4r3350AEWfAm9TIW%2B9cKMnqEWXIwEPUQLAXc%2BWT0%2FiFqd1%2Fn%2Be36LslfUXIyD61n%2BAgNL096XnZxBMZUNl%2BN%2BXO',
@@ -48,19 +51,17 @@ class DIDIflj:
 
     def get_xpsid(self):
         try:
-            url = f'https://v.didi.cn/p/DpzAd35?appid=10000&lang=zh-CN&clientType=1&trip_cityid=21&datatype=101&imei=99d8f16bacaef4eef6c151bcdfa095f0&channel=102&appversion=6.2.4&trip_country=CN&TripCountry=CN&lng=113.812538&maptype=soso&os=iOS&utc_offset=480&access_key_id=1&deviceid=99d8f16bacaef4eef6c151bcdfa095f0&phone=UCvMSok42+5+tfafkxMn+A==&model=iPhone11&lat=23.016271&origin_id=1&client_type=1&terminal_id=1&sig=8503d986c0349e40ea10ff360f75d208c78c989a'
+            url = f'https://v.didi.cn/p/oAJM6mj'
             heards = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
             }
             response = requests.head (url=url, headers=heards, verify=False)  # 获取响应请求头
             res = response.headers['Location']  # 获取响应请求头
             r = re.compile (r'root_xpsid=(.*?)&channel_id')
-            xpsid = r.findall (res)
-            xpsid = xpsid[0]
+            xpsid = r.findall (res)[0].split("&")[0]
             return xpsid
         except Exception as e:
             print (e)
-            return json.loads(e)
 
     #查看福利金
     @staticmethod
@@ -68,67 +69,68 @@ class DIDIflj:
         try:
             wsgsig1 = wsgsig[random.randint (0, 25)]
             nowtime = int (round (time.time () * 1000))
-            info_url = f'https://rewards.xiaojukeji.com/loyalty_credit/bonus/getWelfareUsage4Wallet?wsgsig={wsgsig1}&token={token}&city_id=21'
+            info_url = f'https://rewards.xiaojukeji.com/loyalty_credit/bonus/getWelfareUsage4Wallet?wsgsig={wsgsig1}&token={token}&city_id=2'
             info_headers = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
                 "Referer": "https://page.udache.com/",
-                "origin": "https://page.udache.com",
-                "content-type": "application/json",
-                "host": "rewards.xiaojukeji.com",
+                "Origin": "https://page.udache.com",
+                "Host": "rewards.xiaojukeji.com",
             }
             response = requests.get (url=info_url, headers=info_headers, verify=False)
             result = response.json()
+            print("get_fulijin福利金")
             print(result)
             balance = result['data']['balance']
             res = f"现总共有{balance}福利金"
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     #执行积分签到
     @staticmethod
     def do_sign(token,xpsid):
         try:
             do_sign_url = f'https://ut.xiaojukeji.com/ut/welfare/api/action/dailySign'
-            data = '{'+ r'"xbiz":"","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"62wjxq8","xoid":"aA/iet7vTTmdKCRAgoHwyg","uid":"281474990465673","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r',","xpsid_from":"","xpsid_share":"","token":"' + f"{token}" + r'","lat":"23.016329481336804","lng":"113.81252766927084","platform":"na",'+ r'"env":"{\"cityId\":\"158\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"113.81252766927084\",\"latitude\":\"23.016329481336804\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"ddfp\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0\"}"}'
-            # print(data)
+            data = r'{"xbiz":"240000","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"oAJM6mj","xoid":"74786ba0-66a7-4067-a7ce-5ea7d5d6f8a8","uid":"283381191421562","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"22.547002766927083","lng":"114.04727430555556","platform":"na","env":"{\"cityId\":\"2\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"114.04727430555556\",\"latitude\":\"22.547002766927083\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"ddfp\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0\"}"}'
             do_sign_heards = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
                 "Referer": "https://page.udache.com/",
-                "origin": "https://page.udache.com",
-                "content-type": "application/x-www-form-urlencoded",
-                "host":"ut.xiaojukeji.com",
+                "Origin": "https://page.udache.com",
+                "Host": "ut.xiaojukeji.com",
+                "Content-Type": "application/json",
             }
             response = requests.post(url=do_sign_url,data=data,headers=do_sign_heards,verify=False)
             do_sign_ = response.json()
+            print("do_sign_签到")
             print(do_sign_)
             code = do_sign_['errno']   #本次签到获得的积分
             if code == 40009:
                 res = f"今日福利金已签到，无需重复签到"
             elif code == 0:
-                #prize_status = do_sign_['data']['prize_status']   #5天签到周期内签到第几天
                 subsidy_amount = do_sign_['data']['subsidy_state']['subsidy_amount']
                 res = f"今日签到成功，获得福利金{subsidy_amount}"
+            else:
+                res = do_sign_['errmsg']
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     #报名瓜分
     @staticmethod
-    def guafen(token,xpsid,activity_id_tomorrow,task_id_tomorrow,count):
+    def guafen(token,xpsid,activity_id_tomorrow,count):
         try:
             url = f'https://ut.xiaojukeji.com/ut/welfare/api/action/joinDivide'
-            data = r'{"xbiz":"","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"DpQ3dga","xoid":"9c52fa1a-ec11-46f9-9682-5d90694dd281","uid":"281474990465673","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}'+ '"'+ r',"lat":"23.016388346354166","lng":"113.81221218532986","platform":"na","env":"{\"cityId\":\"21\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"113.81221218532986\",\"latitude\":\"23.016388346354166\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"ddfp\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 BottomBar/on OffMode/0\"}","activity_id":' + f"{activity_id_tomorrow}" + r',"count":' + f"{count}" + r',"type":"ut_bonus"}'
+            data = r'{"xbiz":"240000","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"oAJM6mj","xoid":"74786ba0-66a7-4067-a7ce-5ea7d5d6f8a8","uid":"283381191421562","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"22.547002766927083","lng":"114.04727430555556","platform":"na","env":"{\"cityId\":\"2\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"114.04727430555556\",\"latitude\":\"22.547002766927083\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"ddfp\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0\"}","activity_id":' + f"{activity_id_tomorrow}" + r',"count":' + f"{count}" + r',"type":"ut_bonus"}'
             headers = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
                 "Referer": "https://page.udache.com/",
-                "origin": "https://page.udache.com",
-                "host":"ut.xiaojukeji.com",
+                "Origin": "https://page.udache.com",
+                "Host": "ut.xiaojukeji.com",
+                "Content-Type": "application/json",
             }
             response = requests.post(url=url,data=data,headers=headers,verify=False)
             result = response.json()
+            print("guafen报名瓜分")
             print(result)
             errmsg = result['errmsg']
             if errmsg == 'success':
@@ -140,22 +142,23 @@ class DIDIflj:
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     #签到瓜分
     @staticmethod
     def guafen_Sign(token,xpsid,activity_id_today,task_id_today):
         try:
             url = f'https://ut.xiaojukeji.com/ut/welfare/api/action/divideReward'
-            data = r'{"xbiz":"","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"DpQ3dga","xoid":"3b5d5c47-2c82-4914-b633-227dfc0c687a","uid":"281474990465673","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"23.016388346354166","lng":"113.81221218532986","platform":"na","env":"{\"cityId\":\"21\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"113.81221218532986\",\"latitude\":\"23.016388346354166\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"ddfp\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 BottomBar/on OffMode/0\"}","activity_id":' + f"{activity_id_today}" + r',"task_id":' + f"{task_id_today}" + r'}'
+            data = r'{"xbiz":"240000","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"oAJM6mj","xoid":"74786ba0-66a7-4067-a7ce-5ea7d5d6f8a8","uid":"283381191421562","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"22.547002766927083","lng":"114.04727430555556","platform":"na","env":"{\"cityId\":\"2\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"114.04727430555556\",\"latitude\":\"22.547002766927083\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"ddfp\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0\"}","activity_id":' + f"{activity_id_today}" + r',"task_id":' + f"{task_id_today}" + r'}'
             headers = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
                 "Referer": "https://page.udache.com/",
-                "origin": "https://page.udache.com",
-                "host":"ut.xiaojukeji.com",
+                "Origin": "https://page.udache.com",
+                "Host": "ut.xiaojukeji.com",
+                "Content-Type": "application/json",
             }
             response = requests.post(url=url,data=data,headers=headers,verify=False)
             result = response.json()
+            print("guafen_Sign签到瓜分")
             print(result)
             errmsg = result['errmsg']
             if errmsg == 'success':
@@ -167,18 +170,19 @@ class DIDIflj:
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     #获取瓜分活动ID
+    @staticmethod
     def guafen_id(token,xpsid):
         try:
             url = f'https://ut.xiaojukeji.com/ut/welfare/api/home/init/v2'
-            data = r'{"xbiz":"","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"DpQ3dga","xoid":"3b5d5c47-2c82-4914-b633-227dfc0c687a","uid":"281474990465673","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"23.016388346354166","lng":"113.81221218532986","platform":"na","env":"{\"cityId\":\"21\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"113.81221218532986\",\"latitude\":\"23.016388346354166\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"ddfp\":\"99d8f16bacaef4eef6c151bcdfa095f0\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 BottomBar/on OffMode/0\"}","resparams":"{\"resource_name\":\"ut_welfare_center_play_background,pas_ut_welfare_center_normal,pas_ut_welfare_center_abnormal,pas_ut_welfare_center_more\",\"height\":712,\"width\":534,\"city_id\":0,\"lat\":0,\"lng\":0,\"app_key\":\"server\",\"lang\":\"zh-CN\",\"token\":\"' + f'{token}' + r'\"}","assist_check":true,"os":"ios"}'
+            data = r'{"xbiz":"240000","prod_key":"welfare-center","xpsid":"' + f"{xpsid}" + r'","dchn":"oAJM6mj","xoid":"74786ba0-66a7-4067-a7ce-5ea7d5d6f8a8","uid":"283381191421562","xenv":"passenger","xspm_from":"","xpsid_root":"' + f"{xpsid}" + r'","xpsid_from":"","xpsid_share":"","token":"' + f'{token}' + r'","lat":"22.547002766927083","lng":"114.04727430555556","platform":"na","env":"{\"cityId\":\"2\",\"token\":\"' + f'{token}' + r'\",\"longitude\":\"114.04727430555556\",\"latitude\":\"22.547002766927083\",\"appid\":\"30004\",\"fromChannel\":\"1\",\"deviceId\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"ddfp\":\"eb86143f9b73dd5478f66115a1fe74ba\",\"appVersion\":\"6.2.4\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0\"}","resparams":"{\"resource_name\":\"didipas_welfare_center_bottom\",\"city_id\":\"2\",\"lat\":\"22.547002766927083\",\"lng\":\"114.04727430555556\",\"lang\":\"zh-CN\",\"token\":\"' + f'{token}' + r'\",\"platform_type\":1,\"channel_id\":\"\"}","assist_check":true,"os":"ios"}'
             headers = {
-                "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
+                "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
                 "Referer": "https://page.udache.com/",
-                "origin": "https://page.udache.com",
-                "host":"ut.xiaojukeji.com",
+                "Origin": "https://page.udache.com",
+                "Host": "ut.xiaojukeji.com",
+                "Content-Type": "application/json",
             }
             response = requests.post(url=url,data=data,headers=headers,verify=False)
             result = response.json()
@@ -192,7 +196,6 @@ class DIDIflj:
             return activity_id_today,task_id_today,activity_id_tomorrow,task_id_tomorrow,count
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     def main(self):
         msg_all = ""
@@ -207,17 +210,17 @@ class DIDIflj:
                 + "\n"
                 + self.guafen_Sign (token=token,xpsid=xpsid, activity_id_today=activity_id_today, task_id_today=task_id_today)
                 + "\n"
-                + self.guafen (token=token,xpsid=xpsid, activity_id_tomorrow=activity_id_tomorrow,task_id_tomorrow,count=task_id_tomorrow,count)
+                + self.guafen (token=token,xpsid=xpsid, activity_id_tomorrow=activity_id_tomorrow, count=count)
                 + "\n"
                 + self.get_fulijin(token=token,wsgsig=wsgsig)
                 + "\n------ 滴滴福利金结束------"
             )
             i += 1
-            msg_all += msg + "\n\n"     
+            msg_all += msg + "\n\n"
         return msg_all
 
 if __name__ == "__main__":
     data = get_data()
-    _check_items = data.get("DIDI", [])
+    _check_items = data.get("DIDI2", [])
     res = DIDIflj(check_items=_check_items).main()
     send("滴滴福利金", res)        

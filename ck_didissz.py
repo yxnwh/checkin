@@ -101,6 +101,7 @@ class DIDIssz:
             }
             response = requests.post(url=do_sign_url,data=data,headers=do_sign_heards,verify=False)
             do_sign_ = response.json()
+            print("do_sign_#积分签到")
             print(do_sign_)
             code = do_sign_['errno']   #本次签到获得的积分
             if code == 200100:
@@ -110,6 +111,8 @@ class DIDIssz:
                 content = do_sign_['data']['content']
                 content = content[6:]
                 res = f"今日签到成功，获得{content}"
+            else:
+                res = code
             return res
         except Exception as e:
             print(e)

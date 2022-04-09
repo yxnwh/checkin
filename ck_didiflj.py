@@ -221,6 +221,6 @@ class DIDIflj:
 
 if __name__ == "__main__":
     data = get_data()
-    _check_items = data.get("DIDI2", [])
+    _check_items = data.get("DIDI", [])
     res = DIDIflj(check_items=_check_items).main()
     send("滴滴福利金", res)        

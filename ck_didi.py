@@ -33,12 +33,10 @@ class DIDI:
             res = response.headers['Location']  # 获取响应请求头
             # print(res)
             r = re.compile (r'root_xpsid=(.*?)&channel_id')
-            xpsid = r.findall (res)
-            xpsid = xpsid[0]
+            xpsid = r.findall (res)[0].split("&")[0]
             return xpsid
         except Exception as e:
             print (e)
-            return json.loads(e)
     
     #获取v.didi.cn的url
     @staticmethod
@@ -57,7 +55,6 @@ class DIDI:
                 link = bottom_items[i]['link']
                 v_url = link[18:]
         return v_url
-        # print(json.dumps(result,sort_keys=True,indent=4,ensure_ascii=False))         #格式化后的json
     
     #获取s.didi.cn的url
     def get_s_url(self):
@@ -131,7 +128,7 @@ class DIDI:
             return numb,id,day
         except Exception as e:
             print (e)
-            return json.loads(e)
+
     
     #获取个人信息
     @staticmethod
@@ -144,9 +141,11 @@ class DIDI:
                 "Referer": "https://dpubstatic.udache.com/",
                 "Host": "gsh5act.xiaojukeji.com",
                 "Origin": "https://dpubstatic.udache.com",
+                "Content-Type": "application/json",
             }
             response = requests.post (url=do_sign_url, headers=do_sign_heards, data=data, verify=False)
             do_sign_ = response.json ()
+            print ("do_sign_#获取个人信息")
             print (do_sign_)
             code = do_sign_['errmsg']
             if "已结束" in code:
@@ -155,10 +154,12 @@ class DIDI:
                 res = f"今日已签到，跳过签到环节"
             elif code == '':
                 res = f"今日签到成功"
+            else:
+                res = code
             return res
         except Exception as e:
             print (e)
-            return json.loads(e)
+
     
     #获取积分
     @staticmethod
@@ -172,10 +173,12 @@ class DIDI:
                     "Referer": "https://dpubstatic.udache.com",
                     "Host": "gsh5act.xiaojukeji.com",
                     "Origin": "https://dpubstatic.udache.com",
+                    "Content-Type": "application/json",
                 }
                 data = '{'+ f'"user_token":"{token}","signin_day":{day},"lottery_id":"{id}"' +'}'
                 response = requests.post(url=info_url, headers=info_headers, verify=False,data=data)
                 list = response.json()
+                print ("reward#获取积分")
                 print(list)
                 flag = list['errmsg']
                 if "签到当天奖励" in flag:
@@ -193,7 +196,7 @@ class DIDI:
                 return res
         except Exception as e:
             print (e)
-            return json.loads(e)
+
    
     #获取抽奖lid
     def get_lid(self):
@@ -208,12 +211,13 @@ class DIDI:
             }
             response = requests.get(url=info_url, headers=info_headers, verify=False)
             result = response.json()
+            print ("get_lid#获取抽奖lid")
             print(result)
             activity_id = result['activity_id']
             return activity_id
         except Exception as e:
             print (e)
-            return json.loads(e)
+
     
     #抽奖活动
     @staticmethod
@@ -230,6 +234,7 @@ class DIDI:
                 }
                 response = requests.get(url=do_Lottery_url, headers=do_Lottery_headers, verify=False)
                 result = response.json()
+                print ("do_Lottery#抽奖活动")
                 print(result)
                 code = result['code']
                 if code == 20003:
@@ -250,7 +255,7 @@ class DIDI:
                 return res
         except Exception as e:
             print (e)
-            return json.loads(e)
+
     
     def main(self):
         msg_all = ""

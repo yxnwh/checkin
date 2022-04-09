@@ -2,7 +2,7 @@
 # @url: https://raw.githubusercontent.com/yxnwh/kevinxf/main/xF_DiDi_FLJ_Sign.py
 # @author: zyf1118
 """
-cron: 22 7,13 * * *
+cron: 22 10,15 * * *
 new Env('滴滴福利金签到');
 """
 import requests
@@ -166,7 +166,7 @@ class DIDIflj:
             elif "活动已经被领取" in errmsg:
                 res = f"已参加打卡瓜分活动，请明天记得签到瓜分"
             else:
-                res = f"打卡瓜分福利金活动未开启"
+                res = errmsg
             return res
         except Exception as e:
             print(e)

@@ -48,19 +48,17 @@ class DIDIssz:
 
     def get_xpsid(self):
         try:
-            url = f'https://v.didi.cn/p/DpzAd35?appid=10000&lang=zh-CN&clientType=1&trip_cityid=21&datatype=101&imei=99d8f16bacaef4eef6c151bcdfa095f0&channel=102&appversion=6.2.4&trip_country=CN&TripCountry=CN&lng=113.812538&maptype=soso&os=iOS&utc_offset=480&access_key_id=1&deviceid=99d8f16bacaef4eef6c151bcdfa095f0&phone=UCvMSok42+5+tfafkxMn+A==&model=iPhone11&lat=23.016271&origin_id=1&client_type=1&terminal_id=1&sig=8503d986c0349e40ea10ff360f75d208c78c989a'
+            url = f'https://v.didi.cn/p/7mPlO68'
             heards = {
                 "user-agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",
             }
             response = requests.head (url=url, headers=heards, verify=False)  # 获取响应请求头
             res = response.headers['Location']  # 获取响应请求头
             r = re.compile (r'root_xpsid=(.*?)&channel_id')
-            xpsid = r.findall (res)
-            xpsid = xpsid[0]
+            xpsid = r.findall (res)[0].split("&")[0]
             return xpsid
         except Exception as e:
             print (e)
-            return json.loads(e)
 
     #查看福利金
     @staticmethod
@@ -84,7 +82,6 @@ class DIDIssz:
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
     
     #执行积分签到
     @staticmethod
@@ -116,8 +113,7 @@ class DIDIssz:
             return res
         except Exception as e:
             print(e)
-            return json.loads(e)
-    
+
     def main(self):
         msg_all = ""
         i = 1

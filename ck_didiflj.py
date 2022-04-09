@@ -68,7 +68,6 @@ class DIDIflj:
     def get_fulijin(token,wsgsig):
         try:
             wsgsig1 = wsgsig[random.randint (0, 25)]
-            nowtime = int (round (time.time () * 1000))
             info_url = f'https://rewards.xiaojukeji.com/loyalty_credit/bonus/getWelfareUsage4Wallet?wsgsig={wsgsig1}&token={token}&city_id=2'
             info_headers = {
                 "User-Agent": f"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.2.4 FusionKit/1.2.20 OffMode/0",

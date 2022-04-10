@@ -58,8 +58,6 @@ class DIDIYC:
         r = re.compile (r'root_xpsid=(.*?)&channel_id')
         xpsid = r.findall (res)[0].split("&")[0]
         return xpsid,imei
-    except Exception as e:
-        print (e)
 
     #获取dchn
     def get_dchn(self):

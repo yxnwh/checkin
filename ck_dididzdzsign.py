@@ -95,7 +95,7 @@ class DIDIdzdz_sign:
             xpsid = self.get_xpsid(xpsid=xpsid)
             msg = (
                 f"账号 {i}\n------ 滴滴多走多赚-签到开始------\n"
-                + self.sign(token=token,xpsid_root=xpsid_root,wsgsig=wsgsig)
+                + self.sign(token=token,xpsid=xpsid,wsgsig=wsgsig)
                 + "\n------ 滴滴多走多赚-签到结束------"
             )
             i += 1

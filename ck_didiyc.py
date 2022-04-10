@@ -170,7 +170,7 @@ class DIDIYC:
             id = self.get_id(token=token, xpsid=xpsid, imei=imei, wsgsig=wsgsig)
             reward_msg = self.reward(token=token, xpsid=xpsid, imei=imei, id=id, wsgsig=wsgsig)
             time.sleep (2)
-            id = self.get_id(token=token, xpsid=xpsid, imei=imei)
+            id = self.get_id(token=token, xpsid=xpsid, imei=imei, wsgsig=wsgsig)
             sign_msg = self.sign(token=token, xpsid=xpsid, imei=imei, id=id, wsgsig=wsgsig)
             msg = (
                 f"账号 {i}\n------ 滴滴有车领取奖励结果 ------\n"

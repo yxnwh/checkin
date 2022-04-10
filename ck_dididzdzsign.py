@@ -81,11 +81,11 @@ class DIDIdzdzsign:
             print (result)
             message_text = result['data']['message_text']
             if "今日已领取" in message_text:
-                res = "今日已签到，跳过执行签到环节"
+                res = f"今日已签到，跳过执行签到环节"
             else:
                 amount = result['data']['amount']
                 sign_day = result['data']['sign_day']
-                res = "今日已完成签到，获取{amount}豆，已连续签到{sign_day}天"
+                res = f"今日已完成签到，获取{amount}豆，已连续签到{sign_day}天"
             return res
         except Exception as e:
             print (e)

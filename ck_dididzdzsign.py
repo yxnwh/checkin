@@ -42,6 +42,9 @@ wsgsig=['dd03-vx9tq2onDp0IZqcYVoABxTjsa%2BXNwlstUQ6fOSmVa%2BX%2BZhfRmNkDw6zkAz0%
         ]
 
 class DIDIdzdzsign:
+    def __init__(self, check_items):
+        self.check_items = check_items
+ 
     #获取xpsid
     def get_xpsid(self):
         try:

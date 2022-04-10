@@ -56,8 +56,8 @@ class DIDIYC:
         response = requests.head(url=url, headers=heards, verify=False)    #获取响应请求头
         result = response.headers['Location']                                  #获取响应请求头
         r = re.compile (r'root_xpsid=(.*?)&channel_id')
-        #xpsid = r.findall (res)[0].split("&")[0]
-        xpsid = r.findall (res)[0]
+        #xpsid = r.findall (result)[0].split("&")[0]
+        xpsid = r.findall (result)[0]
         return xpsid,imei
 
     #获取dchn

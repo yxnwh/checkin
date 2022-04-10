@@ -41,7 +41,7 @@ wsgsig=['dd03-vx9tq2onDp0IZqcYVoABxTjsa%2BXNwlstUQ6fOSmVa%2BX%2BZhfRmNkDw6zkAz0%
         'dd03-RnANOxOD1Z3H9sJdnUHQlIrfJ2u%2Ben09kqMvqH%2FaJ2uN9jj1WEUokZZA4P3N9CubiAIsnPrD4OgMGgmNmd5plZPCN2NIF0zGlUBwqLxCNPNHaitCnE6xlZqa2ZA'
         ]
 
-class DIDIdzdz-sign:
+class DIDIdzdz_sign:
     #获取xpsid
     def get_xpsid(self):
         try:
@@ -105,5 +105,5 @@ class DIDIdzdz-sign:
 if __name__ == "__main__":
     data = get_data()
     _check_items = data.get("DIDI", [])
-    res = DIDIdzdz-sign(check_items=_check_items).main()
+    res = DIDIdzdz_sign(check_items=_check_items).main()
     send("滴滴多走多赚-签到", res)      

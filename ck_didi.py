@@ -225,6 +225,7 @@ class DIDI:
     def do_Lottery(token,lottery_lid):
         try:
             flag = 6
+            res = ""
             while True:
                 do_Lottery_url = f'https://bosp-api.xiaojukeji.com/bosp-api/lottery/draw?lid={lottery_lid}&token={token}'
                 do_Lottery_headers = {
@@ -238,21 +239,25 @@ class DIDI:
                 print ("do_Lottery#抽奖活动\n"+f'{result}')
                 code = result['code']
                 if code == 20003:
-                    res = f"抽奖次数已达上限，跳出抽奖环节"
+                    res += f"抽奖次数已达上限，跳出抽奖环节"
+                    break
                 elif code == 20017:
-                    res = f"抽奖操作过频，稍后再试"
+                    res += f"抽奖操作过频，稍后再试"
+                    break
                 elif code == 20008:
-                    res = f"抽奖lid过期，请重新抓包更新"
+                    res += f"抽奖lid过期，请重新抓包更新"
+                    break
                 elif code == 20010:
-                    res = f"积分不足9分，跳出抽奖环节"
+                    res += f"积分不足9分，跳出抽奖环节"
+                    break
                 else:
                     draw_times = result['data']['userinfo']['draw_times']
                     flag = 6 - int(draw_times)
                     name = result['data']['prize']['name']
                     current_point = result['data']['userinfo']['current_point']
-                    res = f"第{flag}次抽奖获得{name},现账号共有{current_point}积分"
+                    res += f"第{flag}次抽奖获得{name},现账号共有{current_point}积分"
                     time.sleep(5)
-                return res
+            return res
         except Exception as e:
             print (e)
 

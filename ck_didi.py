@@ -168,7 +168,7 @@ class DIDI:
                 else:
                     reward = list['lottery']['prize']['name']
                     total_reward = list['lottery']['userinfo']['current_point']  #总积分
-                print(res)
+                    res = f"本次签到获取{reward},账号共有{total_reward}积分"
                 return res
         except Exception as e:
             print (e)
@@ -255,7 +255,7 @@ class DIDI:
                     flag = 6 - int(draw_times)
                     name = result['data']['prize']['name']
                     current_point = result['data']['userinfo']['current_point']
-                    res += f"第{flag}次抽奖获得{name},现账号共有{current_point}积分"
+                    res += f"第{flag}次抽奖获得{name},现账号共有{current_point}积分\n"
                     time.sleep(5)
             return res
         except Exception as e:

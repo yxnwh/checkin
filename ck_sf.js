@@ -99,9 +99,11 @@ function normsign() {
       }).then(function(response) {
         return response.json()
       }).then(function(body) {
+        console.log("普通签到的body"+ '\n');
+        console.log(body);
         if (body.success) {
             if (body.obj.hasFinishSign == 0) {
-              info += `首次签到成功\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].commodityName}\n连续签到 ${body.obj.countDay} 天\n`;
+              info += `---首次签到成功---\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].commodityName}\n连续签到 ${body.obj.countDay} 天\n`;
             } else {
               info += `今日已签到过啦~\n`;
             }
@@ -135,7 +137,7 @@ function surpsign() {
             list = body.obj.giftList;
             for (i in list) {
                 prize = list[i].giftName;
-                info += `超值福利签到成功\n获得 ${prize} 奖励\n`;
+                info += `---超值福利签到成功---\n获得 ${prize} 奖励\n`;
             }
         } else {
             info += "超值签到返回错误，请重新调试\n";
@@ -213,6 +215,8 @@ function do_lottery() {
       }).then(function(response) {
         return response.json()
       }).then(function(body) {
+        console.log("抽奖任务的body"+ '\n');
+        console.log(body);
         if (body.success) {
              info += `执行抽奖任务，获得 ${body.obj.giftName} 奖励\n`;
         }

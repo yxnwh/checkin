@@ -100,7 +100,7 @@ function normsign() {
         return response.json()
       }).then(function(body) {
         console.log("普通签到的body"+ '\n');
-        console.log(body);
+        console.log(body.obj.integralTaskSignPackageVOList);
         if (body.success) {
             if (body.obj.hasFinishSign == 0) {
               info += `---首次签到成功---\n今日获得 ${body.obj.integralTaskSignPackageVOList[0].commodityName}\n连续签到 ${body.obj.countDay} 天\n`;
@@ -218,7 +218,7 @@ function do_lottery() {
         console.log("抽奖任务的body"+ '\n');
         console.log(body);
         if (body.success) {
-             info += `执行抽奖任务，获得 ${body.obj.giftName} 奖励\n`;
+             info += `执行抽奖任务，获得 ${body.obj[0].giftName} 奖励\n`;
         }
       }).catch(function(e) {
           const error = `执行抽奖任务返回错误，请检查⚠️\n`;

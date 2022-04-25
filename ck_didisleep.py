@@ -97,7 +97,7 @@ class DIDIsleep:
                     res = "当前在睡醒状态,无法领取健康豆"
                 else:
                     bonus_amount = result['data']['bonus_amount']
-                    res = "已执行睡醒命令,获取{bonus_amount}健康豆"
+                    res = f"已执行睡醒命令,获取{bonus_amount}健康豆"
             else:
                 res = errmsg
             return res

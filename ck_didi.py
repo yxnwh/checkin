@@ -173,7 +173,7 @@ class DIDI:
         except Exception as e:
             print (e)
 
-   '''
+'''
     @staticmethod
     def get_s(xpsid):
         try:
@@ -281,10 +281,10 @@ class DIDI:
                 + self.do_sign(token=token,day=day,numb=numb)
                 + "\n"
                 + self.reward(token=token,day=day,numb=numb,id=id)
-                '''
+'''
                 + "\n"
                 + self.do_Lottery (token=token,lottery_lid=lottery_lid)
-                '''
+'''
                 + "\n------ 滴滴签到结束------"
             )
             i += 1

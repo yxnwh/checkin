@@ -173,6 +173,40 @@ class DIDI:
         except Exception as e:
             print (e)
 
+    def main(self):
+        msg_all = ""
+        i = 1
+        for check_item in self.check_items:
+            token = check_item.get("token")
+            xpsid = self.get_xpsid()
+            s_url = self.get_s_url()
+            url_id = self.get_url (s_url=s_url)
+            numb,id,day = self.get_id(url_id=url_id)
+#            sid = self.get_s(xpsid=xpsid)
+#            print (f'获取到的s字段值为:{sid}')
+#            hashids = Hashids(salt='o2fXhV')
+#            hashid = hashids.decode(sid)[0]
+#            lottery_lid = self.get_lid(hashid=hashid, sid=sid)
+#            print (f'获取到的lottery_lid值为:{lottery_lid}')
+            msg = (
+                f"账号 {i}\n------ 滴滴签到开始------\n"
+                + self.do_sign(token=token,day=day,numb=numb)
+                + "\n"
+                + self.reward(token=token,day=day,numb=numb,id=id)
+#                + "\n"
+#                + self.do_Lottery (token=token,lottery_lid=lottery_lid)
+                + "\n------ 滴滴签到结束------"
+            )
+            i += 1
+            msg_all += msg + "\n\n"
+        return msg_all            
+
+if __name__ == "__main__":
+    data = get_data()
+    _check_items = data.get("DIDI", [])
+    res = DIDI(check_items=_check_items).main()
+    send("滴滴签到", res)
+
 '''
     @staticmethod
     def get_s(xpsid):
@@ -261,36 +295,3 @@ class DIDI:
         except Exception as e:
             print (e)
 '''
-    def main(self):
-        msg_all = ""
-        i = 1
-        for check_item in self.check_items:
-            token = check_item.get("token")
-            xpsid = self.get_xpsid()
-            s_url = self.get_s_url()
-            url_id = self.get_url (s_url=s_url)
-            numb,id,day = self.get_id(url_id=url_id)
-            sid = self.get_s(xpsid=xpsid)
-            print (f'获取到的s字段值为:{sid}')
-            hashids = Hashids(salt='o2fXhV')
-            hashid = hashids.decode(sid)[0]
-            lottery_lid = self.get_lid(hashid=hashid, sid=sid)
-            print (f'获取到的lottery_lid值为:{lottery_lid}')
-            msg = (
-                f"账号 {i}\n------ 滴滴签到开始------\n"
-                + self.do_sign(token=token,day=day,numb=numb)
-                + "\n"
-                + self.reward(token=token,day=day,numb=numb,id=id)
-#                + "\n"
-#                + self.do_Lottery (token=token,lottery_lid=lottery_lid)
-                + "\n------ 滴滴签到结束------"
-            )
-            i += 1
-            msg_all += msg + "\n\n"
-        return msg_all            
-
-if __name__ == "__main__":
-    data = get_data()
-    _check_items = data.get("DIDI", [])
-    res = DIDI(check_items=_check_items).main()
-    send("滴滴签到", res)

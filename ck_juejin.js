@@ -15,7 +15,7 @@ var info = '';
 const headers = {
   'content-type': 'application/json; charset=utf-8',
   'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
-  referer: 'https://juejin.cn/'
+  'referer': 'https://juejin.cn/'
 };
 const random = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -26,9 +26,9 @@ async function juejin() {
     for (i in AsVow) {
       cookie = AsVow[i].cookie;
       if (cookie) {
-        info += `\n=== 正对在 第${i}个 账号签到===\n`;
+        info += `\n=== 正对在 第${i+1}个 账号签到===\n`;
         await get_point().then (function(data){yesterday_score = data});
-        info += `昨日矿石数：${yesterday_score}\n`;
+        info += `昨日矿石数：${yesterday_score.data}\n`;
         await sign_in_status().then (function(data){res = data});
         if (res.err_no == 0) {
             if (res.data) {
@@ -41,7 +41,7 @@ async function juejin() {
         }
         await draw_status().then (function(data){res = data});
         if (res.err_no == 0) {
-            if (res..data.free_count === 0) {
+            if (res.data.free_count === 0) {
                 info += `今日免费抽奖次数已用完！\n`;
             }else {
                  await draw();
@@ -50,12 +50,13 @@ async function juejin() {
             info += `查询免费抽奖接口异常！\n`;
         }
         await get_point().then (function(data){today_score = data});
-        info += `当前矿石数：${today_score}\n`;
-        await dip_lucky_users().then (function(data){index = data});;
-        await dip_lucky(index);
+        info += `当前矿石数：${today_score.data}\n`;
+        await dip_lucky_users().then (function(data){list = data});
+        index = random(list.data.lotteries.length - 1);
+        await dip_lucky(list,index);
         desp += info;
         info = '';
-      } 
+      }
     }
     info += desp;
     console.log(info);
@@ -104,6 +105,8 @@ function sign_in() {
       }).catch(function(e) {
           const error = '签到出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
+      }).finally(() => {
+          resolve()
       })
     });
 }
@@ -145,6 +148,8 @@ function draw() {
       }).catch(function(e) {
           const error = '签到出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
+      }).finally(() => {
+          resolve()
       })
     });
 }
@@ -160,8 +165,7 @@ function dip_lucky_users() {
       }).then(function(response) {
         return response.json()
       }).then(function(body) {
-        index = random(body.data.lotteries.length - 1);
-        resolve(index);
+        resolve(body);
       }).catch(function(e) {
           const error = '沾喜气获取用户列表出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
@@ -169,31 +173,30 @@ function dip_lucky_users() {
     });
 }
 
-function dip_lucky(t) {
+function dip_lucky(m,t) {
     url = 'https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky';
     headers['Cookie'] = cookie;
     return new Promise(resolve => {
       fetch(url, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify({ lottery_history_id: list.data.lotteries[t].history_id })
+        body: JSON.stringify({ lottery_history_id: m.data.lotteries[t].history_id })
       }).then(function(response) {
         return response.json()
       }).then(function(body) {
         if (body.err_no !== 0) {
             info += `可能是由于cookie导致的网络异常！\n`;
         }else { 
-            if (body.data.has_dip) {
-                info += `今日已经沾过喜气！喜气值：${body.data.total_value}\n`;
-            }
-            if (body.data.dip_action === 1) {
-                info += `沾喜气成功！喜气值：${body.data.total_value}`;
+            if (body.data.has_dip && body.data.dip_action === 1) {
+                info += `沾喜气成功！喜气值：${body.data.total_value}\n`;
             }
         }
         console.log(body);
       }).catch(function(e) {
           const error = '沾喜气出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
+      }).finally(() => {
+          resolve()
       })
     });
 }

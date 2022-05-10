@@ -142,7 +142,7 @@ function draw() {
         if (body.err_no !== 0) {
             info += `免费抽奖异常，接口调用异常！\n`;
         } else {
-            info += `获得奖励：${body.data.lottery_name}\n`;
+            info += `抽奖获得奖励：${body.data.lottery_name}\n`;
         }
         console.log(body);
       }).catch(function(e) {

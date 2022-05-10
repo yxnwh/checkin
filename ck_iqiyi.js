@@ -176,7 +176,7 @@ function Checkin() {
                 CheckinMsg = `爱奇艺app签到: ${e.message||e}\n`;
             }
             info += CheckinMsg
-            console.log(`爱奇艺-${CheckinMsg} ${Details}\n`);
+            console.log(`${CheckinMsg} ${Details}\n`);
             resolve()
         })
     })
@@ -229,7 +229,7 @@ function WebCheckin() {
                 WebCheckinMsg = `爱奇艺网页签到: ${e.message || e}\n`;
             }
             info += WebCheckinMsg
-            console.log(`爱奇艺-${WebCheckinMsg} ${Details}\n`);
+            console.log(`${WebCheckinMsg} ${Details}\n`);
             resolve()
         })
     })
@@ -258,7 +258,7 @@ function Lottery(s) {
             } catch (e) {
                 LotteryMsg = `爱奇艺app抽奖: ${e.message || e}\n`;
             }
-            console.log(`爱奇艺-${LotteryMsg} (${s+1}) ${Details}\n`)
+            console.log(`${LotteryMsg} (${s+1}) ${Details}\n`)
             info += LotteryMsg;
             if (!$nobyda.last) {
                 resolve(1)
@@ -351,7 +351,7 @@ function getTaskRewards(task) {
                 RewardsMsg = `奖励: ${e.message||e}\n`;
             }
             info += RewardsMsg
-            console.log(`爱奇艺-${RewardsMsg} ${Details}\n`)
+            console.log(`${RewardsMsg} ${Details}\n`)
             resolve()
         })
     })

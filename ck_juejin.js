@@ -123,14 +123,14 @@ function draw_status() {
       }).then(function(body) {
         resolve(body);
       }).catch(function(e) {
-          const error = '获取签到状态出现错误，请检查⚠️\n';
+          const error = '获取抽奖状态出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
       })
     });
 }
 
 function draw() {
-    url = 'https://api.juejin.cn/growth_api/v1/lottery_config/get';
+    url = 'https://api.juejin.cn/growth_api/v1/lottery/draw';
     headers['Cookie'] = cookie;
     return new Promise(resolve => {
       fetch(url, {
@@ -146,7 +146,7 @@ function draw() {
         }
         console.log(body);
       }).catch(function(e) {
-          const error = '签到出现错误，请检查⚠️\n';
+          const error = '抽奖出现错误，请检查⚠️\n';
           console.log(error + '\n' + e);
       }).finally(() => {
           resolve()

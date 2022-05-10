@@ -37,6 +37,7 @@ async function iqiyi() {
            P00003 = cookie.match(/P00003=(.*?);/)[1];
         }
         if (P00001 !== "" && P00003 !== "" && dfp !== "") {
+          await login();
           await Checkin();
           await WebCheckin();
           for (let i = 0; i < 3; i++){
@@ -47,7 +48,6 @@ async function iqiyi() {
                   break
               }
           }
-          await login();
           const tasks = await getTaskList();
           for (let i = 0; i < tasks.length; i++){
               if (![1, 4].includes(tasks[i].status)) { //0：待领取 1：已完成 2：未开始 4：进行中

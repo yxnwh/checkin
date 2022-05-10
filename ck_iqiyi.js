@@ -37,7 +37,6 @@ async function iqiyi() {
            P00003 = cookie.match(/P00003=(.*?);/)[1];
         }
         if (P00001 !== "" && P00003 !== "" && dfp !== "") {
-          await login();
           await Checkin();
           await WebCheckin();
           for (let i = 0; i < 3; i++){
@@ -57,6 +56,7 @@ async function iqiyi() {
                   await getTaskRewards(tasks[i]);
               }
           }
+          await login();
           await $nobyda.time();
           desp += info;
           info = '';
@@ -165,15 +165,15 @@ function Checkin() {
                             }
                           }
                         var continued = obj.data.data.signDays;
-                        CheckinMsg = `应用签到: ${rewards.join(", ")}${rewards.length<3?`, 累计签到${continued}天`:``} 🎉\n`;
+                        CheckinMsg = `爱奇艺app签到: ${rewards.join(", ")}${rewards.length<3?`, 累计签到${continued}天`:``} 🎉\n`;
                     } else {
-                        CheckinMsg = `应用签到: ${obj.data.msg} ⚠️\n`;
+                        CheckinMsg = `爱奇艺app签到: ${obj.data.msg} ⚠️\n`;
                     }
                 } else {
-                    CheckinMsg = `应用签到: Cookie无效 ⚠️\n`;
+                    CheckinMsg = `爱奇艺app签到: Cookie无效 ⚠️\n`;
                 }
             } catch (e) {
-                CheckinMsg = `应用签到: ${e.message||e}\n`;
+                CheckinMsg = `爱奇艺app签到: ${e.message||e}\n`;
             }
             info += CheckinMsg
             console.log(`爱奇艺-${CheckinMsg} ${Details}\n`);
@@ -218,15 +218,15 @@ function WebCheckin() {
                     if (obj.data[0].code === "A0000") {
                         var quantity = obj.data[0].score;
                         var continued = obj.data[0].continuousValue;
-                        WebCheckinMsg = `网页签到: 积分+${quantity}, 累计签到${continued}天 🎉\n`
+                        WebCheckinMsg = `爱奇艺网页签到: 积分+${quantity}, 累计签到${continued}天 🎉\n`
                     } else {
-                        WebCheckinMsg = `网页签到: ${obj.data[0].message} ⚠️\n`
+                        WebCheckinMsg = `爱奇艺网页签到: ${obj.data[0].message} ⚠️\n`
                     }
                 } else {
-                    WebCheckinMsg = `网页签到: ${obj.message||'未知错误'} ⚠️\n`
+                    WebCheckinMsg = `爱奇艺网页签到: ${obj.message||'未知错误'} ⚠️\n`
                 }
             } catch (e) {
-                WebCheckinMsg = `网页签到: ${e.message || e}\n`;
+                WebCheckinMsg = `爱奇艺网页签到: ${e.message || e}\n`;
             }
             info += WebCheckinMsg
             console.log(`爱奇艺-${WebCheckinMsg} ${Details}\n`);
@@ -248,15 +248,15 @@ function Lottery(s) {
                 const obj = JSON.parse(data);
                 $nobyda.last = !!data.match(/(机会|已经)用完/)
                 if (obj.awardName && obj.code === 0) {
-                    LotteryMsg = `应用抽奖: ${!$nobyda.last ? `${obj.awardName.replace(/《.+》/, "未中奖")} 🎉` : `您的抽奖次数已经用完 ⚠️`}\n`
+                    LotteryMsg = `爱奇艺app抽奖: ${!$nobyda.last ? `${obj.awardName.replace(/《.+》/, "未中奖")} 🎉` : `您的抽奖次数已经用完 ⚠️`}\n`
                 } else if (data.match(/\"errorReason\"/)) {
                     const msg = data.match(/msg=.+?\)/) ? data.match(/msg=(.+?)\)/)[1].replace(/用户(未登录|不存在)/, "Cookie无效") : ""
-                    LotteryMsg = `应用抽奖: ${msg || `未知错误`} ⚠️\n`
+                    LotteryMsg = `爱奇艺app抽奖: ${msg || `未知错误`} ⚠️\n`
                 } else {
-                    LotteryMsg = `应用抽奖: ${data}\n`
+                    LotteryMsg = `爱奇艺app抽奖: ${data}\n`
                 }
             } catch (e) {
-                LotteryMsg = `应用抽奖: ${e.message || e}\n`;
+                LotteryMsg = `爱奇艺app抽奖: ${e.message || e}\n`;
             }
             console.log(`爱奇艺-${LotteryMsg} (${s+1}) ${Details}\n`)
             info += LotteryMsg;
@@ -343,12 +343,12 @@ function getTaskRewards(task) {
                 if (error) throw new Error(`接口请求出错 ‼️`);
                 const obj = JSON.parse(data)
                 if (obj.msg === "成功" && obj.code === "A00000" && obj.dataNew[0] !== undefined) {
-                    RewardsMsg = `任务奖励: ${task.name} => ${obj.dataNew[0].name + obj.dataNew[0].value} 🎉\n`
+                    RewardsMsg = `奖励: ${task.name}=>${obj.dataNew[0].name + obj.dataNew[0].value} 🎉\n`
                 } else {
-                    RewardsMsg = `任务奖励: ${task.name} => ${obj.msg!==`成功`&&obj.msg||`未完成`} ⚠️\n`
+                    RewardsMsg = `奖励: ${task.name}=>${obj.msg!==`成功`&&obj.msg||`未完成`} ⚠️\n`
                 }
             } catch (e) {
-                RewardsMsg = `任务奖励: ${e.message||e}\n`;
+                RewardsMsg = `奖励: ${e.message||e}\n`;
             }
             info += RewardsMsg
             console.log(`爱奇艺-${RewardsMsg} ${Details}\n`)

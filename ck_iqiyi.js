@@ -358,7 +358,6 @@ function getTaskRewards(task) {
 }
 
 function nobyda() {
-  const times = 0
   const start = Date.now()
   const node = (() => {
     const request = require('request');
@@ -398,7 +397,6 @@ function nobyda() {
     post,
     log,
     time,
-    times,
   }
 };
 

@@ -345,7 +345,7 @@ function getTaskRewards(task) {
                 if (obj.msg === "成功" && obj.code === "A00000" && obj.dataNew[0] !== undefined) {
                     RewardsMsg = `奖励: ${task.name}=>${obj.dataNew[0].name + obj.dataNew[0].value} 🎉\n`
                 } else {
-                    RewardsMsg = `奖励: ${task.name}=>${obj.msg!==`成功`&&obj.msg||`未完成`} ⚠️\n`
+                    RewardsMsg = `奖励: ${task.name}=>${obj.msg!==`成功`&&obj.msg||`失败`} ⚠️\n`
                 }
             } catch (e) {
                 RewardsMsg = `奖励: ${e.message||e}\n`;

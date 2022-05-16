@@ -19,7 +19,7 @@ async function nga() {
       token = AsVow[i].token;
       uid = AsVow[i].uid;
       if (token && uid) {
-        info += `==对${i+1} 账号签到==\n`;
+        info += `===对${i+1} 账号签到===\n`;
         let res1 = await ngaGet("check_in", "check_in")
         if (res1 && res1.data) {
             info += "签到：" + res1.data[0] + "\n";
@@ -32,19 +32,19 @@ async function nga() {
             await ngaGet("mission", "checkin_count_add", 11, "mid=131&get_success_repeat=1&no_compatible_fix=1")       
             await ngaGet("mission", "checkin_count_add", 11, "mid=30&get_success_repeat=1&no_compatible_fix=1")
             console.log("看视频免广告")
-            info += "===看视频免广告==="
+            info += "---看视频免广告---"
             await ngaGet("mission", "video_view_task_counter_add_v2_for_adfree_sp1")
             for (c of new Array(4)) await ngaGet("mission", "video_view_task_counter_add_v2_for_adfree")
             console.log("看视频得N币")
-            info += "===看视频得N币==="
+            info += "---看视频得N币---"
             for (c of new Array(5)) await ngaGet("mission", "video_view_task_counter_add_v2")
             //分享帖子
             console.log("分享帖子 5")
-            info += "===分享帖子 5==="
+            info += "---分享帖子 5---"
             tid = Math.ceil(Math.random() * 12346567) + 12345678
             for (c of new Array(5)) await ngaGet("data_query", "topic_share_log_v2", 12, "event=4&tid=" + tid)
             console.log("领取分享奖励 1N币")
-            info += "===领取分享奖励 1N币==="
+            info += "---领取分享奖励 1N币---"
             await ngaGet("mission", "check_mission", 11, "mid=149&get_success_repeat=1&no_compatible_fix=1")
             //查询
             let {
@@ -68,7 +68,6 @@ async function nga() {
 function ngaGet(lib, act, output = 11, other = null) {
     return new Promise(async (resolve) => {
         try {
-            let nga = config.nga;
             let url = "https://ngabbs.com/nuke.php";
             let res = await axios.post(url,`access_uid=${uid}&access_token=${token}&app_id=1010&__act=${act}&__lib=${lib}&__output=${output}&${other}`, {
                     headers: {
@@ -77,7 +76,6 @@ function ngaGet(lib, act, output = 11, other = null) {
                 }
             );            
             console.log("    " + (res.data && res.data.time || res.data.code))
-            info += "    " + (res.data && res.data.time || res.data.code)
             resolve(res.data)
         } catch (err) {
             console.log(err);

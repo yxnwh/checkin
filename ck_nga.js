@@ -25,32 +25,32 @@ async function nga() {
             info += "签到：" + res1.data[0] + "\n";
         } else {
             console.log("res1:" + res1);
-            info += "签到：" + (res1.error && res1.error[0]);
+            info += "签到：" + (res1.error && res1.error[0]) + "\n";
         }
         if (!info.match(/登录|CLIENT/)) {
             await ngaGet("mission", "checkin_count_add", 11, "mid=2&get_success_repeat=1&no_compatible_fix=1")
             await ngaGet("mission", "checkin_count_add", 11, "mid=131&get_success_repeat=1&no_compatible_fix=1")       
             await ngaGet("mission", "checkin_count_add", 11, "mid=30&get_success_repeat=1&no_compatible_fix=1")
-            console.log("看视频免广告")
-            info += "---看视频免广告---"
+            console.log("看视频免广告\n")
+            info += "---看视频免广告---\n"
             await ngaGet("mission", "video_view_task_counter_add_v2_for_adfree_sp1")
             for (c of new Array(4)) await ngaGet("mission", "video_view_task_counter_add_v2_for_adfree")
-            console.log("看视频得N币")
-            info += "---看视频得N币---"
+            console.log("看视频得N币\n")
+            info += "---看视频得N币---\n"
             for (c of new Array(5)) await ngaGet("mission", "video_view_task_counter_add_v2")
             //分享帖子
-            console.log("分享帖子 5")
-            info += "---分享帖子 5---"
+            console.log("分享帖子 5\n")
+            info += "---分享帖子 5---\n"
             tid = Math.ceil(Math.random() * 12346567) + 12345678
             for (c of new Array(5)) await ngaGet("data_query", "topic_share_log_v2", 12, "event=4&tid=" + tid)
-            console.log("领取分享奖励 1N币")
-            info += "---领取分享奖励 1N币---"
+            console.log("领取分享奖励 1N币\n")
+            info += "---领取分享奖励 1N币---\n"
             await ngaGet("mission", "check_mission", 11, "mid=149&get_success_repeat=1&no_compatible_fix=1")
             //查询
             let {
                 data: [sign, money, y]
             } = await ngaGet("check_in", "get_stat")
-            info += ` 连签 ${sign.continued}天 累签 ${sign.sum}天\n    N币：${money.money_n}\n    铜币：${money.money}\n    啊哈：${y[0]}`
+            info += ` 连签 ${sign.continued}天 累签 ${sign.sum}天\n    N币：${money.money_n}\n    铜币：${money.money}\n    啊哈：${y[0]}\n`
         }
         desp += info;
         info = '';

@@ -165,15 +165,15 @@ function Checkin() {
                             }
                           }
                         var continued = obj.data.data.signDays;
-                        CheckinMsg = `爱奇艺app签到: ${rewards.join(", ")}${rewards.length<3?`, 累计签到${continued}天`:``} 🎉\n`;
+                        CheckinMsg = `app签到: ${rewards.join(", ")}${rewards.length<3?`, 累计签到${continued}天`:``} 🎉\n`;
                     } else {
-                        CheckinMsg = `爱奇艺app签到: ${obj.data.msg} ⚠️\n`;
+                        CheckinMsg = `app签到: ${obj.data.msg} ⚠️\n`;
                     }
                 } else {
-                    CheckinMsg = `爱奇艺app签到: Cookie无效 ⚠️\n`;
+                    CheckinMsg = `app签到: Cookie无效 ⚠️\n`;
                 }
             } catch (e) {
-                CheckinMsg = `爱奇艺app签到: ${e.message||e}\n`;
+                CheckinMsg = `app签到: ${e.message||e}\n`;
             }
             info += CheckinMsg
             console.log(`${CheckinMsg} ${Details}\n`);
@@ -218,15 +218,15 @@ function WebCheckin() {
                     if (obj.data[0].code === "A0000") {
                         var quantity = obj.data[0].score;
                         var continued = obj.data[0].continuousValue;
-                        WebCheckinMsg = `爱奇艺网页签到: 积分+${quantity}, 累计签到${continued}天 🎉\n`
+                        WebCheckinMsg = `网页签到: 积分+${quantity}, 累计签到${continued}天 🎉\n`
                     } else {
-                        WebCheckinMsg = `爱奇艺网页签到: ${obj.data[0].message} ⚠️\n`
+                        WebCheckinMsg = `网页签到: ${obj.data[0].message} ⚠️\n`
                     }
                 } else {
-                    WebCheckinMsg = `爱奇艺网页签到: ${obj.message||'未知错误'} ⚠️\n`
+                    WebCheckinMsg = `网页签到: ${obj.message||'未知错误'} ⚠️\n`
                 }
             } catch (e) {
-                WebCheckinMsg = `爱奇艺网页签到: ${e.message || e}\n`;
+                WebCheckinMsg = `网页签到: ${e.message || e}\n`;
             }
             info += WebCheckinMsg
             console.log(`${WebCheckinMsg} ${Details}\n`);
@@ -248,15 +248,15 @@ function Lottery(s) {
                 const obj = JSON.parse(data);
                 $nobyda.last = !!data.match(/(机会|已经)用完/)
                 if (obj.awardName && obj.code === 0) {
-                    LotteryMsg = `爱奇艺app抽奖: ${!$nobyda.last ? `${obj.awardName.replace(/《.+》/, "未中奖")} 🎉` : `您的抽奖次数已经用完 ⚠️`}\n`
+                    LotteryMsg = `app抽奖: ${!$nobyda.last ? `${obj.awardName.replace(/《.+》/, "未中奖")} 🎉` : `您的抽奖次数已经用完 ⚠️`}\n`
                 } else if (data.match(/\"errorReason\"/)) {
                     const msg = data.match(/msg=.+?\)/) ? data.match(/msg=(.+?)\)/)[1].replace(/用户(未登录|不存在)/, "Cookie无效") : ""
-                    LotteryMsg = `爱奇艺app抽奖: ${msg || `未知错误`} ⚠️\n`
+                    LotteryMsg = `app抽奖: ${msg || `未知错误`} ⚠️\n`
                 } else {
-                    LotteryMsg = `爱奇艺app抽奖: ${data}\n`
+                    LotteryMsg = `app抽奖: ${data}\n`
                 }
             } catch (e) {
-                LotteryMsg = `爱奇艺app抽奖: ${e.message || e}\n`;
+                LotteryMsg = `app抽奖: ${e.message || e}\n`;
             }
             console.log(`${LotteryMsg} (${s+1}) ${Details}\n`)
             info += LotteryMsg;

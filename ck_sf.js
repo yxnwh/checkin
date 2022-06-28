@@ -202,9 +202,9 @@ function do_mission(title, taskCode) {
 
 //抽奖任务
 function do_lottery() {
-    url = 'https://mcs-mimp-web.sf-express.com/mcs-mimp/lottery/receiveCoupon';
+    url = 'https://mcs-mimp-web.sf-express.com/mcs-mimp/commonPost/~memberNonactivity~multiIntegralLotteryService~lottery';
     //headers['Cookie'] = cookie;
-    body = {"channel":"SFAPP"};
+    body = {"lotteryType":"NINE_POINT","continuityLotteryFlag":0};
     return new Promise(resolve => {
       fetch(url, {
         method: 'POST',
@@ -214,7 +214,7 @@ function do_lottery() {
         return response.json()
       }).then(function(body) {
         if (body.success) {
-             info += `执行抽奖任务，获得 ${body.obj[0].giftName} 奖励\n`;
+             info += `执行抽奖任务，获得 ${body.obj[0].commodityName} 奖励\n`;
         }
       }).catch(function(e) {
           const error = `执行抽奖任务返回错误，请检查⚠️\n`;

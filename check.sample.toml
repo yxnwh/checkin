@@ -180,3 +180,19 @@ phone = ""
 # 滴滴【IOS】
 [[DIDI]]
 token = ""
+
+# 和彩云【IOS】
+[[MCLOUD]]
+cookie = ''
+referer = ''
+
+# 顺丰【IOS】
+[[SFEXPRESS]]
+cookie = ""
+dotreasure = "false"
+whitelist = "18元顺丰优惠券"
+
+# WPS【WEB】
+# https://www.kdocs.cn cookie
+[[WPS]]
+cookie = ""

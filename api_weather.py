@@ -22,6 +22,24 @@ class Weather:
         获取天气信息。网址：https://www.sojson.com/blog/305.html
         :return:
         """
+import json
+import os
+
+import requests
+
+from notify_mtr import send
+from utils import get_data
+
+
+class Weather:
+    def __init__(self, check_items):
+        self.check_items = check_items
+
+    def main(self):
+        """
+        获取天气信息。网址：https://www.sojson.com/blog/305.html
+        :return:
+        """
         try:
             with open(
                 os.path.join(os.path.dirname(__file__), "city.json"),
@@ -29,20 +47,31 @@ class Weather:
                 encoding="utf-8",
             ) as city_file:
                 city_map = json.loads(city_file.read())
-        except Exception:
-            with open(
-                "/ql/repo/yxnwh_checkin_main/city.json", "r", encoding="utf-8"
-            ) as city_file:
-                city_map = json.loads(city_file.read())
+                if not city_map:
+                    raise FileNotFoundError
+        except FileNotFoundError:
+            r = requests.get(
+                "https://fastly.jsdelivr.net/gh/Oreomeow/checkinpanel@master/city.json"
+            )
+            if r.status_code == 200:
+                city_map = r.json()
+                with open(
+                    os.path.join(os.path.dirname(__file__), "city.json"),
+                    "w",
+                    encoding="utf-8",
+                ) as city_file:
+                    json.dump(city_map, city_file, ensure_ascii=False)
+            else:
+                return "下载 city.json 失败！"
         msg_all = ""
         for city_name in self.check_items:
             city_code = city_map.get(city_name, "101020100")
             weather_url = f"http://t.weather.itboy.net/api/weather/city/{city_code}"
-            resp = requests.get(url=weather_url)
-            if resp.status_code == 200 and resp.json().get("status") == 200:
-                d = resp.json()
+            r = requests.get(url=weather_url)
+            if r.status_code == 200 and r.json().get("status") == 200:
+                d = r.json()
                 msg = (
-                    "\n城市："
+                    "城市："
                     + d["cityInfo"]["parent"]
                     + " "
                     + d["cityInfo"]["city"]

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-cron: 12 6 * * *
+cron: 31 7 * * *
 new Env('WPS');
 """
 

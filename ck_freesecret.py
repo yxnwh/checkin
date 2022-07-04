@@ -25,9 +25,8 @@ class daili:
         n = re.findall(r'><img src=([0-9a-zA-Z/?&=]+)',res.content.decode())
         for i in range(len(n)):
             n[i] = 'https://proxy.mimvp.com'+n[i]
-        print(n)
         return m,n
-
+    
     def get_token(ak,sk):
         url = "https://aip.baidubce.com/oauth/2.0/token"
         params = {
@@ -43,10 +42,10 @@ class daili:
         return access_token
     
     def baidu_api(token,imgurl):
-        ports = []
-        for i in range(len(imgurl)):
+        port = []
+        for i in imgurl:
             request_url = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
-            res = requests.get(imgurl[i])
+            res = requests.get(i)
             pic=res.content
             photo = open(r'./1.jpg','wb')
             photo.write(pic)
@@ -59,9 +58,10 @@ class daili:
             request_url = request_url + "?access_token=" + token
             headers = {'content-type': 'application/x-www-form-urlencoded'}
             response = requests.post(request_url, data=params, headers=headers).json()
-            ports.append(response['words_result'][0]['words']) #空列表使用append添加元素
-            time.sleep(3)
-        return ports
+            print(response)
+            port.append(response['words_result'][0]['words']) #空列表使用append添加元素
+            time.sleep(1.5)
+        return port
     
     def main(self):
         ip_cistern = []

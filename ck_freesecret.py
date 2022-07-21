@@ -14,7 +14,7 @@ from notify_mtr import send
 from utils import get_data
 
 
-class daili:
+class FREESECRET:
     def __init__(self, check_items):
         self.check_items = check_items
 
@@ -27,6 +27,7 @@ class daili:
             n[i] = 'https://proxy.mimvp.com'+n[i]
         return m,n
     
+    @staticmethod
     def get_token(ak,sk):
         url = "https://aip.baidubce.com/oauth/2.0/token"
         params = {
@@ -41,6 +42,7 @@ class daili:
         access_token = res['access_token']
         return access_token
     
+    @staticmethod
     def baidu_api(token,imgurl):
         port = []
         for i in imgurl:
@@ -80,5 +82,5 @@ class daili:
 if __name__ == "__main__":
     data = get_data()
     _check_items = data.get("FREESECRET", [])
-    res = Pojie(check_items=_check_items).main()
+    res = FREESECRET(check_items=_check_items).main()
     send("FREESECRET", res)

@@ -73,8 +73,8 @@ class FREESECRET:
             ip_tmp = self.get_link()
             token = self.get_token(ak=ak,sk=sk)
             ports = self.baidu_api(token=token,imgurl=ip_tmp[1])
-            for j in range(len(nn)):
-                ip_cistern.append(ip_tmp[0][j]+':'+nn[j]) #空列表使用append添加元素
+            for j in range(len(ports)):
+                ip_cistern.append(ip_tmp[0][j]+':'+ports[j]) #空列表使用append添加元素
             msg = f"获取到的代理池为: {ip_cistern}"
         return msg
 
